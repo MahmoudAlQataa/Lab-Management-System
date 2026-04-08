@@ -4,64 +4,239 @@
 <head>
     <meta charset="UTF-8">
     <title>Comprehensive Report</title>
-    <link rel="stylesheet" href="../static/css/print.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background-color: white;
+            color: black;
+        }
+
+        .page {
+            width: 21cm;
+            min-height: 29.7cm;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+        }
+
+        header {
+            height: 3cm;
+            border-bottom: 1px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* ✅ بدل cover */
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 21cm;
+            height: 2cm;
+            border-top: 1px solid black;
+            text-align: center;
+            font-size: 9pt;
+            padding-top: 10px;
+            background: white;
+        }
+
+        footer p {
+            margin: 3px 0;
+        }
+
+        footer hr {
+            width: 80%;
+            margin: 5px auto;
+            border: none;
+            border-top: 0.5px solid black;
+        }
+
+        main {
+            padding: 1.5cm 2cm 3cm 2cm;
+        }
+
+        .report-title {
+            text-align: center;
+            font-size: 12pt;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .patient-info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            font-size: 9pt;
+        }
+
+        .patient-info-table td {
+            border: 0.5px solid black;
+            padding: 6px 8px;
+        }
+
+        .patient-info-table td:nth-child(odd) {
+            font-weight: bold;
+            width: 15%;
+        }
+
+        .analysis-section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .analysis-title {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-bottom: 2px solid black;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+        }
+
+        .results-table th {
+            border: 0.5px solid black;
+            border-bottom: 1px solid black;
+            padding: 6px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .results-table td {
+            border: 0.5px solid #999;
+            padding: 5px 8px;
+            text-align: center;
+        }
+
+        .results-table td:first-child {
+            text-align: left;
+        }
+
+        .divider {
+            margin: 25px 0;
+            border-top: 1px solid #ccc;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            footer {
+                position: fixed;
+                bottom: 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <header>
-        <img src="../static/img/ترويسة.png" style="width:100%; height:3cm;">
-    </header>
+    <div class="page">
+        <header>
+            <img src="../static/img/ترويسة.png" alt="Header">
+        </header>
 
-    <main>
-        <!-- ======================================= -->
-        <!-- بيانات المريض -->
-        <!-- ======================================= -->
-        <h2 style="text-align: center; color: #2c3e50;">Comprehensive Medical Report</h2>
+        <main>
+            <div class="report-title">Comprehensive Medical Report</div>
 
-        <h3>Patient Information</h3>
-        <div class="patient-info">
-            <p><strong>Name:</strong> {{ patient[0] }}</p>
-            <p><strong>ID:</strong> {{ patient[1] }}</p>
-            <p><strong>Phone:</strong> {{ patient[2] }}</p>
-            <p><strong>Age:</strong> {{ patient[3] }}</p>
-            <p><strong>Gender:</strong> {{ patient[4] }}</p>
-            {% if patient[5] %}
-            <p><strong>Doctor:</strong> {{ patient[5] }}</p>
-            {% endif %}
-            <p><strong>Date:</strong> {{ patient[6] }}</p>
-        </div>
+            <div class="section-title">Patient Information</div>
+            <table class="patient-info-table">
+                <tr>
+                    <td>Name:</td>
+                    <td>{{ patient[0] }}</td>
+                    <td>ID Number:</td>
+                    <td>{{ patient[1] }}</td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td>{{ patient[2] or '-' }}</td>
+                    <td>Age:</td>
+                    <td>{{ patient[3] }}</td>
+                </tr>
+                <tr>
+                    <td>Gender:</td>
+                    <td>{{ patient[4] }}</td>
+                    <td>Doctor:</td>
+                    <td>{{ patient[5] or '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td colspan="3">{{ patient[6] }}</td>
+                </tr>
+            </table>
 
-        <!-- ======================================= -->
-        <!-- التحاليل -->
-        <!-- ======================================= -->
-        {% for analysis in all_results %}
-        <div class="analysis-section">
-            <h2 class="analysis-title">{{ loop.index }}. {{ analysis.analysis_type }}</h2>
+            {% for analysis in all_results %}
+            <div class="analysis-section">
+                <div class="analysis-title">{{ loop.index }}. {{ analysis.analysis_type }}</div>
 
-            <div class="results-grid">
-                {% for r in analysis.results %}
-                <p>
-                    {{ r[0] }}: {{ r[1] }} {{ r[2] }}
-                    {% if r[3] %}
-                    <span style="color: #666; font-size: 12px;">(Normal: {{ r[3] }})</span>
-                    {% endif %}
-                </p>
-                {% endfor %}
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Test</th>
+                            <th>Result</th>
+                            <th>Unit</th>
+                            <th>Normal Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in analysis.results %}
+                        <tr>
+                            <td>{{ r[0] }}</td>
+                            <td>{{ r[1] }}</td>
+                            <td>{{ r[2] or '' }}</td>
+                            <td>{{ r[3] or '' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        </div>
 
-        {% if not loop.last %}
-        <hr style="margin: 30px 0; border: 1px solid #ddd;">
-        {% endif %}
-        {% endfor %}
+            {% if not loop.last %}
+            <div class="divider"></div>
+            {% endif %}
+            {% endfor %}
+        </main>
 
-    </main>
+        <footer>
+            <p>مرخص من وزارة الصحة الفلسطينية</p>
+            <hr>
+            <p>غزة - شارع الوحدة - مقابل عيادة الدرج (البندر)</p>
+        </footer>
+    </div>
 
-    <footer>
-        <p>مرخص من وزارة الصحة الفلسطينية</p>
-        <hr color="black">
-        <p>غزة - شارع الوحدة - مقابل عيادة الدرج (البندر)</p>
-    </footer>
+    <script>
+        window.onload = function () {
+            window.print();
+        };
+    </script>
 </body>
 
 </html>

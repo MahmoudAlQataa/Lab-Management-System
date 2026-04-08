@@ -8,56 +8,114 @@
 </head>
 
 <body>
+    <!-- ======================================= -->
+    <!-- Header + Navbar -->
+    <!-- ======================================= -->
+    <header class="main-header">
+        <h1 class="lab-title">
+            <img src="../static/img/WaterMark.png" alt="">
+            Nebras Medical Laboratory
+        </h1>
 
-    <div class="top-bar">
-        <div class="nav-buttons">
-            <a href="/new-report"><button>➕ إضافة تقرير جديد</button></a>
-            <a href="/reports"><button>📄 عرض جميع التقارير</button></a>
+        <nav class="main-navbar">
+            <a href="/new-report" class="nav-btn">➕ New Report</a>
+            <a href="/reports" class="nav-btn active-page">📄 Reports</a>
+
+            <a href="/stats" class="nav-btn">📊 Statistics</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn settings-btn">⚙️ Settings ▼</button>
+                <div class="dropdown-content">
+                    <a href="/template-settings">📋 Template Settings</a>
+                    <a href="/manage-doctors">👨‍⚕️ Manage Doctors</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ======================================= -->
+    <!-- Main Container -->
+    <!-- ======================================= -->
+    <div class="main-container">
+
+        <!-- Search & Filter -->
+        <div class="search-section" style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+            <input type="text" id="searchInput" placeholder="🔍 Search by name or ID number..."
+                style="flex:1; min-width:200px;">
+            <form method="GET" action="/reports" style="display:flex; gap:8px; align-items:center;">
+                <input type="month" name="month" value="{{ selected_month }}"
+                    style="padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
+                <button type="submit"
+                    style="padding:8px 16px; background:#c0392b; color:white; border:none; border-radius:6px; cursor:pointer; font-size:14px;">
+                    🔍 Filter
+                </button>
+                {% if selected_month %}
+                <a href="/reports"
+                    style="padding:8px 14px; background:#aaa; color:white; border-radius:6px; text-decoration:none; font-size:14px;">
+                    ✕ Clear
+                </a>
+                {% endif %}
+            </form>
         </div>
 
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 ابحث بالاسم أو رقم الهوية...">
-        </div>
-    </div>
+        <!-- Reports Table -->
+        <div class="table-container">
+            <h2 class="section-title">All Reports</h2>
 
-    <!-- صقحة عرض كل قاعدة البيانات -->
-    <h2>Reports Lists</h2>
+            <table border="1">
+                <!-- الهيدر للجدول -->
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>ID Number</th>
+                    <th>Analysis</th>
+                    <th>Date</th>
+                    <th>View</th>
+                    <th>History</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
 
-    <table border="1">
-        <!-- الهيدر للجدول -->
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>ID Number</th>
-            <th>Analysis</th>
-            <th>Date</th>
-            <th>View</th>
-            <th>PDF</th>
-        </tr>
+                <!-- لوب للبيانات -->
+                <!-- البيانات مخزنة بطريقة list of tupels -->
+                {% for p in patients %}
+                <tr>
+                    <td>{{ p[0] }}</td>
+                    <td>{{ p[1] }}</td>
+                    <td>{{ p[2] }}</td>
+                    <td>{{ p[3] }}</td>
+                    <td>{{ p[4] }}</td>
+                    <td>
+                        <a href="/reports/{{ p[0] }}" target="_blank">View</a>
+                    </td>
+                    <td>
+                        <a href="/patient/{{ p[5] }}" target="_blank" style="color:#0056b3;">👤 History</a>
+                    </td>
+                    <td>
+                        <a href="/edit-report/{{ p[0] }}" target="_blank">Edit</a>
+                    </td>
+                    <td>
+                        <button onclick="confirmDelete({{ p[0] }})"
+                            style="background:#d9534f; color:white; border:none; border-radius:4px; padding:4px 10px; cursor:pointer;">
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
 
-        <!-- لوب للبيانات -->
-        <!-- البيانات مخزنة بطريقة list of tupels -->
-        {% for p in patients %}
-        <tr>
-            <td>{{ p[0] }}</td>
-            <td>{{ p[1] }}</td>
-            <td>{{ p[2] }}</td>
-            <td>{{ p[3] }}</td>
-            <td>{{ p[4] }}</td>
-            <td>
-                <a href="/reports/{{ p[0] }}" target="_blank">View</a>
-            </td>
-            <td>
-                <a href="/print/{{ p[0] }}" target="_blank">Open PDF</a>
-            </td>
-        </tr>
-        {% endfor %}
-
-    </table>
+            </table>
+        </div> <!-- إغلاق table-container -->
+    </div> <!-- إغلاق main-container -->
 
 
     <!-- سكريبت للبحث عن المريض -->
     <script>
+        function confirmDelete(analysisId) {
+            if (confirm("Are you sure you want to delete this analysis? This cannot be undone.")) {
+                fetch('/delete-analysis/' + analysisId, { method: 'POST' })
+                    .then(r => { if (r.ok || r.redirected) window.location.reload(); });
+            }
+        }
+
         // البحث المباشر
         document.getElementById('searchInput').addEventListener('keyup', function () {
             const searchValue = this.value.toLowerCase();

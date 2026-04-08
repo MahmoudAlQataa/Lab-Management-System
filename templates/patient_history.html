@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/report_view.css">
+    <title>Patient History</title>
+    <style>
+        .history-card {
+            background: white;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .history-card h3 {
+            margin: 0 0 14px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #0056b3;
+            color: #0056b3;
+            font-size: 15px;
+        }
+
+        .patient-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .info-item {
+            font-size: 14px;
+        }
+
+        .info-item strong {
+            color: #444;
+        }
+
+        .analyses-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .analyses-table th {
+            background: #0056b3;
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .analyses-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .analyses-table tr:hover td {
+            background: #f5f8ff;
+        }
+
+        .analyses-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            background: #e8f0fe;
+            color: #0056b3;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-view {
+            background: #0056b3;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #f0ad4e;
+            color: white;
+        }
+
+        .btn-print {
+            background: #5cb85c;
+            color: white;
+        }
+
+        .new-analysis-btn {
+            display: inline-block;
+            padding: 10px 22px;
+            background: #0056b3;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-size: 15px;
+        }
+
+        .lab-title {
+            color: #1a1a1a;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .lab-title img {
+            width: 70px;
+            height: 70px;
+            margin-right: 10px;
+            border-radius: 50%;
+            object-fit: contain;
+            background: white;
+            padding: 1px;
+            border: 1px solid #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <h1 class="lab-title">
+            <img src="../static/img/WaterMark.png" alt="">
+            Nebras Medical Laboratory
+        </h1>
+        <nav class="main-navbar">
+            <a href="/new-report" class="nav-btn">➕ New Report</a>
+            <a href="/reports" class="nav-btn">📄 Reports</a>
+            <a href="/stats" class="nav-btn">📊 Statistics</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn settings-btn">⚙️ Settings ▼</button>
+                <div class="dropdown-content">
+                    <a href="/template-settings">📋 Template Settings</a>
+                    <a href="/manage-doctors">👨‍⚕️ Manage Doctors</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+
+        <!-- Patient Info -->
+        <div class="history-card">
+            <h3>👤 Patient Information</h3>
+            <div class="patient-info-grid">
+                <div class="info-item"><strong>Name:</strong> {{ patient[1] }}</div>
+                <div class="info-item"><strong>ID Number:</strong> {{ patient[2] or '—' }}</div>
+                <div class="info-item"><strong>Phone:</strong> {{ patient[5] or '—' }}</div>
+                <div class="info-item"><strong>Age:</strong> {{ patient[4] or '—' }}</div>
+                <div class="info-item"><strong>Gender:</strong> {{ patient[3] or '—' }}</div>
+                <div class="info-item"><strong>Doctor:</strong> {{ patient[6] or '—' }}</div>
+            </div>
+            <div style="margin-top:16px;">
+                <a href="/new-report" class="new-analysis-btn">➕ Add New Analysis</a>
+            </div>
+        </div>
+
+        <!-- Analyses History -->
+        <div class="history-card">
+            <h3>🧪 Analysis History ({{ analyses|length }} total)</h3>
+
+            {% if analyses %}
+            <table class="analyses-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Analysis</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in analyses %}
+                    <tr>
+                        <td>{{ loop.revindex }}</td>
+                        <td><span class="badge">{{ a[1] }}</span></td>
+                        <td>{{ a[3] }}</td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="/reports/{{ a[0] }}" target="_blank" class="btn-sm btn-view">👁 View</a>
+                                <a href="/edit-report/{{ a[0] }}" target="_blank" class="btn-sm btn-edit">✏️ Edit</a>
+                                <button onclick="printAnalysis({{ a[0] }})" class="btn-sm btn-print">🖨️ Print</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">No analyses found for this patient.</div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <script>
+        function printAnalysis(id) {
+            window.open('/pdf/analysis/' + id, '_blank');
+        }
+
+        document.querySelector('.settings-btn')?.addEventListener('click', function (e) {
+            e.stopPropagation();
+            this.nextElementSibling.style.display =
+                this.nextElementSibling.style.display === 'block' ? 'none' : 'block';
+        });
+        document.addEventListener('click', function () {
+            const dd = document.querySelector('.dropdown-content');
+            if (dd) dd.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

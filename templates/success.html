@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Report Saved</title>
+
     <style>
         * {
             margin: 0;
@@ -12,28 +13,47 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #2c3e50;
             min-height: 100vh;
-            color: #333;
         }
 
+        /* ======================================= */
+        /* Header */
+        /* ======================================= */
+        .main-header {
+            background-color: #ffffff;
+            border-bottom: 3px solid #c0392b;
+            padding: 12px 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .lab-title {
+            color: #1a1a1a;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* ======================================= */
+        /* Success Container */
+        /* ======================================= */
         .success-container {
+            max-width: 600px;
+            margin: 50px auto;
             background-color: white;
-            padding: 50px 60px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px 50px;
+            border-radius: 10px;
+            border: 2px solid #b0b8c1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: center;
             animation: slideIn 0.5s ease-out;
-            max-width: 600px;
         }
 
         @keyframes slideIn {
             from {
-                transform: translateY(-50px);
+                transform: translateY(-30px);
                 opacity: 0;
             }
 
@@ -44,7 +64,7 @@
         }
 
         .success-icon {
-            font-size: 80px;
+            font-size: 70px;
             color: #27ae60;
             margin-bottom: 20px;
             animation: checkmark 0.6s ease-in-out;
@@ -65,33 +85,35 @@
         }
 
         h2 {
-            color: #2c3e50;
-            font-size: 28px;
+            color: #1a1a1a;
+            font-size: 24px;
             margin-bottom: 15px;
             font-weight: 700;
         }
 
         p {
-            color: #7f8c8d;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 25px;
         }
 
-        /* أزرار الطباعة */
+        /* ======================================= */
+        /* Print Buttons */
+        /* ======================================= */
         .print-buttons {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 12px;
+            margin-top: 25px;
         }
 
         .print-btn {
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: 700;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: 600;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
@@ -106,31 +128,17 @@
         .print-all:hover {
             background-color: #229954;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
         }
 
         .print-current {
-            background-color: #3498db;
+            background-color: #2874a6;
         }
 
         .print-current:hover {
-            background-color: #2980b9;
+            background-color: #1f5a7a;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
-        }
-
-        .skip-btn {
-            background-color: transparent;
-            color: #7f8c8d;
-            margin-top: 15px;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-        }
-
-        .skip-btn:hover {
-            background-color: #f8f9fa;
-            color: #2c3e50;
+            box-shadow: 0 4px 12px rgba(40, 116, 166, 0.3);
         }
 
         .print-individual {
@@ -140,12 +148,59 @@
         .print-individual:hover {
             background-color: #8e44ad;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(155, 89, 182, 0.4);
+            box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3);
+        }
+
+        .skip-btn {
+            background-color: transparent;
+            color: #7f8c8d;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #b0b8c1;
+        }
+
+        .skip-btn:hover {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            border-color: #95a5a6;
+        }
+
+        /* ======================================= */
+        /* Responsive */
+        /* ======================================= */
+        @media (max-width: 768px) {
+            .main-header {
+                padding: 12px 20px;
+            }
+
+            .success-container {
+                margin: 30px 20px;
+                padding: 30px 25px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .print-btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
         }
     </style>
+
 </head>
 
 <body>
+
+    <!-- ======================================= -->
+    <!-- Header -->
+    <!-- ======================================= -->
+    <header class="main-header">
+        <h1 class="lab-title">🏥 Nebras Medical Laboratory</h1>
+    </header>
+
     <div class="success-container">
         <div class="success-icon">✅</div>
         <h2>تم حفظ التقرير بنجاح!</h2>
@@ -195,17 +250,17 @@
         // =======================================
 
         function printAll() {
-            // ✅ فقط فتح صفحة الطباعة - بدون انتقال تلقائي
-            window.open('/print-comprehensive/{{ patient_id }}', '_blank');
+            // ✅ فتح Comprehensive PDF مباشرة
+            window.open('/pdf/comprehensive/{{ patient_id }}', '_blank');
         }
 
         function printAnalysis(analysisId) {
-            // ✅ فقط فتح صفحة الطباعة - بدون انتقال تلقائي
-            window.open('/print-single/' + analysisId, '_blank');
+            // ✅ فتح PDF التحليل الفردي مباشرة
+            window.open('/pdf/analysis/' + analysisId, '_blank');
         }
 
         function skipToDashboard() {
-            // ✅ الانتقال فقط عند الضغط على Skip
+            // ✅ الانتقال للـ Dashboard
             window.location.href = '/new-report';
         }
     </script>

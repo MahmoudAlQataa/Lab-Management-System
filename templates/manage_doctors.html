@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Doctors</title>
+    <link rel="stylesheet" href="../static/css/manage_doctors.css">
+</head>
+
+<body>
+
+    <!-- ======================================= -->
+    <!-- Header + Navbar -->
+    <!-- ======================================= -->
+    <header class="main-header">
+
+        <h1 class="lab-title">
+            <img src="../static/img/WaterMark.png" alt="">
+            Nebras Medical Laboratory
+        </h1>
+
+        <nav class="main-navbar">
+            <a href="/new-report" class="nav-btn">➕ New Report</a>
+            <a href="/reports" class="nav-btn">📄 Reports</a>
+
+            <a href="/stats" class="nav-btn">📊 Statistics</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn settings-btn active-page">⚙️ Settings ▼</button>
+                <div class="dropdown-content">
+                    <a href="/template-settings">📋 Template Settings</a>
+                    <a href="/manage-doctors">👨‍⚕️ Manage Doctors</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ======================================= -->
+    <!-- Main Container -->
+    <!-- ======================================= -->
+    <div class="main-container">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2 class="page-title">👨‍⚕️ Manage Doctors</h2>
+            <p class="page-description">Add, view, and manage doctors list</p>
+        </div>
+
+        <!-- ======================================= -->
+        <!-- Add Doctor Section -->
+        <!-- ======================================= -->
+        <div class="add-doctor-section">
+            <h3 class="section-title">Add New Doctor</h3>
+            <form method="post" action="/add-doctor" class="add-doctor-form">
+                <input type="text" name="doctor_name" placeholder="Doctor Name" required>
+                <button type="submit" class="btn-add">➕ Add Doctor</button>
+            </form>
+        </div>
+
+        <!-- ======================================= -->
+        <!-- Doctors List -->
+        <!-- ======================================= -->
+        <div class="doctors-list-section">
+            <h3 class="section-title">Doctors List</h3>
+
+            {% if doctors %}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Doctor Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doctor in doctors %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ doctor[1] }}</td>
+                            <td>
+                                <form method="post" action="/delete-doctor/{{ doctor[0] }}" style="display: inline;">
+                                    <button type="submit" class="btn-delete"
+                                        onclick="return confirm('Are you sure you want to delete this doctor?\nNote: Old records will remain saved.')">
+                                        🗑️ Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="no-data">No doctors registered yet</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+</body>
+
+</html>

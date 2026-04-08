@@ -9,90 +9,231 @@
 
 <body>
 
-    <div class="nav-buttons">
-        <a href="/new-report"><button>➕ إضافة تقرير جديد</button></a>
-        <a href="/reports"><button>📄 عرض جميع التقارير</button></a>
-    </div>
+    <!-- ======================================= -->
+    <!-- Header + Navbar -->
+    <!-- ======================================= -->
+    <header class="main-header">
+        <h1 class="lab-title">
+            <img src="../static/img/WaterMark.png" alt="">
+            Nebras Medical Laboratory
+        </h1>
 
-    <h2>Patient Information</h2>
+        <nav class="main-navbar">
+            <button type="submit" form="patientForm" class="nav-btn save-btn">💾 Save</button>
+            <a href="/reports" class="nav-btn reports-btn">📄 Reports</a>
+            <a href="/stats" class="nav-btn">📊 Statistics</a>
 
-    <form method="post" id="patientForm">
-        <!-- ======================================= -->
-        <!-- بيانات المريض الأساسية -->
-        <!-- ======================================= -->
-        <!-- ✅ حقل مخفي لحفظ التحليل النشط -->
-        <input type="hidden" name="active_analysis" id="activeAnalysisInput" value="">
-        <div>
-            <label>Patient Name</label>
-            <input type="text" name="name" required>
-        </div>
+            <!-- خانة البحث في الـ Navbar -->
+            <div style="position:relative; display:flex; align-items:center;">
+                <input type="text" id="patientSearchInput" placeholder="🔍 Search patient..." style="padding:6px 12px; border:1px solid #ccc; border-radius:6px;
+                           font-size:13px; width:200px; outline:none;">
+                <button type="button" id="clearPatientBtn" onclick="clearSelectedPatient()" style="display:none; margin-left:6px; padding:6px 10px; background:#aaa;
+                           color:white; border:none; border-radius:6px; cursor:pointer; font-size:12px;">
+                    ✕
+                </button>
 
-        <div>
-            <label>ID Number</label>
-            <input type="text" name="patient_id_number" required>
-        </div>
-
-        <div>
-            <label>Phone</label>
-            <input type="text" name="phone">
-        </div>
-
-        <div>
-            <label>Age</label>
-            <input type="number" name="age" required>
-        </div>
-
-        <div>
-            <label>Gender</label>
-            <select name="gender" required>
-                <option value="">-- Select --</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-        </div>
-
-        <div>
-            <label>Doctor Name</label>
-            <select name="doctor_name" required>
-                <option value="">-- Select Doctor --</option>
-                {% for doctor in doctors %}
-                <option value="{{ doctor }}">{{ doctor }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- ======================================= -->
-        <!-- اختيار التحاليل (Checkboxes) -->
-        <!-- ======================================= -->
-        <div style="grid-column: 1 / -1;">
-            <label style="font-size: 18px; margin-top: 20px; margin-bottom: 10px; display: block;">Select Analysis
-                Types:</label>
-            <div class="analysis-checkboxes">
-                {% for analysis_name in templates.keys() %}
-                <label class="checkbox-label">
-                    <input type="checkbox" name="selected_analyses" value="{{ analysis_name }}"
-                        class="analysis-checkbox">
-                    {{ analysis_name }}
-                </label>
-                {% endfor %}
+                <!-- Dropdown نتائج البحث -->
+                <div id="searchResults" style="display:none; position:absolute; top:36px; left:0; width:380px;
+                           background:white; border:1px solid #ddd; border-radius:8px;
+                           box-shadow:0 4px 16px rgba(0,0,0,0.15); z-index:9999; overflow:hidden;">
+                </div>
             </div>
-        </div>
 
-        <!-- ======================================= -->
-        <!-- Tabs للتحاليل -->
-        <!-- ======================================= -->
-        <div id="analysisTabs" style="grid-column: 1 / -1; display: none;">
-            <div class="tabs-header" id="tabsHeader"></div>
-            <div class="tabs-content" id="tabsContent"></div>
-        </div>
+            <div class="dropdown">
+                <button type="button" class="nav-btn settings-btn">⚙️ Settings ▼</button>
+                <div class="dropdown-content">
+                    <a href="/template-settings">📋 Template Settings</a>
+                    <a href="/manage-doctors">👨‍⚕️ Manage Doctors</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-        <button type="submit">Save Report</button>
-    </form>
+    <!-- ======================================= -->
+    <!-- Container -->
+    <!-- ======================================= -->
+    <div class="main-container">
+
+        <form method="post" id="patientForm" autocomplete="off">
+            <!-- ======================================= -->
+            <!-- بيانات المريض - كارت مضغوط -->
+            <!-- ======================================= -->
+            <input type="hidden" name="active_analysis" id="activeAnalysisInput" value="">
+            <input type="hidden" name="existing_patient_id" id="existingPatientId" value="">
+
+            <!-- رسالة المريض المحدد - تظهر فوق الفورم -->
+            <div id="selectedPatientMsg" style="display:none; margin-bottom:10px; padding:8px 14px;
+                background:#e8f5e9; border:1px solid #4caf50; border-radius:6px; color:#2e7d32; font-size:14px;">
+            </div>
+
+            <div class="patient-card">
+                <h3 class="card-title">Patient Information</h3>
+                <div class="patient-grid">
+                    <div class="form-field">
+                        <label>Name:</label>
+                        <input type="text" name="name" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label>ID Number:</label>
+                        <input type="text" name="patient_id_number">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Phone:</label>
+                        <input type="text" name="phone">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Age:</label>
+                        <input type="number" name="age" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Gender:</label>
+                        <select name="gender" required>
+                            <option value="">-- Select --</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Doctor:</label>
+                        <select name="doctor_name">
+                            <option value="">-- Select --</option>
+                            {% for doctor in doctors %}
+                            <option value="{{ doctor }}">{{ doctor }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================= -->
+            <!-- اختيار التحاليل (Checkboxes) -->
+            <!-- ======================================= -->
+            <div style="grid-column: 1 / -1;">
+                <label style="font-size: 18px; margin-top: 20px; margin-bottom: 10px; display: block;">Select Analysis
+                    Types:</label>
+                <div class="analysis-checkboxes">
+                    {% for analysis_name in templates.keys() %}
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="selected_analyses" value="{{ analysis_name }}"
+                            class="analysis-checkbox">
+                        {{ analysis_name }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- ======================================= -->
+            <!-- Tabs للتحاليل -->
+            <!-- ======================================= -->
+            <div id="analysisTabs" style="grid-column: 1 / -1; display: none;">
+                <div class="tabs-header" id="tabsHeader"></div>
+                <div class="tabs-content" id="tabsContent"></div>
+            </div>
+
+        </form>
+
+    </div> <!-- إغلاق main-container -->
+
+
 
     <!-- ======================================= -->
     <!-- JavaScript -->
     <!-- ======================================= -->
     <script>
+        // =======================================
+        // البحث عن مريض موجود
+        // =======================================
+        let searchTimeout = null;
+
+        document.getElementById('patientSearchInput').addEventListener('input', function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchPatients, 400);
+        });
+
+        function searchPatients() {
+            const q = document.getElementById('patientSearchInput').value.trim();
+            if (q.length < 2) {
+                document.getElementById('searchResults').style.display = 'none';
+                return;
+            }
+
+            fetch(`/search-patients?q=${encodeURIComponent(q)}`)
+                .then(r => r.json())
+                .then(data => {
+                    const container = document.getElementById('searchResults');
+                    if (data.length === 0) {
+                        container.innerHTML = `<div style="padding:12px; color:#888; font-size:14px;">No patients found — fill the form below to add new patient.</div>`;
+                        container.style.display = 'block';
+                        return;
+                    }
+
+                    let html = '';
+                    data.forEach(p => {
+                        html += `
+                            <div style="padding:10px 14px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; background:white; cursor:pointer;"
+                                onmouseover="this.style.background='#f0f7ff'" onmouseout="this.style.background='white'">
+                                <div>
+                                    <strong>${p.name}</strong>
+                                    <span style="color:#666; font-size:13px; margin-left:10px;">
+                                        ${p.age ? p.age + ' yrs' : ''} | ${p.gender || ''} ${p.id_number ? '| ID: ' + p.id_number : ''}
+                                    </span>
+                                </div>
+                                <button type="button" onclick='selectPatient(${JSON.stringify(p)})'
+                                    style="padding:5px 14px; background:#0056b3; color:white; border:none; border-radius:4px; cursor:pointer; font-size:13px;">
+                                    Select
+                                </button>
+                            </div>`;
+                    });
+                    container.innerHTML = html;
+                    container.style.display = 'block';
+                });
+        }
+
+        function selectPatient(p) {
+            // ملء الفورم
+            document.querySelector('[name="name"]').value = p.name;
+            document.querySelector('[name="patient_id_number"]').value = p.id_number;
+            document.querySelector('[name="phone"]').value = p.phone;
+            document.querySelector('[name="age"]').value = p.age;
+            document.querySelector('[name="gender"]').value = p.gender;
+            document.querySelector('[name="doctor_name"]').value = p.doctor;
+
+            // حفظ الـ ID
+            document.getElementById('existingPatientId').value = p.id;
+
+            // إخفاء نتائج البحث
+            document.getElementById('searchResults').style.display = 'none';
+
+            // إظهار رسالة التأكيد
+            const msg = document.getElementById('selectedPatientMsg');
+            msg.innerHTML = `✅ Selected existing patient: <strong>${p.name}</strong> — new analyses will be added to their history.`;
+            msg.style.display = 'block';
+
+            // إظهار زر Clear
+            document.getElementById('clearPatientBtn').style.display = 'inline-block';
+        }
+
+        function clearSelectedPatient() {
+            document.getElementById('existingPatientId').value = '';
+            document.getElementById('selectedPatientMsg').style.display = 'none';
+            document.getElementById('clearPatientBtn').style.display = 'none';
+            document.getElementById('patientSearchInput').value = '';
+            document.getElementById('searchResults').style.display = 'none';
+
+            // مسح الفورم
+            document.querySelector('[name="name"]').value = '';
+            document.querySelector('[name="patient_id_number"]').value = '';
+            document.querySelector('[name="phone"]').value = '';
+            document.querySelector('[name="age"]').value = '';
+            document.querySelector('[name="gender"]').value = '';
+            document.querySelector('[name="doctor_name"]').value = '';
+        }
+
         // =======================================
         // البيانات من السيرفر (القوالب)
         // =======================================
@@ -110,27 +251,43 @@
         let selectedAnalyses = new Set();
         let activeTab = null;
 
+        // ✅ جديد: التحاليل المنفصلة (ما تنجمع مع غيرها)
+        const STANDALONE_ANALYSES = ['URINE_ANALYSIS', 'SEMEN_ANALYSIS', 'STOOL_ANALYSIS', 'MICROBIOLOGY', 'LAP_REPORT'];
+
         // =======================================
         // عند تغيير الـ checkboxes
         // =======================================
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function () {
-                const analysisName = this.value;
-
-                if (this.checked) {
-                    // إضافة التحليل
-                    selectedAnalyses.add(analysisName);
-                } else {
-                    // إزالة التحليل
-                    selectedAnalyses.delete(analysisName);
-                }
-
-                updateTabs();
+                toggleAnalysis(this);
             });
         });
 
         // =======================================
+        // دالة تبديل اختيار التحليل
+        // =======================================
+        function toggleAnalysis(checkbox) {
+            const analysisName = checkbox.value;
+
+            if (checkbox.checked) {
+                // ✅ إضافة التحليل للقائمة
+                selectedAnalyses.add(analysisName);
+            } else {
+                // ✅ إزالة التحليل من القائمة
+                selectedAnalyses.delete(analysisName);
+                if (activeTab === analysisName) {
+                    activeTab = '';
+                }
+            }
+
+            updateTabs();
+        }
+
+        // =======================================
         // تحديث الـ Tabs
+        // =======================================
+        // =======================================
+        // تحديث الـ Tabs - نسخة محدثة مع دعم dropdown
         // =======================================
         function updateTabs() {
             // إذا ما في تحاليل محددة، إخفاء الـ tabs
@@ -138,6 +295,69 @@
                 tabsContainer.style.display = 'none';
                 return;
             }
+
+            // ✅ حفظ القيم المدخلة قبل إعادة الإنشاء
+            const savedValues = {};
+
+            // ✅ جمع كل القيم من الحقول الموجودة (input + select + textarea)
+            document.querySelectorAll('input[data-analysis], select[data-analysis], textarea[data-analysis]').forEach(input => {
+                if (input.value) {
+                    savedValues[input.name] = input.value;
+                }
+            });
+
+            // ✅ حفظ عدد الحقول المخصصة لكل تحليل
+            const customFieldsData = {};
+
+            document.querySelectorAll('.custom-field-row').forEach(row => {
+                const analysisName = row.getAttribute('data-analysis');
+                const fieldNum = row.getAttribute('data-field-num');
+
+                if (!customFieldsData[analysisName]) {
+                    customFieldsData[analysisName] = [];
+                }
+
+                const nameInput = row.querySelector(`[name="${analysisName}_custom_name_${fieldNum}"]`);
+                const valueInput = row.querySelector(`[name="${analysisName}_custom_value_${fieldNum}"]`);
+                const unitInput = row.querySelector(`[name="${analysisName}_custom_unit_${fieldNum}"]`);
+                const rangeInput = row.querySelector(`[name="${analysisName}_custom_range_${fieldNum}"]`);
+
+                if (nameInput && nameInput.value) {
+                    customFieldsData[analysisName].push({
+                        num: fieldNum,
+                        name: nameInput.value,
+                        value: valueInput ? valueInput.value : '',
+                        unit: unitInput ? unitInput.value : '',
+                        range: rangeInput ? rangeInput.value : ''
+                    });
+
+                    // حفظ في savedValues
+                    savedValues[nameInput.name] = nameInput.value;
+                    if (valueInput && valueInput.value) savedValues[valueInput.name] = valueInput.value;
+                    if (unitInput && unitInput.value) savedValues[unitInput.name] = unitInput.value;
+                    if (rangeInput && rangeInput.value) savedValues[rangeInput.name] = rangeInput.value;
+                }
+            });
+
+            // ✅ حفظ عنوان التقرير العام
+            const customNameInput = document.querySelector('[name="GENERAL_custom_name"]');
+            if (customNameInput && customNameInput.value) {
+                savedValues['GENERAL_custom_name'] = customNameInput.value;
+            }
+
+            // حفظ القيم من القالب العام
+            document.querySelectorAll('.general-field-row').forEach(row => {
+                const rowNum = row.getAttribute('data-row');
+                const nameInput = row.querySelector(`[name="GENERAL_field_name_${rowNum}"]`);
+                const valueInput = row.querySelector(`[name="GENERAL_field_value_${rowNum}"]`);
+                const unitInput = row.querySelector(`[name="GENERAL_field_unit_${rowNum}"]`);
+                const rangeInput = row.querySelector(`[name="GENERAL_field_range_${rowNum}"]`);
+
+                if (nameInput && nameInput.value) savedValues[nameInput.name] = nameInput.value;
+                if (valueInput && valueInput.value) savedValues[valueInput.name] = valueInput.value;
+                if (unitInput && unitInput.value) savedValues[unitInput.name] = unitInput.value;
+                if (rangeInput && rangeInput.value) savedValues[rangeInput.name] = rangeInput.value;
+            });
 
             // إظهار الـ tabs
             tabsContainer.style.display = 'block';
@@ -167,31 +387,289 @@
 
                 // إنشاء HTML للحقول
                 let fieldsHTML = '';
-                fields.forEach(field => {
-                    fieldsHTML += `
-                        <div class="result-field">
-                            <label>${field.label || field.name}</label>
-                            <input type="text" 
-                                   name="${analysisName}_${field.name}" 
-                                   placeholder="Value"
-                                   data-analysis="${analysisName}">
-                            <input type="text" 
-                                   name="${analysisName}_${field.name}_range" 
-                                   placeholder="Normal Range" 
-                                   value="${field.normal_range || ''}"
-                                   data-analysis="${analysisName}">
-                        </div>
+
+                // =======================================
+                // معالجة خاصة للقالب العام
+                // =======================================
+                if (analysisName === 'GENERAL') {
+                    fieldsHTML = `
+                <div id="general-fields-container">
+                    <div class="general-info">
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                            📝 Custom Report - Add your own fields
+                        </p>
+                    </div>
+                    
+                    <!-- حقل اسم التقرير المخصص -->
+                    <div class="custom-name-field">
+                        <label style="font-weight: 700; margin-bottom: 8px; display: block;">Report Name:</label>
+                        <input type="text" 
+                               name="GENERAL_custom_name" 
+                               placeholder="Enter custom report name (e.g., Blood Type Test)"
+                               class="custom-name-input"
+                               value="${savedValues['GENERAL_custom_name'] || ''}"
+                               required>
+                    </div>
+                    
+                    <!-- حقل واحد افتراضي -->
+                    <div class="general-field-row" data-row="1">
+                        <input type="text" 
+                               name="GENERAL_field_name_1" 
+                               placeholder="Field Name"
+                               class="general-field-name"
+                               value="${savedValues['GENERAL_field_name_1'] || ''}">
+                        <input type="text" 
+                               name="GENERAL_field_value_1" 
+                               placeholder="Value"
+                               class="general-field-value"
+                               value="${savedValues['GENERAL_field_value_1'] || ''}">
+                        <input type="text" 
+                               name="GENERAL_field_unit_1" 
+                               placeholder="Unit"
+                               class="general-field-unit"
+                               value="${savedValues['GENERAL_field_unit_1'] || ''}">
+                        <input type="text" 
+                               name="GENERAL_field_range_1" 
+                               placeholder="Normal Range"
+                               class="general-field-range"
+                               value="${savedValues['GENERAL_field_range_1'] || ''}">
+                        <button type="button" class="remove-field-btn" onclick="removeGeneralField(1)" style="display:none;">❌</button>
+                    </div>
+                </div>
+                
+                <button type="button" class="add-field-btn" onclick="addGeneralField()">
+                    ➕ Add More Fields
+                </button>
+                
+                <!-- ✅ Lab Comment للتحليل العام -->
+                <div class="lab-comment-section">
+                    <label class="lab-comment-label">Lab Comment:</label>
+                    <textarea name="GENERAL_lab_comment" 
+                              placeholder="Enter lab comments or notes (optional)..."
+                              data-analysis="GENERAL"
+                              rows="4"
+                              class="lab-comment-textarea">${savedValues['GENERAL_lab_comment'] || ''}</textarea>
+                </div>
+            `;
+                    // =======================================
+                    // معالجة خاصة لـ LAP_REPORT
+                    // =======================================
+                } else if (analysisName === 'LAP_REPORT') {
+                    fieldsHTML = `
+                <div class="lap-report-container">
+                    <div class="lap-report-field">
+                        <label>Report Title:</label>
+                        <input type="text" 
+                               name="LAP_REPORT_title" 
+                               placeholder="Enter report title"
+                               data-analysis="LAP_REPORT"
+                               value="${savedValues['LAP_REPORT_title'] || ''}"
+                               class="lap-title-input">
+                    </div>
+                    
+                    <div class="lap-report-field">
+                        <label>Report Content:</label>
+                        <textarea name="LAP_REPORT_content" 
+                                  placeholder="Enter detailed report content..."
+                                  data-analysis="LAP_REPORT"
+                                  rows="15"
+                                  class="lap-content-textarea">${savedValues['LAP_REPORT_content'] || ''}</textarea>
+                    </div>
+                </div>
+            `;
+                } else {
+                    // القوالب العادية
+                    fields.forEach(field => {
+                        const valueName = `${analysisName}_${field.name}`;
+                        const rangeName = `${analysisName}_${field.name}_range`;
+
+                        // ✅ جديد: عنوان فرعي لحقول الـ Motility في السائل المنوي
+                        if (analysisName === 'SEMEN_ANALYSIS' && field.name === 'grade_a') {
+                            fieldsHTML += `
+                                <div style="grid-column: 1 / -1; margin-top: 20px; margin-bottom: 10px; font-weight: bold; color: #0056b3; font-size: 16px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+                                    🔬 Motility:
+                                </div>
+                            `;
+                        }
+
+                        // ✅ جديد: خط فاصل لإنهاء قسم الـ Motility
+                        if (analysisName === 'SEMEN_ANALYSIS' && field.name === 'sperm_morphology') {
+                            fieldsHTML += `
+                                <div style="grid-column: 1 / -1; margin-top: 15px; border-top: 1px solid #ddd; padding-top: 10px;"></div>
+                            `;
+                        }
+
+                        // ✅ تحديد نوع الحقل (dropdown أو text)
+                        let valueInput = '';
+
+                        if (field.type === 'dropdown' && field.options) {
+                            // قائمة منسدلة عادية (بدون كتابة)
+                            valueInput = `
+                        <select name="${valueName}" data-analysis="${analysisName}">
+                            <option value="">-- Select --</option>
+                            ${field.options.map(opt =>
+                                `<option value="${opt}" ${savedValues[valueName] === opt ? 'selected' : ''}>${opt}</option>`
+                            ).join('')}
+                        </select>
                     `;
-                });
+                        } else {
+                            // حقل نصي عادي
+                            valueInput = `
+                        <input type="text" 
+                               name="${valueName}" 
+                               placeholder="Value"
+                               data-analysis="${analysisName}"
+                               value="${savedValues[valueName] || ''}">
+                    `;
+                        }
+
+                        const unitName = `${analysisName}_${field.name}_unit`;
+
+                        // Normal Range - dropdown أو text
+                        let rangeInput = '';
+                        if (field.range_type === 'dropdown' && field.range_options && field.range_options.length > 0) {
+                            rangeInput = `
+                                <select name="${rangeName}" data-analysis="${analysisName}" class="range-input">
+                                    <option value="">-- Range --</option>
+                                    ${field.range_options.map(opt =>
+                                `<option value="${opt}" ${savedValues[rangeName] === opt ? 'selected' : ''}>${opt}</option>`
+                            ).join('')}
+                                </select>
+                            `;
+                        } else {
+                            rangeInput = `
+                                <input type="text"
+                                       name="${rangeName}"
+                                       placeholder="Normal Range"
+                                       value="${savedValues[rangeName] || field.normal_range || ''}"
+                                       data-analysis="${analysisName}"
+                                       class="range-input">
+                            `;
+                        }
+
+                        fieldsHTML += `
+                    <div class="result-field">
+                        <label>${field.label || field.name}</label>
+                        ${valueInput}
+                        <input type="text" 
+                               name="${unitName}" 
+                               placeholder="Unit" 
+                               value="${savedValues[unitName] || field.unit || ''}"
+                               data-analysis="${analysisName}"
+                               class="unit-input">
+                        ${rangeInput}
+                    </div>
+                `;
+                    });
+
+                    // ✅ جديد: حاوية للحقول المخصصة
+                    fieldsHTML += `
+                <div id="${analysisName}_custom_fields_container" class="custom-fields-container">
+                </div>
+                
+                <button type="button" class="add-custom-field-btn" onclick="addCustomField('${analysisName}')">
+                    ➕ Add Custom Field
+                </button>
+            `;
+
+                    // ✅ جديد: إضافة Lab Comment في نهاية كل تحليل
+                    fieldsHTML += `
+                <div class="lab-comment-section">
+                    <label class="lab-comment-label">Lab Comment:</label>
+                    <textarea name="${analysisName}_lab_comment" 
+                              placeholder="Enter lab comments or notes (optional)..."
+                              data-analysis="${analysisName}"
+                              rows="4"
+                              class="lab-comment-textarea">${savedValues[`${analysisName}_lab_comment`] || ''}</textarea>
+                </div>
+            `;
+                }
 
                 tabPane.innerHTML = fieldsHTML;
                 tabsContent.appendChild(tabPane);
 
-                // تفعيل أول tab
-                if (isFirst) {
+                // تفعيل أول tab أو الـ tab النشط السابق
+                if (isFirst || analysisName === activeTab) {
                     showTab(analysisName);
                     isFirst = false;
                 }
+            });
+
+            // ✅ استرجاع حقول GENERAL الإضافية
+            if (selectedAnalyses.has('GENERAL')) {
+                // البحث عن أعلى رقم صف محفوظ
+                let maxRow = 1;
+                Object.keys(savedValues).forEach(key => {
+                    const match = key.match(/GENERAL_field_name_(\d+)/);
+                    if (match) {
+                        const rowNum = parseInt(match[1]);
+                        if (rowNum > maxRow) maxRow = rowNum;
+                    }
+                });
+
+                // إضافة الصفوف الإضافية
+                for (let i = 2; i <= maxRow; i++) {
+                    if (savedValues[`GENERAL_field_name_${i}`]) {
+                        generalFieldCounter = i - 1; // تعيين العداد
+                        addGeneralField(); // إضافة الصف
+
+                        // ملء القيم
+                        document.querySelector(`[name="GENERAL_field_name_${i}"]`).value = savedValues[`GENERAL_field_name_${i}`] || '';
+                        document.querySelector(`[name="GENERAL_field_value_${i}"]`).value = savedValues[`GENERAL_field_value_${i}`] || '';
+                        document.querySelector(`[name="GENERAL_field_unit_${i}"]`).value = savedValues[`GENERAL_field_unit_${i}`] || '';
+                        document.querySelector(`[name="GENERAL_field_range_${i}"]`).value = savedValues[`GENERAL_field_range_${i}`] || '';
+                    }
+                }
+            }
+            // ✅ استرجاع الحقول المخصصة لكل تحليل
+            Object.keys(customFieldsData).forEach(analysisName => {
+                const fields = customFieldsData[analysisName];
+
+                fields.forEach(field => {
+                    customFieldCounters[analysisName] = Math.max(
+                        customFieldCounters[analysisName] || 0,
+                        parseInt(field.num)
+                    );
+
+                    // إضافة الحقل
+                    const container = document.getElementById(`${analysisName}_custom_fields_container`);
+                    if (container) {
+                        const newRow = document.createElement('div');
+                        newRow.className = 'custom-field-row';
+                        newRow.setAttribute('data-analysis', analysisName);
+                        newRow.setAttribute('data-field-num', field.num);
+
+                        newRow.innerHTML = `
+                    <input type="text" 
+                           name="${analysisName}_custom_name_${field.num}" 
+                           placeholder="Field Name"
+                           class="custom-field-name"
+                           data-analysis="${analysisName}"
+                           value="${field.name}">
+                    <input type="text" 
+                           name="${analysisName}_custom_value_${field.num}" 
+                           placeholder="Value"
+                           class="custom-field-value"
+                           data-analysis="${analysisName}"
+                           value="${field.value}">
+                    <input type="text" 
+                           name="${analysisName}_custom_unit_${field.num}" 
+                           placeholder="Unit"
+                           class="custom-field-unit"
+                           data-analysis="${analysisName}"
+                           value="${field.unit}">
+                    <input type="text" 
+                           name="${analysisName}_custom_range_${field.num}" 
+                           placeholder="Normal Range"
+                           class="custom-field-range"
+                           data-analysis="${analysisName}"
+                           value="${field.range}">
+                    <button type="button" class="remove-custom-field-btn" onclick="removeCustomField('${analysisName}', ${field.num})">❌</button>
+                `;
+
+                        container.appendChild(newRow);
+                    }
+                });
             });
         }
 
@@ -241,10 +719,394 @@
             event.target.classList.add('active');
             activeTab = analysisName;
 
-            // ✅ جديد: تحديث الحقل المخفي
+            // تحديث الحقل المخفي
             document.getElementById('activeAnalysisInput').value = analysisName;
+
+            // ✅ تعبأة تلقائية لما نبدل tab
+            autoFillRanges();
         }
 
+        // =======================================
+        // دوال القالب العام الديناميكي
+        // =======================================
+
+        let generalFieldCounter = 1;
+        // ✅ عدادات للحقول المخصصة لكل تحليل
+        const customFieldCounters = {};
+
+        function addGeneralField() {
+            generalFieldCounter++;
+
+            const container = document.getElementById('general-fields-container');
+
+            const newRow = document.createElement('div');
+            newRow.className = 'general-field-row';
+            newRow.setAttribute('data-row', generalFieldCounter);
+
+            newRow.innerHTML = `
+            <input type="text" 
+                name="GENERAL_field_name_${generalFieldCounter}" 
+                placeholder="Field Name"
+                class="general-field-name">
+            <input type="text" 
+                name="GENERAL_field_value_${generalFieldCounter}" 
+                placeholder="Value"
+                class="general-field-value">
+            <input type="text" 
+                name="GENERAL_field_unit_${generalFieldCounter}" 
+                placeholder="Unit"
+                class="general-field-unit">
+            <input type="text" 
+                name="GENERAL_field_range_${generalFieldCounter}" 
+                placeholder="Normal Range"
+                class="general-field-range">
+            <button type="button" class="remove-field-btn" onclick="removeGeneralField(${generalFieldCounter})">❌</button>
+            `;
+
+            container.appendChild(newRow);
+
+            // إظهار زر الحذف لكل الصفوف
+            updateRemoveButtons();
+        }
+
+        function removeGeneralField(rowNumber) {
+            const row = document.querySelector(`.general-field-row[data-row="${rowNumber}"]`);
+            if (row) {
+                row.remove();
+            }
+            updateRemoveButtons();
+        }
+
+        function updateRemoveButtons() {
+            const rows = document.querySelectorAll('.general-field-row');
+            const removeButtons = document.querySelectorAll('.remove-field-btn');
+
+            // إذا في صف واحد بس، إخفاء زر الحذف
+            if (rows.length === 1) {
+                removeButtons.forEach(btn => btn.style.display = 'none');
+            } else {
+                removeButtons.forEach(btn => btn.style.display = 'inline-block');
+            }
+        }
+
+        // =======================================
+        // دوال الحقول المخصصة لكل التحاليل
+        // =======================================
+
+        function addCustomField(analysisName) {
+            // تهيئة العداد إذا ما كان موجود
+            if (!customFieldCounters[analysisName]) {
+                customFieldCounters[analysisName] = 0;
+            }
+
+            customFieldCounters[analysisName]++;
+            const fieldNum = customFieldCounters[analysisName];
+
+            const container = document.getElementById(`${analysisName}_custom_fields_container`);
+
+            const newRow = document.createElement('div');
+            newRow.className = 'custom-field-row';
+            newRow.setAttribute('data-analysis', analysisName);
+            newRow.setAttribute('data-field-num', fieldNum);
+
+            newRow.innerHTML = `
+                <input type="text" 
+                    name="${analysisName}_custom_name_${fieldNum}" 
+                    placeholder="Field Name"
+                    class="custom-field-name"
+                    data-analysis="${analysisName}">
+                <input type="text" 
+                    name="${analysisName}_custom_value_${fieldNum}" 
+                    placeholder="Value"
+                    class="custom-field-value"
+                    data-analysis="${analysisName}">
+                <input type="text" 
+                    name="${analysisName}_custom_unit_${fieldNum}" 
+                    placeholder="Unit"
+                    class="custom-field-unit"
+                    data-analysis="${analysisName}">
+                <input type="text" 
+                    name="${analysisName}_custom_range_${fieldNum}" 
+                    placeholder="Normal Range"
+                    class="custom-field-range"
+                    data-analysis="${analysisName}">
+                <button type="button" class="remove-custom-field-btn" onclick="removeCustomField('${analysisName}', ${fieldNum})">❌</button>
+            `;
+
+            container.appendChild(newRow);
+        }
+
+        function removeCustomField(analysisName, fieldNum) {
+            const row = document.querySelector(`.custom-field-row[data-analysis="${analysisName}"][data-field-num="${fieldNum}"]`);
+            if (row) {
+                row.remove();
+            }
+        }
+
+        // =======================================
+        // التعبأة التلقائية لـ Normal Range
+        // =======================================
+        function autoFillRanges() {
+            const gender = document.querySelector('[name="gender"]')?.value?.toLowerCase() || '';
+            const age = parseInt(document.querySelector('[name="age"]')?.value) || null;
+
+            document.querySelectorAll('select.range-input').forEach(select => {
+                if (!select.options.length) return;
+
+                let bestOption = null;
+
+                // أولوية العمر
+                if (age !== null) {
+                    if (age < 18) {
+                        bestOption = [...select.options].find(o => o.value.toLowerCase().includes('child'));
+                    } else {
+                        bestOption = [...select.options].find(o => o.value.toLowerCase().includes('adult'));
+                    }
+                }
+
+                // لو ما لاقى بالعمر - جرب الجنس
+                if (!bestOption && gender) {
+                    if (gender === 'male') {
+                        bestOption = [...select.options].find(o => o.value.toLowerCase().includes('male') && !o.value.toLowerCase().includes('female'));
+                    } else if (gender === 'female') {
+                        bestOption = [...select.options].find(o => o.value.toLowerCase().includes('female'));
+                    }
+                }
+
+                if (bestOption) {
+                    select.value = bestOption.value;
+                }
+            });
+        }
+
+        // مراقبة تغيير الجنس والعمر
+        document.addEventListener('change', function (e) {
+            if (e.target.name === 'gender' || e.target.name === 'age') {
+                autoFillRanges();
+            }
+        });
+
+        document.addEventListener('input', function (e) {
+            if (e.target.name === 'age') {
+                autoFillRanges();
+            }
+        });
+
+    </script>
+    <!-- ======================================= -->
+    <!-- شاشة التوقف -->
+    <!-- ======================================= -->
+    <div id="screensaver" style="
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: #0d0d0d;
+        z-index: 99999;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        cursor: pointer;
+        overflow: hidden;
+    " onclick="hideScreensaver()">
+
+        <!-- خطوط زخرفية في الخلفية -->
+        <div style="
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, #c0392b, transparent);
+            animation: scanline 4s ease-in-out infinite;
+        "></div>
+        <div style="
+            position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, #c0392b, transparent);
+            animation: scanline 4s ease-in-out infinite reverse;
+        "></div>
+        <div style="
+            position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: linear-gradient(180deg, transparent, #c0392b, transparent);
+            animation: scanlineV 4s ease-in-out infinite;
+        "></div>
+        <div style="
+            position: absolute; top: 0; right: 0;
+            width: 4px; height: 100%;
+            background: linear-gradient(180deg, transparent, #c0392b, transparent);
+            animation: scanlineV 4s ease-in-out infinite reverse;
+        "></div>
+
+        <!-- المحتوى الرئيسي -->
+        <div style="text-align: center; animation: pulse 4s ease-in-out infinite; z-index: 1;">
+
+            <!-- الشعار -->
+            <div style="
+                width: 200px; height: 200px;
+                margin: 0 auto 30px auto;
+                border-radius: 50%;
+                background: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 0 3px #c0392b, 0 0 40px rgba(192,57,43,0.4);
+                animation: glow 4s ease-in-out infinite;
+            ">
+                <img src="../static/img/WaterMark.png"
+                    style="width: 180px; height: 180px; object-fit: contain; border-radius: 50%;">
+            </div>
+
+            <!-- الخط الفاصل -->
+            <div style="
+                width: 300px; height: 2px;
+                background: linear-gradient(90deg, transparent, #c0392b, transparent);
+                margin: 0 auto 25px auto;
+            "></div>
+
+            <!-- الاسم بالإنجليزي -->
+            <div style="
+                color: #ffffff;
+                font-size: 32px;
+                font-weight: 700;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                font-family: 'Segoe UI', Arial, sans-serif;
+            ">Nebras Medical Laboratory</div>
+
+            <!-- الاسم بالعربي -->
+            <div style="
+                color: #c0392b;
+                font-size: 22px;
+                font-weight: 600;
+                margin-top: 10px;
+                letter-spacing: 2px;
+                font-family: 'Segoe UI', Arial, sans-serif;
+            ">مختبر النبراس للتحاليل الطبية</div>
+
+            <!-- الخط الفاصل -->
+            <div style="
+                width: 300px; height: 2px;
+                background: linear-gradient(90deg, transparent, #c0392b, transparent);
+                margin: 25px auto 20px auto;
+            "></div>
+
+            <!-- نص الاستمرار -->
+            <div style="
+                color: #666;
+                font-size: 13px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                animation: blink 2s ease-in-out infinite;
+            ">Click anywhere to continue</div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 0 3px #c0392b, 0 0 20px rgba(192, 57, 43, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 0 3px #c0392b, 0 0 50px rgba(192, 57, 43, 0.6);
+            }
+
+            100% {
+                box-shadow: 0 0 0 3px #c0392b, 0 0 20px rgba(192, 57, 43, 0.3);
+            }
+        }
+
+        @keyframes scanline {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes scanlineV {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <script>
+        // ======================================= 
+        // شاشة التوقف
+        // =======================================
+        let screensaverTimer = null;
+        const IDLE_TIME = 15 * 1000; // 15 ثانية
+
+        function showScreensaver() {
+            const ss = document.getElementById('screensaver');
+            ss.style.display = 'flex';
+        }
+
+        function hideScreensaver() {
+            const ss = document.getElementById('screensaver');
+            ss.style.display = 'none';
+            resetTimer();
+        }
+
+        function resetTimer() {
+            clearTimeout(screensaverTimer);
+            screensaverTimer = setTimeout(showScreensaver, IDLE_TIME);
+        }
+
+        // مراقبة أي تفاعل لإعادة العداد (بدون إخفاء الشاشة)
+        ['mousemove', 'keydown', 'scroll'].forEach(event => {
+            document.addEventListener(event, () => {
+                if (document.getElementById('screensaver').style.display !== 'flex') {
+                    resetTimer();
+                }
+            });
+        });
+
+        // إخفاء الشاشة بس عند الضغط أو اللمس
+        ['mousedown', 'touchstart', 'click'].forEach(event => {
+            document.addEventListener(event, () => {
+                if (document.getElementById('screensaver').style.display === 'flex') {
+                    hideScreensaver();
+                } else {
+                    resetTimer();
+                }
+            });
+        });
+
+        // تشغيل العداد عند تحميل الصفحة
+        resetTimer();
     </script>
 
 </body>

@@ -3,47 +3,278 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Patient Report</title>
-    <link rel="stylesheet" href="../static/css/print.css">
+    <title>Print Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background-color: white;
+            color: black;
+        }
+
+        .page {
+            width: 21cm;
+            min-height: 29.7cm;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+            page-break-after: always;
+        }
+
+        /* ======================================= */
+        /* Header */
+        /* ======================================= */
+        header {
+            height: 3cm;
+            border-bottom: 1px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        header img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* ✅ تغيير من cover لـ contain */
+        }
+
+        /* ======================================= */
+        /* Footer */
+        /* ======================================= */
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 2cm;
+            border-top: 1px solid black;
+            text-align: center;
+            font-size: 9pt;
+            padding-top: 10px;
+        }
+
+        footer p {
+            margin: 3px 0;
+        }
+
+        footer hr {
+            width: 80%;
+            margin: 5px auto;
+            border: none;
+            border-top: 0.5px solid black;
+        }
+
+        /* ======================================= */
+        /* المحتوى الرئيسي */
+        /* ======================================= */
+        main {
+            padding: 1.5cm 2cm;
+            min-height: calc(29.7cm - 5cm);
+        }
+
+        /* ======================================= */
+        /* بيانات المريض */
+        /* ======================================= */
+        .section-title {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: black;
+        }
+
+        .patient-info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 9pt;
+        }
+
+        .patient-info-table td {
+            border: 0.5px solid black;
+            padding: 6px 8px;
+        }
+
+        .patient-info-table td:nth-child(odd) {
+            font-weight: bold;
+            width: 15%;
+        }
+
+        .patient-info-table td:nth-child(even) {
+            width: 35%;
+        }
+
+        .analysis-date-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0 25px 0;
+            font-size: 9pt;
+        }
+
+        .analysis-date-row .analysis-type {
+            font-size: 12pt;
+            font-weight: bold;
+            padding: 8px 12px;
+            background-color: #f8f8f8;
+        }
+
+        .analysis-date-row .date-info span {
+            font-weight: bold;
+        }
+
+        /* ======================================= */
+        /* جدول النتائج */
+        /* ======================================= */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 9pt;
+        }
+
+        .results-table thead {
+            background-color: white;
+        }
+
+        .results-table th {
+            border: 0.5px solid black;
+            border-bottom: 1px solid black;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10pt;
+        }
+
+        .results-table td {
+            border: 0.5px solid #999;
+            padding: 6px 8px;
+            text-align: center;
+        }
+
+        .results-table td:first-child {
+            text-align: left;
+        }
+
+        .results-table tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* ======================================= */
+        /* الطباعة */
+        /* ======================================= */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+            }
+
+            @page {
+                margin: 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <header>
-        <img src="../static/img/ترويسة.png" filename="header.png" style="width:100%; height:3cm;">
-    </header>
+    <div class="page">
+        <!-- ======================================= -->
+        <!-- Header -->
+        <!-- ======================================= -->
+        <header>
+            <img src="../static/img/ترويسة.png" alt="Header">
+        </header>
 
-    <main>
-        <h2>Patient Info</h2>
+        <!-- ======================================= -->
+        <!-- المحتوى الرئيسي -->
+        <!-- ======================================= -->
+        <main>
+            <!-- بيانات المريض -->
+            <div class="section-title">Patient Information</div>
 
-        <div class="patient-info">
-            <p><strong>Name:</strong> {{ patient[0] }}</p>
-            <p><strong>ID:</strong> {{ patient[1] }}</p>
-            <p><strong>Phone:</strong> {{ patient[2] }}</p>
-            <p><strong>Age:</strong> {{ patient[3] }}</p>
-            <p><strong>Gender:</strong> {{ patient[4] }}</p>
-            <p><strong>Analysis:</strong> {{ patient[5] }}</p>
-        </div>
+            <table class="patient-info-table">
+                <tr>
+                    <td>Name:</td>
+                    <td>{{ patient[0] }}</td>
+                    <td>ID Number:</td>
+                    <td>{{ patient[1] }}</td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td>{{ patient[2] or '-' }}</td>
+                    <td>Age:</td>
+                    <td>{{ patient[3] }}</td>
+                </tr>
+                <tr>
+                    <td>Gender:</td>
+                    <td>{{ patient[4] }}</td>
+                    <td>Doctor:</td>
+                    <td>{{ patient[5] or '-' }}</td>
+                </tr>
+            </table>
 
-        <div class="results">
-            <h2>Results</h2>
-            <div class="results-grid">
-                {% for r in results %}
-                <p>
-                    {{ r[0] }}: {{ r[1] }} {{ r[2] }}
-                    {% if r[3] %}
-                    <span style="color: #666; font-size: 12px;">(Normal: {{ r[3] }})</span>
-                    {% endif %}
-                </p>
-                {% endfor %}
+            <!-- التحليل والتاريخ -->
+            <div class="analysis-date-row">
+                <div class="analysis-type">{{ patient[6] }}</div>
+                <div class="date-info"><span>Date:</span> {{ patient[7] }}</div>
             </div>
-        </div>
-    </main>
 
-    <footer>
-        <p>مرخص من وزارة الصحة الفلسطينية</p>
-        <hr color="black">
-        <p>غزة - شارع الوحدة - مقابل عيادة الدرج (البندر)</p>
-    </footer>
+            <!-- النتائج -->
+            <div class="section-title">Test Results</div>
+
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Test</th>
+                        <th>Result</th>
+                        <th>Unit</th>
+                        <th>Normal Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in results %}
+                    <tr>
+                        <td>{{ r[0] }}</td>
+                        <td>{{ r[1] }}</td>
+                        <td>{{ r[2] or '' }}</td>
+                        <td>{{ r[3] or '' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+
+        <!-- ======================================= -->
+        <!-- Footer -->
+        <!-- ======================================= -->
+        <footer>
+            <p>مرخص من وزارة الصحة الفلسطينية</p>
+            <hr>
+            <p>غزة - شارع الوحدة - مقابل عيادة الدرج (البندر)</p>
+        </footer>
+    </div>
+
+    <script>
+        // طباعة تلقائية عند فتح الصفحة
+        window.onload = function () {
+            window.print();
+        };
+    </script>
 </body>
 
 </html>

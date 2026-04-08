@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/report_view.css">
+    <title>Edit Report</title>
+    <style>
+        .edit-form input[type="text"],
+        .edit-form select,
+        .edit-form textarea {
+            width: 100%;
+            padding: 5px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .edit-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .form-grid .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 3px;
+            display: block;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .results-table th {
+            background: #2c6fad;
+            color: white;
+            padding: 8px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .results-table td {
+            padding: 5px;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        .results-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .btn-add-row {
+            margin-top: 8px;
+            padding: 6px 14px;
+            background: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-remove-row {
+            background: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 3px 8px;
+            font-size: 12px;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+        }
+
+        .btn-save {
+            padding: 10px 28px;
+            background: #2c6fad;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-save:hover {
+            background: #1a5276;
+        }
+
+        .btn-cancel {
+            padding: 10px 20px;
+            background: #aaa;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid #dce3ec;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .section-card h3 {
+            margin: 0 0 14px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #2c6fad;
+            color: #2c6fad;
+            font-size: 15px;
+        }
+
+        .lap-field {
+            margin-bottom: 14px;
+        }
+
+        .lab-title {
+            color: #1a1a1a;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .lab-title img {
+            width: 70px;
+            height: 70px;
+            margin-right: 10px;
+            border-radius: 50%;
+            object-fit: contain;
+            background: white;
+            padding: 1px;
+            border: 1px solid #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <h1 class="lab-title">
+            <img src="../static/img/WaterMark.png" alt="">
+            Nebras Medical Laboratory
+        </h1>
+        <nav class="main-navbar">
+            <a href="/new-report" class="nav-btn">➕ New Report</a>
+            <a href="/reports" class="nav-btn active-page">📄 Reports</a>
+            <a href="/stats" class="nav-btn">📊 Statistics</a>
+            <div class="dropdown">
+                <button type="button" class="nav-btn settings-btn">⚙️ Settings ▼</button>
+                <div class="dropdown-content">
+                    <a href="/template-settings">📋 Template Settings</a>
+                    <a href="/manage-doctors">👨‍⚕️ Manage Doctors</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <form method="POST" class="edit-form" autocomplete="off">
+            <input type="hidden" name="patient_id" value="{{ row[3] }}">
+
+            <!-- ======= Patient Info ======= -->
+            <div class="section-card">
+                <h3>✏️ Edit Patient Information</h3>
+                <div class="form-grid">
+                    <div>
+                        <label class="form-label">Patient Name</label>
+                        <input type="text" name="name" value="{{ row[4] }}" required>
+                    </div>
+                    <div>
+                        <label class="form-label">ID Number</label>
+                        <input type="text" name="patient_id_number" value="{{ row[5] }}">
+                    </div>
+                    <div>
+                        <label class="form-label">Phone</label>
+                        <input type="text" name="phone" value="{{ row[6] }}">
+                    </div>
+                    <div>
+                        <label class="form-label">Age</label>
+                        <input type="text" name="age" value="{{ row[7] }}">
+                    </div>
+                    <div>
+                        <label class="form-label">Gender</label>
+                        <select name="gender">
+                            <option value="Male" {% if row[8]=='Male' %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if row[8]=='Female' %}selected{% endif %}>Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Doctor</label>
+                        <select name="doctor_name">
+                            <option value="">-- Select Doctor --</option>
+                            {% for doc in doctors %}
+                            <option value="{{ doc }}" {% if row[9]==doc %}selected{% endif %}>{{ doc }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======= Analysis Name (GENERAL only) ======= -->
+            {% if analysis_type == 'GENERAL' %}
+            <div class="section-card">
+                <h3>📋 Analysis Name</h3>
+                <input type="text" name="custom_name" value="{{ row[2] or '' }}"
+                    placeholder="e.g. CBC, Liver Function ...">
+            </div>
+            {% endif %}
+
+            <!-- ======= Results ======= -->
+            <div class="section-card">
+                <h3>🔬 Test Results — {{ analysis_type.replace('_', ' ') }}</h3>
+
+                <!-- ===== GENERAL: Dynamic rows ===== -->
+                {% if analysis_type == 'GENERAL' %}
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th style="width:30%">Test Name</th>
+                            <th style="width:25%">Result</th>
+                            <th style="width:20%">Unit</th>
+                            <th style="width:20%">Normal Range</th>
+                            <th style="width:5%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="generalBody">
+                        {% for r in results_dict.values() %}
+                        <tr>
+                            <td><input type="text" name="field_name_{{ loop.index }}" value="{{ r[0] }}"></td>
+                            <td><input type="text" name="field_value_{{ loop.index }}" value="{{ r[1] }}"></td>
+                            <td><input type="text" name="field_unit_{{ loop.index }}" value="{{ r[2] }}"></td>
+                            <td><input type="text" name="field_range_{{ loop.index }}" value="{{ r[3] }}"></td>
+                            <td><button type="button" class="btn-remove-row" onclick="removeRow(this)">✕</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn-add-row" onclick="addGeneralRow()">+ Add Row</button>
+
+                <!-- ===== LAP REPORT ===== -->
+                {% elif analysis_type == 'LAP_REPORT' %}
+                <div class="lap-field">
+                    <label class="form-label">Title</label>
+                    <input type="text" name="field_title"
+                        value="{{ results_dict.get('title', ('','','','',''))[1] if results_dict.get('title') else '' }}">
+                </div>
+                <div class="lap-field">
+                    <label class="form-label">Content</label>
+                    <textarea name="field_content"
+                        style="min-height:160px;">{{ results_dict.get('content', ('','','','',''))[1] if results_dict.get('content') else '' }}</textarea>
+                </div>
+
+                <!-- ===== Template-based (URINE, SEMEN, STOOL, MICROBIOLOGY) ===== -->
+                {% else %}
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th style="width:30%">Test</th>
+                            <th style="width:25%">Result</th>
+                            <th style="width:20%">Unit</th>
+                            <th style="width:25%">Normal Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for field in template_fields %}
+                        {% set saved = results_dict.get(field.name) %}
+                        <tr>
+                            <td><strong>{{ field.name }}</strong></td>
+                            <td><input type="text" name="field_{{ field.name }}"
+                                    value="{{ saved[1] if saved else '' }}"></td>
+                            <td><input type="text" name="unit_{{ field.name }}"
+                                    value="{{ saved[2] if saved else field.get('unit','') }}"></td>
+                            <td><input type="text" name="range_{{ field.name }}"
+                                    value="{{ saved[3] if saved else field.get('normal_range','') }}"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Custom Fields -->
+                {% if custom_fields %}
+                <h4 style="margin-top:16px; color:#555;">Custom Fields</h4>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Field Name</th>
+                            <th>Result</th>
+                            <th>Unit</th>
+                            <th>Range</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="customBody">
+                        {% for cf in custom_fields %}
+                        <tr>
+                            <td><input type="text" name="custom_name_{{ loop.index }}" value="{{ cf[0] }}"></td>
+                            <td><input type="text" name="custom_value_{{ loop.index }}" value="{{ cf[1] }}"></td>
+                            <td><input type="text" name="custom_unit_{{ loop.index }}" value="{{ cf[2] }}"></td>
+                            <td><input type="text" name="custom_range_{{ loop.index }}" value="{{ cf[3] }}"></td>
+                            <td><button type="button" class="btn-remove-row" onclick="removeRow(this)">✕</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn-add-row" onclick="addCustomRow()">+ Add Custom</button>
+                {% endif %}
+
+                {% endif %}
+            </div>
+
+            <!-- ======= Lab Comment (not for LAP_REPORT) ======= -->
+            {% if analysis_type != 'LAP_REPORT' %}
+            <div class="section-card">
+                <h3>💬 Lab Comment</h3>
+                <textarea name="lab_comment">{{ lab_comment or '' }}</textarea>
+            </div>
+            {% endif %}
+
+            <!-- ======= Actions ======= -->
+            <div class="action-bar">
+                <button type="submit" class="btn-save">💾 Save & Regenerate PDF</button>
+                <a href="/reports/{{ analysis_id }}" class="btn-cancel">✕ Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // ======= GENERAL: Add/Remove rows =======
+        let generalRowCount = document.querySelectorAll('#generalBody tr').length;
+
+        function addGeneralRow() {
+            generalRowCount++;
+            const tbody = document.getElementById('generalBody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="text" name="field_name_${generalRowCount}" placeholder="Field name"></td>
+                <td><input type="text" name="field_value_${generalRowCount}" placeholder="Value"></td>
+                <td><input type="text" name="field_unit_${generalRowCount}" placeholder="Unit"></td>
+                <td><input type="text" name="field_range_${generalRowCount}" placeholder="Range"></td>
+                <td><button type="button" class="btn-remove-row" onclick="removeRow(this)">✕</button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        // ======= Custom Fields: Add rows =======
+        let customRowCount = document.querySelectorAll('#customBody tr').length || 0;
+
+        function addCustomRow() {
+            let tbody = document.getElementById('customBody');
+            if (!tbody) {
+                // إنشاء الجدول إذا لم يكن موجوداً
+                const container = document.querySelector('.section-card:nth-child(3)');
+                const table = document.createElement('table');
+                table.className = 'results-table';
+                table.innerHTML = '<thead><tr><th>Field Name</th><th>Result</th><th>Unit</th><th>Range</th><th></th></tr></thead><tbody id="customBody"></tbody>';
+                container.appendChild(table);
+                tbody = document.getElementById('customBody');
+            }
+            customRowCount++;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="text" name="custom_name_${customRowCount}" placeholder="Field name"></td>
+                <td><input type="text" name="custom_value_${customRowCount}" placeholder="Value"></td>
+                <td><input type="text" name="custom_unit_${customRowCount}" placeholder="Unit"></td>
+                <td><input type="text" name="custom_range_${customRowCount}" placeholder="Range"></td>
+                <td><button type="button" class="btn-remove-row" onclick="removeRow(this)">✕</button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function removeRow(btn) {
+            btn.closest('tr').remove();
+        }
+
+        // Dropdown
+        document.querySelector('.settings-btn')?.addEventListener('click', function (e) {
+            e.stopPropagation();
+            this.nextElementSibling.style.display =
+                this.nextElementSibling.style.display === 'block' ? 'none' : 'block';
+        });
+        document.addEventListener('click', function () {
+            const dd = document.querySelector('.dropdown-content');
+            if (dd) dd.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

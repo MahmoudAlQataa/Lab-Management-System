@@ -70,6 +70,10 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
+.nav-btn.active-page {
+    background-color: #95a5a6;
+}
+
 /* Dropdown */
 .dropdown {
     position: relative;
@@ -126,9 +130,29 @@ body {
 /* Main Container */
 /* ======================================= */
 .main-container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 30px auto;
     padding: 0 40px;
+}
+
+/* ======================================= */
+/* Page Header */
+/* ======================================= */
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-title {
+    color: #1a1a1a;
+    font-size: 24px;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.page-description {
+    color: #7f8c8d;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 /* ======================================= */
@@ -144,9 +168,9 @@ body {
 }
 
 /* ======================================= */
-/* Patient Card */
+/* Add Doctor Section */
 /* ======================================= */
-.patient-card {
+.add-doctor-section {
     background-color: white;
     border: 2px solid #b0b8c1;
     border-radius: 8px;
@@ -155,51 +179,76 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.patient-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.add-doctor-form {
+    display: flex;
     gap: 12px;
 }
 
-.info-item {
-    padding: 10px;
-    background-color: #ecf0f1;
-    border-radius: 5px;
-    border-left: 3px solid #2874a6;
+.add-doctor-form input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #b0b8c1;
+    border-radius: 6px;
     font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.info-item strong {
-    color: #1a1a1a;
-    margin-right: 8px;
-    font-weight: 700;
+.add-doctor-form input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+}
+
+.btn-add {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-add:hover {
+    background-color: #229954;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(39, 174, 96, 0.3);
 }
 
 /* ======================================= */
-/* Results Card */
+/* Doctors List Section */
 /* ======================================= */
-.results-card {
+.doctors-list-section {
     background-color: white;
     border: 2px solid #b0b8c1;
     border-radius: 8px;
     padding: 20px;
-    margin-bottom: 25px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.table-wrapper {
+    overflow-x: auto;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: white;
+    margin-top: 10px;
+}
+
+thead {
+    background-color: #ce5042;
 }
 
 th {
-    background-color: #2874a6;
-    color: white;
     padding: 12px;
     text-align: center;
     font-weight: 600;
     font-size: 13px;
+    color: white;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border: 1px solid #1f5a7a;
@@ -214,98 +263,33 @@ td {
     font-weight: 500;
 }
 
-tr:hover {
+tbody tr:hover {
     background-color: #ecf0f1;
 }
 
-/* ======================================= */
-/* Lab Comment */
-/* ======================================= */
-.lab-comment-display {
-    background-color: white;
-    border: 2px solid #f39c12;
-    border-left: 5px solid #f39c12;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.lab-comment-display h4 {
-    color: #1a1a1a;
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-.lab-comment-display p {
-    color: #2c3e50;
-    font-size: 14px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    margin: 0;
-}
-
-/* ======================================= */
-/* Print Section */
-/* ======================================= */
-.print-section {
-    background-color: white;
-    border: 2px solid #b0b8c1;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.print-buttons {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 15px;
-}
-
-.print-btn {
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    color: white;
-}
-
-.print-all {
-    background-color: #27ae60;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.print-all:hover {
-    background-color: #229954;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
-}
-
-.print-current {
+.btn-delete {
     background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-.print-current:hover {
+.btn-delete:hover {
     background-color: #c0392b;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
 }
 
-.print-individual {
-    background-color: #2874a6;
-}
-
-.print-individual:hover {
-    background-color: #1f5a7a;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(40, 116, 166, 0.3);
+.no-data {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 40px 20px;
+    font-size: 15px;
 }
 
 /* ======================================= */
@@ -327,20 +311,16 @@ tr:hover {
         justify-content: center;
     }
 
-    .patient-info {
-        grid-template-columns: 1fr;
+    .add-doctor-form {
+        flex-direction: column;
     }
 
     table {
-        font-size: 11px;
+        font-size: 12px;
     }
 
     th,
     td {
         padding: 8px 6px;
-    }
-
-    .print-buttons {
-        flex-direction: column;
     }
 }

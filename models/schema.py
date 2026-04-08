@@ -109,23 +109,22 @@ def init_database():
             -- المعرف الفريد للتحليل
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             
-            -- معرف المريض (مرتبط بجدول patients)
-            -- كل التحاليل لنفس المريض لها نفس patient_id
+            -- معرف المريض
             patient_id INTEGER NOT NULL,
             
-            -- نوع التحليل (CBC, RFT, LFT, etc.)
+            -- نوع التحليل (CBC, RFT, GENERAL, etc.)
             analysis_type TEXT NOT NULL,
+            
+            -- ✅ جديد: اسم مخصص للتحليل (للقالب العام)
+            custom_name TEXT,
             
             -- تاريخ ووقت إجراء التحليل
             created_at TEXT NOT NULL,
             
-            -- مسار ملف PDF الخاص بهذا التحليل
-            -- ملاحظة: كل تحليل له PDF منفصل
+            -- مسار ملف PDF
             pdf_path TEXT,
             
-            -- تعريف المفتاح الخارجي
-            -- يربط التحليل بالمريض
-            -- ON DELETE CASCADE: إذا حذفنا المريض، كل تحاليله تنحذف
+            -- المفتاح الخارجي
             FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE
         )
     """)
@@ -137,30 +136,28 @@ def init_database():
     # ملاحظة مهمة: تم تغيير patient_id إلى analysis_id
     cur.execute("""
         CREATE TABLE IF NOT EXISTS results (
-            -- المعرف الفريد للنتيجة
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            
-            -- معرف التحليل (مرتبط بجدول analysis_instances)
-            -- هذا هو التغيير الأساسي!
-            -- بدل patient_id، صار analysis_id
             analysis_id INTEGER NOT NULL,
-            
-            -- اسم الحقل (مثلاً: WBC, HGB)
             field_name TEXT NOT NULL,
-            
-            -- قيمة الحقل (مثلاً: 7.5)
             field_value TEXT,
-            
-            -- وحدة القياس (مثلاً: g/dL)
             unit TEXT,
-            
-            -- المدى الطبيعي (مثلاً: 4-10)
-            -- قابل للتعديل من الواجهة
             normal_range TEXT,
             
-            -- تعريف المفتاح الخارجي
-            -- يربط النتيجة بالتحليل
-            -- ON DELETE CASCADE: إذا حذفنا التحليل، نتائجه تنحذف
+            -- ✅ جديد: نوع الحقل (template أو custom)
+            field_type TEXT DEFAULT 'template',
+            
+            FOREIGN KEY (analysis_id) REFERENCES analysis_instances(id) ON DELETE CASCADE
+        )
+    """)
+    
+    # =======================================
+    # جدول Lab Comments (تعليقات المختبر)
+    # =======================================
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS lab_comments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            analysis_id INTEGER NOT NULL,
+            comment TEXT,
             FOREIGN KEY (analysis_id) REFERENCES analysis_instances(id) ON DELETE CASCADE
         )
     """)

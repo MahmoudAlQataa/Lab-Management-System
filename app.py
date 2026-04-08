@@ -8,6 +8,9 @@ from flask import Flask
 from routes.patients import patients_bp
 from routes.reports import reports_bp
 from routes.print_routes import print_bp
+from routes.doctors import doctors_bp  
+from routes.settings import settings_bp
+from routes.stats import stats_bp
 
 app = Flask(__name__)
 
@@ -15,6 +18,9 @@ app = Flask(__name__)
 app.register_blueprint(patients_bp)
 app.register_blueprint(reports_bp)
 app.register_blueprint(print_bp)
+app.register_blueprint(doctors_bp)
+app.register_blueprint(settings_bp)
+app.register_blueprint(stats_bp)
 
 
 @app.route("/")
@@ -43,3 +49,4 @@ if __name__ == "__main__":
     # تشغيل التطبيق
     # =======================================
     app.run(debug=False, use_reloader=False)
+    
