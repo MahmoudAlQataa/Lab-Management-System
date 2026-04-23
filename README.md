@@ -79,6 +79,7 @@ Supports multiple analysis types out of the box:
 
 ## 📁 Project Structure
 
+```
 Lap_System/
 ├── LapApp/                  ← Application source (this repository)
 │   ├── app.py
@@ -106,6 +107,7 @@ Lap_System/
 ├── lap.db
 └── pdf_reports/
 └── YYYY/MM/
+```
 
 ---
 
