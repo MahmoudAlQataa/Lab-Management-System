@@ -7,6 +7,7 @@ Routes الخاصة بالاحصائيات (Statistics)
 from flask import Blueprint, render_template, request
 from models.database import getdb
 from datetime import datetime
+from config import DB_NAME
 
 # =======================================
 # إنشاء Blueprint للإحصائيات

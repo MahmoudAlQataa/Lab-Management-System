@@ -69,9 +69,10 @@
                         <div class="rows-container" id="rows-{{ analysis_name }}">
                             {% for field in fields %}
                             {% set row_index = loop.index0 %}
-                            <div class="field-row">
+                            <div class="field-row" data-name="{{ field.name }}">
                                 <!-- Top Bar -->
                                 <div class="field-top-bar">
+                                    <span class="drag-handle" title="Drag to reorder">☰</span>
                                     <input type="hidden" name="fields_{{ analysis_name }}_old_name[]"
                                         value="{{ field.name }}">
 
@@ -316,6 +317,43 @@
             applySelectStyles();
         });
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".rows-container").forEach(function (container) {
+                Sortable.create(container, {
+                    handle: ".drag-handle",
+                    animation: 150,
+                    onEnd: function (evt) {
+                        const analysisName = container.id.replace("rows-", "");
+                        const rows = container.querySelectorAll(".field-row");
+                        const order = Array.from(rows).map(r => r.dataset.name);
+
+                        fetch("/reorder-fields", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ analysis_name: analysisName, order: order })
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .drag-handle {
+            cursor: grab;
+            padding: 0 8px;
+            color: #888;
+            font-size: 16px;
+            user-select: none;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+    </style>
 </body>
 
 </html>

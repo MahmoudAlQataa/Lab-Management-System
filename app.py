@@ -3,6 +3,8 @@
 #########################
 
 from flask import Flask
+from config import DATA_DIR
+import os
 
 # استيراد الـ routes
 from routes.patients import patients_bp
@@ -28,14 +30,15 @@ def home():
     return 'Lab System is Running 🏥'
 
 
-if __name__ == "__main__":
+def initialize():
+    # التأكد من وجود مجلد البيانات قبل أي شي
+    os.makedirs(DATA_DIR, exist_ok=True)
     # =======================================
     # إنشاء قاعدة البيانات والبيانات الأولية
     # =======================================
     from models.schema import init_database
     from services.template_service import seed_templates
-    from services.seed_doctors import seed_doctors  # ✅ جديد
-    
+    from services.seed_doctors import seed_doctors
     # إنشاء الجداول
     init_database()
     
@@ -45,8 +48,9 @@ if __name__ == "__main__":
     # إضافة الأطباء ✅ جديد
     seed_doctors()
     
+if __name__ == "__main__":
+    initialize()
     # =======================================
     # تشغيل التطبيق
     # =======================================
     app.run(debug=False, use_reloader=False)
-    

@@ -9,6 +9,7 @@ Routes الخاصة بالطباعة والـ PDF
 
 from flask import Blueprint, render_template, send_file
 from models.database import getdb
+from config import PDF_OUTPUT_DIR, DB_NAME
 
 # =======================================
 # إنشاء Blueprint للطباعة
@@ -16,7 +17,7 @@ from models.database import getdb
 print_bp = Blueprint('print', __name__)
 
 
-@print_bp.route("/pdf_reports/<int:report_id>")
+@print_bp.route("/PDF_OUTPUT_DIR/<int:report_id>")
 def open_pdf(report_id):
     """
     فتح ملف PDF المحفوظ

@@ -7,6 +7,7 @@ Routes الخاصة بإدارة الأطباء
 
 from flask import Blueprint, render_template, request, redirect
 from models.database import getdb
+from config import DB_NAME
 
 doctors_bp = Blueprint('doctors', __name__)
 

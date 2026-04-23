@@ -10,6 +10,7 @@ Routes الخاصة بإدارة المرضى
 import json
 from datetime import datetime
 import os
+from config import PDF_OUTPUT_DIR, DB_NAME
 import glob
 from flask import Blueprint, render_template, request, redirect
 from models.database import getdb
@@ -109,6 +110,7 @@ def new_report():
             "gender": request.form.get("gender"),
             "doctor_name": request.form.get("doctor_name"),
         }
+        sample_date = request.form.get("sample_date", "").strip() or datetime.now().strftime("%Y-%m-%d")
 
         # =======================================
         # الخطوة 2: جمع التحاليل المحددة
@@ -280,15 +282,15 @@ def new_report():
             if analysis_type.upper() == 'GENERAL':
                 cur.execute("""
                     INSERT INTO analysis_instances
-                    (patient_id, analysis_type, custom_name, created_at)
-                    VALUES (?, ?, ?, ?)
-                """, (patient_id, analysis_type, custom_name, created_at))
+                    (patient_id, analysis_type, custom_name, created_at, sample_date)
+                    VALUES (?, ?, ?, ?, ?)
+                """, (patient_id, analysis_type, custom_name, created_at, sample_date))
             else:
                 cur.execute("""
                     INSERT INTO analysis_instances
-                    (patient_id, analysis_type, created_at)
-                    VALUES (?, ?, ?)
-                """, (patient_id, analysis_type, created_at))
+                    (patient_id, analysis_type, created_at, sample_date)
+                    VALUES (?, ?, ?, ?)
+                """, (patient_id, analysis_type, created_at, sample_date))
 
             analysis_id = cur.lastrowid
             analysis_ids.append(analysis_id)
@@ -604,7 +606,7 @@ def view_pdf(filename):
     import os
     
     # المسار الكامل للملف
-    pdf_path = os.path.join('pdf_reports', filename)
+    pdf_path = os.path.join('PDF_OUTPUT_DIR', filename)
     
     if os.path.exists(pdf_path):
         return send_file(
@@ -684,7 +686,7 @@ def serve_comprehensive_pdf(patient_id):
     
     patient_name = patient[0].replace(" ", "_")
     pdf_filename = f"{patient_name}_comprehensive_{patient_id}.pdf"
-    pdf_path = os.path.join('pdf_reports', year, month, pdf_filename)
+    pdf_path = os.path.join(PDF_OUTPUT_DIR, year, month, pdf_filename)
     pdf_path = os.path.abspath(pdf_path)
     
     if os.path.exists(pdf_path):
@@ -720,6 +722,21 @@ def edit_report(analysis_id):
         old_patient_name = old_name_row[0] if old_name_row else ""
         new_patient_name = request.form.get("name", "").strip()
         name_changed = old_patient_name != new_patient_name
+        sample_date = request.form.get("sample_date", "").strip() or datetime.now().strftime("%Y-%m-%d")
+
+        # جلب كل بيانات المريض القديمة للمقارنة
+        cur.execute("SELECT age, gender, doctor_name FROM patients WHERE id = ?", (patient_id,))
+        old_data_row = cur.fetchone()
+        old_age    = old_data_row[0] if old_data_row else ""
+        old_gender = old_data_row[1] if old_data_row else ""
+        old_doctor = old_data_row[2] if old_data_row else ""
+
+        patient_data_changed = (
+            name_changed or
+            old_age    != request.form.get("age", "").strip() or
+            old_gender != request.form.get("gender", "").strip() or
+            old_doctor != request.form.get("doctor_name", "").strip()
+        )
 
         # =======================================
         # 1. تحديث بيانات المريض
@@ -747,10 +764,12 @@ def edit_report(analysis_id):
         analysis_type = analysis_row[0]
         old_pdf_path = analysis_row[1]
 
-        # تحديث custom_name للـ GENERAL
+        
         if analysis_type.upper() == 'GENERAL':
             custom_name = request.form.get("custom_name", "").strip() or "General Report"
-            cur.execute("UPDATE analysis_instances SET custom_name = ? WHERE id = ?", (custom_name, analysis_id))
+            cur.execute("UPDATE analysis_instances SET custom_name = ?, sample_date = ? WHERE id = ?", (custom_name, sample_date, analysis_id))
+        else:
+            cur.execute("UPDATE analysis_instances SET sample_date = ? WHERE id = ?", (sample_date, analysis_id))
 
         # =======================================
         # 3. جمع معلومات Comprehensive قبل الإغلاق
@@ -864,7 +883,7 @@ def edit_report(analysis_id):
         # 7. حذف PDF القديم وتوليد جديد
         # =======================================
         # حذف التحليل الحالي
-        old_pattern = os.path.join('pdf_reports', '**', f"*_{analysis_id}.pdf")
+        old_pattern = os.path.join('PDF_OUTPUT_DIR', '**', f"*_{analysis_id}.pdf")
         for old_file in glob.glob(old_pattern, recursive=True):
             if 'comprehensive' not in os.path.basename(old_file):
                 try:
@@ -875,11 +894,11 @@ def edit_report(analysis_id):
         generate_pdf(analysis_id)
 
         # إذا تغير الاسم - نجدد كل تحاليل المريض الأخرى
-        if name_changed:
+        if patient_data_changed:
             for other_id in all_patient_analysis_ids:
                 if other_id == analysis_id:
                     continue
-                other_pattern = os.path.join('pdf_reports', '**', f"*_{other_id}.pdf")
+                other_pattern = os.path.join('PDF_OUTPUT_DIR', '**', f"*_{other_id}.pdf")
                 for old_file in glob.glob(other_pattern, recursive=True):
                     if 'comprehensive' not in os.path.basename(old_file):
                         try:
@@ -891,13 +910,35 @@ def edit_report(analysis_id):
         # =======================================
         # 8. تحديث Comprehensive PDF
         # =======================================
+        if patient_data_changed and not needs_comprehensive:
+            # تعديل تقرير STANDALONE غيّر بيانات المريض → نجدد الـ Comprehensive لو موجود
+            from services.pdf_service import generate_comprehensive_pdf
+            for search_name in set([old_patient_name, new_patient_name]):
+                pname_clean = search_name.replace(" ", "_")
+                pattern = os.path.join('PDF_OUTPUT_DIR', '**', f"{pname_clean}_comprehensive_{patient_id}.pdf")
+                for old_comp in glob.glob(pattern, recursive=True):
+                    try:
+                        os.remove(old_comp)
+                    except Exception:
+                        pass
+            cur2 = getdb().cursor()
+            cur2.execute("""
+                SELECT COUNT(*) FROM analysis_instances
+                WHERE patient_id = ? AND analysis_type NOT IN
+                ('URINE_ANALYSIS','SEMEN_ANALYSIS','STOOL_ANALYSIS','MICROBIOLOGY','LAP_REPORT')
+            """, (patient_id,))
+            comp_count2 = cur2.fetchone()[0]
+            cur2.connection.close()
+            if comp_count2 >= 2:
+                generate_comprehensive_pdf(patient_id)
+
         if needs_comprehensive and pat_id_for_comp:
             from services.pdf_service import generate_comprehensive_pdf
 
             # حذف الـ Comprehensive بالاسم القديم والجديد (الاثنين للأمان)
             for search_name in set([old_patient_name, new_patient_name]):
                 pname_clean = search_name.replace(" ", "_")
-                pattern = os.path.join('pdf_reports', '**', f"{pname_clean}_comprehensive_{pat_id_for_comp}.pdf")
+                pattern = os.path.join('PDF_OUTPUT_DIR', '**', f"{pname_clean}_comprehensive_{pat_id_for_comp}.pdf")
                 for old_comp in glob.glob(pattern, recursive=True):
                     try:
                         os.remove(old_comp)
@@ -914,7 +955,8 @@ def edit_report(analysis_id):
     # =======================================
     cur.execute("""
         SELECT a.id, a.analysis_type, a.custom_name, a.patient_id,
-               p.patient_name, p.patient_id_number, p.phone, p.age, p.gender, p.doctor_name
+               p.patient_name, p.patient_id_number, p.phone, p.age, p.gender, p.doctor_name,
+               a.sample_date
         FROM analysis_instances a
         JOIN patients p ON a.patient_id = p.id
         WHERE a.id = ?
@@ -962,10 +1004,12 @@ def edit_report(analysis_id):
 
     conn.close()
 
+    sample_date = row[10] or datetime.now().strftime("%Y-%m-%d")
     return render_template("edit_report.html",
         analysis_id=analysis_id,
         analysis_type=analysis_type,
         row=row,
+        sample_date=sample_date,
         results_dict=results_dict,
         custom_fields=custom_fields,
         template_fields=template_fields,

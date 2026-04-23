@@ -242,7 +242,7 @@ body {
 
 .field-top-bar {
     display: grid;
-    grid-template-columns: 2fr 1fr 2fr 1.5fr auto;
+    grid-template-columns: auto 2fr 1fr 2fr 1.5fr auto;
     gap: 15px;
     align-items: center;
 }

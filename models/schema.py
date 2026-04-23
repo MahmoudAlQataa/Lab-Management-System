@@ -187,6 +187,14 @@ def init_database():
     # =======================================
     # commit() يحفظ كل التغييرات في قاعدة البيانات
     # بدون commit()، التغييرات ما تنحفظ!
+    # =======================================
+    # Migration: إضافة sample_date إذا ما كانت موجودة
+    # =======================================
+    try:
+        cur.execute("ALTER TABLE analysis_instances ADD COLUMN sample_date TEXT")
+    except Exception:
+        pass  # العمود موجود مسبقاً
+
     conn.commit()
     
     # =======================================

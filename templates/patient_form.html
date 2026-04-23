@@ -107,8 +107,22 @@
                             {% endfor %}
                         </select>
                     </div>
+
+                    <div class="form-field">
+                        <label>Sample Date:</label>
+                        <input type="date" name="sample_date" id="sample_date">
+                    </div>
                 </div>
             </div>
+
+            <script>
+                // تعبئة تاريخ اليوم تلقائياً عند تحميل الصفحة
+                document.addEventListener("DOMContentLoaded", function () {
+                    const today = new Date().toISOString().split("T")[0];
+                    const field = document.getElementById("sample_date");
+                    if (field && !field.value) field.value = today;
+                });
+            </script>
 
             <!-- ======================================= -->
             <!-- اختيار التحاليل (Checkboxes) -->
@@ -121,7 +135,7 @@
                     <label class="checkbox-label">
                         <input type="checkbox" name="selected_analyses" value="{{ analysis_name }}"
                             class="analysis-checkbox">
-                        {{ analysis_name }}
+                        {{ analysis_name.replace('_', ' ').title() }}
                     </label>
                     {% endfor %}
                 </div>
@@ -254,6 +268,21 @@
         // ✅ جديد: التحاليل المنفصلة (ما تنجمع مع غيرها)
         const STANDALONE_ANALYSES = ['URINE_ANALYSIS', 'SEMEN_ANALYSIS', 'STOOL_ANALYSIS', 'MICROBIOLOGY', 'LAP_REPORT'];
 
+        const ANALYSIS_DISPLAY_NAMES = {
+            'CLINICAL_CHEMISTRY': 'Clinical Chemistry Report',
+            'HEMATOLOGY': 'Hematology Report',
+            'HORMONES': 'Hormones Report',
+            'TUMOR_MARKERS': 'Tumor Markers Report',
+            'MICROBIOLOGY': 'Microbiology Report',
+            'SERO_VIROLOGY': 'Sero Virology Report',
+            'SERO_IMMU': 'Sero Immu Report',
+            'URINE_ANALYSIS': 'Urine Analysis Report',
+            'SEMEN_ANALYSIS': 'Semen Analysis Report',
+            'STOOL_ANALYSIS': 'Stool Analysis Report',
+            'LAP_REPORT': 'Lap Report',
+            'GENERAL': 'General'
+        };
+
         // =======================================
         // عند تغيير الـ checkboxes
         // =======================================
@@ -373,7 +402,7 @@
                 const tabButton = document.createElement('button');
                 tabButton.type = 'button';
                 tabButton.className = 'tab-button';
-                tabButton.textContent = analysisName;
+                tabButton.textContent = ANALYSIS_DISPLAY_NAMES[analysisName] || analysisName;
                 tabButton.onclick = () => showTab(analysisName);
                 tabsHeader.appendChild(tabButton);
 

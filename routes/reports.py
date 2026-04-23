@@ -5,6 +5,8 @@ Routes الخاصة بقائمة التقارير
 """
 
 import os
+from config import DB_NAME
+from config import PDF_OUTPUT_DIR as _PDF_DIR
 import glob
 from flask import Blueprint, render_template, redirect, request
 from models.database import getdb
@@ -103,7 +105,7 @@ def delete_analysis(analysis_id):
     conn.close()
 
     # حذف PDF الفردي
-    old_pattern = os.path.join('pdf_reports', '**', f"*_{analysis_id}.pdf")
+    old_pattern = os.path.join(_PDF_DIR, '**', f"*_{analysis_id}.pdf")
     for f in glob.glob(old_pattern, recursive=True):
         if 'comprehensive' not in os.path.basename(f):
             try:
@@ -118,7 +120,7 @@ def delete_analysis(analysis_id):
         pname_clean = re.sub(r'[\\/:*?"<>|]', '', pname_clean)
 
         # حذف الـ Comprehensive القديم
-        comp_pattern = os.path.join('pdf_reports', '**', f"{pname_clean}_comprehensive_{patient_id}.pdf")
+        comp_pattern = os.path.join(_PDF_DIR, '**', f"{pname_clean}_comprehensive_{patient_id}.pdf")
         for f in glob.glob(comp_pattern, recursive=True):
             try:
                 os.remove(f)

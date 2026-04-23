@@ -8,6 +8,7 @@ settings.py
 import json
 from flask import Blueprint, render_template, request, redirect, url_for
 from models.database import getdb
+from config import DB_NAME
 
 settings_bp = Blueprint('settings', __name__)
 
@@ -121,3 +122,27 @@ def template_settings():
     conn.close()
     
     return render_template("template_settings.html", templates=templates_data)
+
+
+@settings_bp.route("/reorder-fields", methods=["POST"])
+def reorder_fields():
+    """حفظ ترتيب الحقول الجديد"""
+    data = request.get_json()
+    analysis_name = data.get("analysis_name")
+    new_order = data.get("order", [])  # قائمة بأسماء الحقول بالترتيب الجديد
+
+    conn = getdb()
+    cur = conn.cursor()
+    cur.execute("SELECT fields FROM analysis_templates WHERE analysis_name = ?", (analysis_name,))
+    row = cur.fetchone()
+
+    if row:
+        fields = json.loads(row[0])
+        fields_dict = {f["name"]: f for f in fields}
+        reordered = [fields_dict[name] for name in new_order if name in fields_dict]
+        cur.execute("UPDATE analysis_templates SET fields = ? WHERE analysis_name = ?",
+                    (json.dumps(reordered), analysis_name))
+        conn.commit()
+
+    conn.close()
+    return {"status": "ok"}

@@ -48,7 +48,7 @@
                 <div class="info-item"><strong>Age:</strong> {{ patient[4] }}</div>
                 <div class="info-item"><strong>Gender:</strong> {{ patient[5] }}</div>
                 <div class="info-item"><strong>Doctor:</strong> {{ patient[6] }}</div>
-                <div class="info-item"><strong>Analysis:</strong> {{ patient[7] }}</div>
+                <div class="info-item"><strong>Analysis:</strong> {{ patient[7].replace('_', ' ').title() }}</div>
                 <div class="info-item"><strong>Date:</strong> {{ patient[8] }}</div>
                 <!-- style="grid-column: 1 / -1;" -->
             </div>
@@ -118,7 +118,7 @@
                         onclick="printAnalysis({{ analysis[0] }})">
                         class="print-btn {% if analysis[0] == patient[0] %}print-current{% else %}print-individual{%
                         endif %}">
-                        🖨️ Print {{ analysis[1] }}
+                        🖨️ Print {{ analysis[1].replace('_', ' ').title() }}
                         </a>
                         {% endfor %}
                 </div>

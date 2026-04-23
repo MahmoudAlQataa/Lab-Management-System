@@ -267,10 +267,12 @@ button:hover {
 /* ======================================= */
 .tabs-header {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-top: 15px;
     margin-bottom: 12px;
     border-bottom: 3px solid #95a5a6;
+    /* max-width: 100%; */
 }
 
 .tab-button {
