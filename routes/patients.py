@@ -370,9 +370,18 @@ def new_report():
         
         # فحص: هل في تحاليل عادية؟
         STANDALONE_ANALYSES = ['URINE_ANALYSIS', 'SEMEN_ANALYSIS', 'STOOL_ANALYSIS', 'MICROBIOLOGY', 'LAP_REPORT']
-        normal_analyses = [a for a in selected_analyses if a not in STANDALONE_ANALYSES]
-        
-        if len(normal_analyses) >= 2:  # ✅ تحليلين عاديين أو أكثر
+
+        conn2 = getdb()
+        cur2 = conn2.cursor()
+        cur2.execute("""
+            SELECT COUNT(*) FROM analysis_instances
+            WHERE patient_id = ? AND analysis_type NOT IN
+            ('URINE_ANALYSIS','SEMEN_ANALYSIS','STOOL_ANALYSIS','MICROBIOLOGY','LAP_REPORT')
+        """, (patient_id,))
+        total_normal = cur2.fetchone()[0]
+        conn2.close()
+
+        if total_normal >= 2:
             comprehensive_pdf = generate_comprehensive_pdf(patient_id)
             if comprehensive_pdf:
                 print(f"   ✅ Comprehensive PDF created: {comprehensive_pdf}")
@@ -643,8 +652,13 @@ def serve_analysis_pdf(analysis_id):
         
         # ✅ فتح الملف بالبرنامج الافتراضي (Acrobat)
         try:
+            # قديم
+            # if platform.system() == 'Windows':
+            #     os.startfile(pdf_path)
+            # جديد
             if platform.system() == 'Windows':
-                os.startfile(pdf_path)
+                import ctypes
+                subprocess.Popen(['cmd', '/c', 'start', '', pdf_path])
             elif platform.system() == 'Darwin':  # macOS
                 subprocess.call(['open', pdf_path])
             else:  # Linux

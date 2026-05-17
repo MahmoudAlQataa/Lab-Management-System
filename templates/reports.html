@@ -85,13 +85,13 @@
                     <td>{{ p[3].replace('_', ' ').title() }}</td>
                     <td>{{ p[4] }}</td>
                     <td>
-                        <a href="/reports/{{ p[0] }}" target="_blank">View</a>
+                        <a href="/reports/{{ p[0] }}">View</a>
                     </td>
                     <td>
-                        <a href="/patient/{{ p[5] }}" target="_blank" style="color:#0056b3;">👤 History</a>
+                        <a href="/patient/{{ p[5] }}" style="color:#0056b3;">👤 History</a>
                     </td>
                     <td>
-                        <a href="/edit-report/{{ p[0] }}" target="_blank">Edit</a>
+                        <a href="/edit-report/{{ p[0] }}">Edit</a>
                     </td>
                     <td>
                         <button onclick="confirmDelete({{ p[0] }})"

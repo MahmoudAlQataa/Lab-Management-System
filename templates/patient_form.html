@@ -252,7 +252,9 @@
         // البيانات من السيرفر (القوالب)
         // =======================================
         //        const templates = {{ templates | tojson }};
-        const templates = JSON.parse('{{ templates | tojson | safe }}');
+
+        //const templates = JSON.parse('{{ templates | tojson | safe }}');
+        const templates = {{ templates | tojson | safe }};
 
         // =======================================
         // العناصر

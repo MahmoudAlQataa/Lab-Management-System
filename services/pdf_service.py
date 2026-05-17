@@ -36,6 +36,8 @@ from config import FONT_PATH, HEADER_IMAGE_PATH, PDF_OUTPUT_DIR
 # =======================================
 SHOW_ALL_FIELDS = ['URINE_ANALYSIS', 'SEMEN_ANALYSIS', 'STOOL_ANALYSIS']
 
+FONT_SIZE_VALUE = 11      # خط القيم (نتائج + بيانات المريض)
+FONT_SIZE_LABEL = 9       # خط الـ labels والـ headers (ما بيتغير)
 # =======================================
 # Helper Functions
 # =======================================
@@ -49,41 +51,41 @@ def setup_arabic_font():
         return False
 
 
-def draw_watermark(c, width, height):
-    try:
-        import os, sys
-        from PIL import Image
-        import io
-        from reportlab.lib.utils import ImageReader
+# def draw_watermark(c, width, height):
+#     try:
+#         import os, sys
+#         from PIL import Image
+#         import io
+#         from reportlab.lib.utils import ImageReader
 
-        if getattr(sys, 'frozen', False):
-            watermark_path = os.path.join(sys._MEIPASS, 'static', 'img', 'WaterMark.png')
-        else:
-            watermark_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static', 'img', 'WaterMark.png')
+#         if getattr(sys, 'frozen', False):
+#             watermark_path = os.path.join(sys._MEIPASS, 'static', 'img', 'WaterMark.png')
+#         else:
+#             watermark_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static', 'img', 'WaterMark.png')
 
-        if os.path.exists(watermark_path):
-            # افتح الصورة وعدّل الـ opacity
-            img = Image.open(watermark_path).convert("RGBA")
-            r, g, b, a = img.split()
-            a = a.point(lambda x: int(x * 0.15))  # 15% opacity
-            img.putalpha(a)
+#         if os.path.exists(watermark_path):
+#             # افتح الصورة وعدّل الـ opacity
+#             img = Image.open(watermark_path).convert("RGBA")
+#             r, g, b, a = img.split()
+#             a = a.point(lambda x: int(x * 0.20))  # 15% opacity
+#             img.putalpha(a)
 
-            # احفظها في memory buffer
-            buffer = io.BytesIO()
-            img.save(buffer, format='PNG')
-            buffer.seek(0)
+#             # احفظها في memory buffer
+#             buffer = io.BytesIO()
+#             img.save(buffer, format='PNG')
+#             buffer.seek(0)
 
-            img_width = 500
-            img_height = 500
-            x = (width - img_width) / 2
-            y = (height - img_height) / 2
+#             img_width = 500
+#             img_height = 500
+#             x = (width - img_width) / 2
+#             y = (height - img_height) / 2
 
-            c.saveState()
-            c.drawImage(ImageReader(buffer), x, y, width=img_width, height=img_height,
-                        mask='auto', preserveAspectRatio=True)
-            c.restoreState()
-    except Exception:
-        pass
+#             c.saveState()
+#             c.drawImage(ImageReader(buffer), x, y, width=img_width, height=img_height,
+#                         mask='auto', preserveAspectRatio=True)
+#             c.restoreState()
+#     except Exception:
+#         pass
 
 def ar(text):
     """تحويل النص العربي للعرض الصحيح"""
@@ -103,7 +105,7 @@ def draw_header_footer(c, width, height, arabic_available):
     """
     
     # ✅ العلامة المائية أولاً (في الخلفية)
-    draw_watermark(c, width, height)
+    # draw_watermark(c, width, height)
     
     header_height = 130
     footer_height = 57
@@ -175,7 +177,7 @@ def draw_patient_info_boxes(c, patient_data, y_start, width, arabic_available):
     else:
         c.setFont("Helvetica-Bold", 9)
         c.drawString(44, y - 13, "Age:")
-    c.setFont("Helvetica", 9)
+    c.setFont("Helvetica", FONT_SIZE_VALUE)
     c.drawCentredString(70, y - 13, str(patient_data[3]))
 
     # جنس (105-220)
@@ -186,7 +188,7 @@ def draw_patient_info_boxes(c, patient_data, y_start, width, arabic_available):
     else:
         c.setFont("Helvetica-Bold", 9)
         c.drawString(109, y - 13, "Gender:")
-    c.setFont("Helvetica", 9)
+    c.setFont("Helvetica", FONT_SIZE_VALUE)
     gender_text = patient_data[4] if patient_data[4] else ""
     c.drawCentredString(162, y - 13, gender_text)
 
@@ -198,7 +200,7 @@ def draw_patient_info_boxes(c, patient_data, y_start, width, arabic_available):
     else:
         c.setFont("Helvetica-Bold", 9)
         c.drawString(229, y - 13, "ID:")
-    c.setFont("Helvetica", 9)
+    c.setFont("Helvetica", FONT_SIZE_VALUE)
     id_text = patient_data[1] if patient_data[1] else ""
     c.drawCentredString(302, y - 13, id_text)
 
@@ -212,7 +214,7 @@ def draw_patient_info_boxes(c, patient_data, y_start, width, arabic_available):
     else:
         c.setFont("Helvetica-Bold", 9)
         c.drawString(389, y - 13, "Name:")
-        c.setFont("Helvetica", 10)
+        c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawString(430, y - 13, patient_data[0])
 
     y -= 25
@@ -226,7 +228,7 @@ def draw_patient_info_boxes(c, patient_data, y_start, width, arabic_available):
     else:
         c.setFont("Helvetica-Bold", 9)
         c.drawString(44, y - 13, "Phone:")
-    c.setFont("Helvetica", 9)
+    c.setFont("Helvetica", FONT_SIZE_VALUE)
     phone_text = patient_data[2] if patient_data[2] else ""
     c.drawString(44, y - 13, phone_text)
 
@@ -238,7 +240,7 @@ def draw_patient_info_boxes(c, patient_data, y_start, width, arabic_available):
     else:
         c.setFont("Helvetica-Bold", 9)
         c.drawString(164, y - 13, "Sample Date:")
-    c.setFont("Helvetica", 9)
+    c.setFont("Helvetica", FONT_SIZE_VALUE)
     try:
         from datetime import datetime as dt
         sample_date = dt.strptime(patient_data[6][:10], "%Y-%m-%d").strftime("%d-%m-%Y")
@@ -259,7 +261,7 @@ def draw_patient_info_boxes(c, patient_data, y_start, width, arabic_available):
         c.setFont("Arabic", 10)
         c.drawRightString(490, y - 13, ar(doctor))
     else:
-        c.setFont("Helvetica", 10)
+        c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawString(390, y - 13, doctor)
 
     y -= 30
@@ -373,7 +375,8 @@ def draw_urine_analysis(c, results, template_fields, lab_comment, y, width, heig
     # بناء قاموس النتائج - مع فصل template و custom
     results_dict = {}
     custom_fields = []
-    
+    results_dict_ordered = [(r[0], r[1]) for r in results if (r[4] if len(r) > 4 else 'template') == 'template']
+
     for r in results:
         field_name = r[0]
         field_value = r[1]
@@ -382,7 +385,8 @@ def draw_urine_analysis(c, results, template_fields, lab_comment, y, width, heig
         if field_type == 'custom':
             custom_fields.append(r)
         else:
-            results_dict[field_name] = field_value
+            unit = r[2] if len(r) > 2 and r[2] else ""
+            results_dict[field_name] = f"{field_value} {unit}".strip()
     
     # Headers
     c.setStrokeColor(colors.black)
@@ -446,7 +450,7 @@ def draw_urine_analysis(c, results, template_fields, lab_comment, y, width, heig
             c.setFont("Courier", 9)
             c.drawCentredString(90, y - 13, field_display)
             c.rect(145, y - row_height, 150, row_height)
-            c.setFont("Helvetica", 9)
+            c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(220, y - 13, str(field_value))
         
         # العمود الأيمن (x=315)
@@ -457,7 +461,7 @@ def draw_urine_analysis(c, results, template_fields, lab_comment, y, width, heig
             c.setFont("Courier", 9)
             c.drawCentredString(365, y - 13, field_display)
             c.rect(420, y - row_height, 155, row_height)
-            c.setFont("Helvetica", 9)
+            c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(497, y - 13, str(field_value))
         
         y -= row_height
@@ -525,16 +529,22 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     # بناء قاموس النتائج - مع فصل template و custom
     results_dict = {}
     custom_fields = []
-    
     for r in results:
         field_name = r[0]
         field_value = r[1]
         field_type = r[4] if len(r) > 4 else 'template'
-        
+
         if field_type == 'custom':
             custom_fields.append(r)
         else:
-            results_dict[field_name] = field_value
+            unit = r[2] if len(r) > 2 and r[2] else ""
+            results_dict[field_name] = f"{field_value} {unit}".strip()
+
+    tf_names = [f[0] for f in template_fields]
+    basic_keys = tf_names[:9]
+    motility_keys = tf_names[9:13]
+    morph_key = tf_names[13] if len(tf_names) > 13 else "sperm_morphology"
+    spermatocyte_key = tf_names[14] if len(tf_names) > 14 else "spermatocyte_hpf"
     
     # Headers - محاذاة مع Motility
     c.setStrokeColor(colors.black)
@@ -549,39 +559,22 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     
     y -= 25
     
-    # الحقول الأساسية
-    basic_fields = [
-        ('period', 'Period', 'Days'),
-        ('volume', 'Volume / mL', 'mL'),
-        ('appearance', 'Appearance', ''),
-        ('viscosity', 'Viscosity', ''),
-        ('liquefaction', 'Liquefaction', 'min'),
-        ('sperm_count', 'Sperm Count', 'mill/mL'),
-        ('ph', 'pH', ''),
-        ('rbc_hpf', 'RBC / HPF', ''),
-        ('wbc_hpf', 'WBC / HPF', '')
-    ]
-    
+    basic_results = [(k, results_dict.get(k, "")) for k in basic_keys]
+    motility_results = [(k, results_dict.get(k, "")) for k in motility_keys]
+
     c.setLineWidth(1)
     c.setFont("Courier", 9)
     row_height = 20
-    
-    for field_key, field_display, unit in basic_fields:
-        field_value = results_dict.get(field_key, "")
-        
-        # Test name
+
+    for field_name, field_value in basic_results:
         c.rect(90, y - row_height, 150, row_height)
-        c.drawCentredString(165, y - 13, field_display)
-        
-        # Result with unit
+        c.drawCentredString(165, y - 13, field_name)
+
         c.rect(245, y - row_height, 295, row_height)
-        c.setFont("Helvetica", 9)
-        result_text = str(field_value)
-        if result_text and unit:
-            result_text += " " + unit
-        c.drawCentredString(392, y - 13, result_text)
-        c.setFont("Courier", 9)
-        
+        c.setFont("Helvetica", FONT_SIZE_VALUE)
+        c.drawCentredString(392, y - 13, str(field_value))
+        c.setFont("Courier", FONT_SIZE_LABEL)
+
         y -= row_height
     
     y -= 15
@@ -593,42 +586,41 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     c.drawString(65, y - 13, "Motility :")
     
     y -= 23
-    
-    motility_grades = [
-        ('grade_a', 'Grade "A"', 'Rapid progressive movement'),
-        ('grade_b', 'Grade "B"', 'Slow or sluggish progressive movement'),
-        ('grade_c', 'Grade "C"', 'Non - Progressive movement'),
-        ('grade_d', 'Grade "D"', 'Immotile')
+
+    motility_descriptions = [
+        'Rapid progressive movement',
+        'Slow or sluggish progressive movement',
+        'Non - Progressive movement',
+        'Immotile'
     ]
-    
+
     c.setLineWidth(1)
     c.setFont("Helvetica", 9)
-    for grade_key, grade_name, grade_desc in motility_grades:
+    for i, (field_name, field_value) in enumerate(motility_results):
         c.rect(90, y - 18, 70, 18)
-        c.drawCentredString(125, y - 13, grade_name)
-        
+        c.drawCentredString(125, y - 13, field_name)
+
+        desc = motility_descriptions[i] if i < len(motility_descriptions) else ""
         c.rect(165, y - 18, 280, 18)
-        c.drawCentredString(305, y - 13, grade_desc)
-        
+        c.drawCentredString(305, y - 13, desc)
+
+        c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.rect(450, y - 18, 60, 18)
-        grade_value = results_dict.get(grade_key, "")
-        c.drawCentredString(480, y - 13, str(grade_value))
-        
+        c.drawCentredString(480, y - 13, str(field_value))
+
         c.rect(515, y - 18, 25, 18)
         c.drawString(520, y - 13, "%")
-        
+
         y -= 18
     
-    y -= 20  # ✅ مسافة بدل العنوان
+    y -= 20
     
-    # حقلين Sperm Morphology - نفس محاذاة Test/Result
     c.setLineWidth(1)
     c.setFont("Helvetica", 9)
     
-    # 1. Sperm Morphology - مع text wrapping للنص الطويل
     from reportlab.pdfbase.pdfmetrics import stringWidth
     
-    morph_value = str(results_dict.get("sperm_morphology", ""))
+    morph_value = str(results_dict.get(morph_key, ""))
     
     # تقسيم النص لأسطر
     morph_font = "Helvetica"
@@ -668,7 +660,8 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     
     c.rect(90, y - morph_box_h, 150, morph_box_h)
     c.setFont("Helvetica", 9)
-    c.drawString(95, y - (morph_box_h / 2) - 3, "Sperm Morphology")
+    morph_name = morph_key
+    c.drawString(95, y - (morph_box_h / 2) - 3, morph_name)
     
     c.rect(245, y - morph_box_h, 295, morph_box_h)
     c.setFont(morph_font, morph_font_size)
@@ -681,30 +674,25 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     
     # 2. Spermatocyte / HPF
     c.rect(90, y - 18, 150, 18)
-    c.drawString(95, y - 13, "Spermatocyte / HPF")
-    
+    c.drawString(95, y - 13, spermatocyte_key)
+
     c.rect(245, y - 18, 295, 18)
-    sperm_hpf_value = results_dict.get("spermatocyte_hpf", "")
-    c.drawString(250, y - 13, str(sperm_hpf_value))
+    c.drawString(250, y - 13, str(results_dict.get(spermatocyte_key, "")))
     
     y -= 28
     
-    # ✅ Extra Template Fields (Added dynamically via settings)
-    basic_keys = [f[0] for f in basic_fields] + [f[0] for f in motility_grades] + ["sperm_morphology", "spermatocyte_hpf"]
-    extra_template_fields = [f for f in template_fields if f[0] not in basic_keys]
+    extra_keys = tf_names[15:]
+    extra_template_fields = [(k, results_dict.get(k, "")) for k in extra_keys]
     
     if extra_template_fields:
-        for extra_field in extra_template_fields:
+        for field_name, field_value in extra_template_fields:
             c.rect(90, y - 18, 150, 18)
-            c.drawString(95, y - 13, extra_field[0])
-            
+            c.drawString(95, y - 13, field_name)
+
             c.rect(245, y - 18, 295, 18)
-            val = results_dict.get(extra_field[0], "")
-            unit = extra_field[1] if len(extra_field) > 1 else ""
-            txt = str(val) + (" " + unit if unit and str(val) else "")
-            c.drawString(250, y - 13, txt)
+            c.drawString(250, y - 13, str(field_value))
             y -= 23
-            
+
         y -= 5
         
     # ✅ Custom Fields
@@ -744,89 +732,84 @@ def draw_stool_analysis(c, results, template_fields, lab_comment, y, width, heig
     results_dict = {}
     custom_fields = []
     
+    # قائمة مرتبة من template fields بالترتيب من DB
     for r in results:
         field_name = r[0]
         field_value = r[1]
         field_type = r[4] if len(r) > 4 else 'template'
-        
+
         if field_type == 'custom':
             custom_fields.append(r)
         else:
-            results_dict[field_name] = field_value
-    
-    # Headers - نفس محاذاة SEMEN
+            unit = r[2] if len(r) > 2 and r[2] else ""
+            results_dict[field_name] = f"{field_value} {unit}".strip()
+
+    # أسماء الحقول من القالب (بالترتيب الفعلي)
+    tf_names = [f[0] for f in template_fields]
+    parasites_key = tf_names[6] if len(tf_names) > 6 else "parasites"
+    extra_keys = tf_names[7:]
+
+    # Headers
     c.setStrokeColor(colors.black)
     c.setLineWidth(1.5)
-    
+
     c.rect(90, y - 20, 150, 20)
     c.setFont("Helvetica-Bold", 10)
     c.drawCentredString(165, y - 13, "Test")
-    
+
     c.rect(245, y - 20, 295, 20)
     c.drawCentredString(392, y - 13, "Result")
-    
+
     y -= 25
-    
-    # الحقول الأساسية (قبل Parasites)
-    basic_fields = [
-        ('color', 'Color'),
-        ('consistency', 'Consistency'),
-        ('ph', 'PH'),
-        ('mucous', 'Mucous'),
-        ('rbcs', "RBC's"),
-        ('wbcs', "WBC's")
-    ]
-    
+
+    # الحقول الأساسية: أول 6 من القالب
+    basic_keys = tf_names[:6]
+
     c.setLineWidth(1)
     c.setFont("Courier", 9)
     row_height = 20
-    
-    for field_key, field_display in basic_fields:
+
+    for field_key in basic_keys:
         field_value = results_dict.get(field_key, "")
-        
+
         c.rect(90, y - row_height, 150, row_height)
-        c.drawCentredString(165, y - 13, field_display)
-        
+        c.drawCentredString(165, y - 13, field_key)
+
         c.rect(245, y - row_height, 295, row_height)
-        c.setFont("Helvetica", 9)
+        c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(392, y - 13, str(field_value))
-        c.setFont("Courier", 9)
-        
+        c.setFont("Courier", FONT_SIZE_LABEL)
+
         y -= row_height
-    
+
     y -= 5
-    
+
     # Parasites - مربع كبير
     parasites_height = 40
     c.rect(90, y - parasites_height, 150, parasites_height)
     c.setFont("Courier", 9)
-    c.drawString(95, y - 20, "Parasites")
-    
+    c.drawString(95, y - 20, parasites_key)
+
     c.rect(245, y - parasites_height, 295, parasites_height)
-    parasites_value = results_dict.get("parasites", "")
     c.setFont("Helvetica", 9)
-    c.drawString(250, y - 20, str(parasites_value))
-    
+    c.drawString(250, y - 20, str(results_dict.get(parasites_key, "")))
+
     y -= parasites_height + 10
-    
-    # ✅ Extra Template Fields (Added dynamically via settings)
-    basic_keys = [f[0] for f in basic_fields] + ["parasites"]
-    extra_template_fields = [f for f in template_fields if f[0] not in basic_keys]
+
+    # Extra Template Fields
+    extra_template_fields = [(k, results_dict.get(k, "")) for k in extra_keys]
     
     if extra_template_fields:
-        for extra_field in extra_template_fields:
+        for field_name, field_value in extra_template_fields:
             c.rect(90, y - 18, 150, 18)
             c.setFont("Courier", 9)
-            c.drawString(95, y - 13, extra_field[0])
-            
+            c.drawString(95, y - 13, field_name)
+
             c.rect(245, y - 18, 295, 18)
             c.setFont("Helvetica", 9)
-            val = results_dict.get(extra_field[0], "")
-            unit = extra_field[1] if len(extra_field) > 1 else ""
-            txt = str(val) + (" " + unit if unit and str(val) else "")
-            c.drawString(250, y - 13, txt)
+            c.drawString(250, y - 13, str(field_value))
             y -= 23
-            
+
         y -= 5
     
     # ✅ Custom Fields - فقط إذا موجودة
@@ -863,152 +846,109 @@ def draw_microbiology(c, results, template_fields, lab_comment, y, width, height
     رسم تحليل MICROBIOLOGY
     """
     y = draw_analysis_title_box(c, "Microbiology Report", y, width)
-    
-    # بناء قاموس النتائج
-    results_dict = {}
-    for r in results:
-        results_dict[r[0]] = r[1]
-    
+
+    # أول 4 حقول دايماً هي الـ fixed grid، الباقي antibiotics
+    fixed_fields = results[:4]
+    antibiotic_results = results[4:]
+
+    # بناء قاموس للحقول الثابتة بالترتيب
+    fixed_list = [(r[0], r[1]) for r in fixed_fields]
+    while len(fixed_list) < 4:
+        fixed_list.append(("", ""))
+
+    # antibiotic_fields: فقط اللي عندهم قيمة
+    antibiotic_fields = [(r[0], r[1]) for r in antibiotic_results if r[1]]
+
     # الحقول الأربعة العلوية (2x2 grid)
     c.setStrokeColor(colors.black)
     c.setLineWidth(1)
     c.setFont("Helvetica", 9)
-    
-    # Specimen & Gram Stain
+
     row_h = 18
-    
+
     c.rect(60, y - row_h, 130, row_h)
-    c.drawCentredString(125, y - 12, "Specimen")
-    
+    c.drawCentredString(125, y - 12, fixed_list[0][0])
     c.rect(195, y - row_h, 100, row_h)
-    specimen_value = results_dict.get("specimen", "")
-    c.drawCentredString(245, y - 12, str(specimen_value))
-    
+    c.setFont("Helvetica", FONT_SIZE_VALUE)
+    c.drawCentredString(245, y - 12, str(fixed_list[0][1]))
+
     c.rect(310, y - row_h, 130, row_h)
-    c.drawCentredString(375, y - 12, "Gram Stain")
-    
+    c.drawCentredString(375, y - 12, fixed_list[1][0])
     c.rect(445, y - row_h, 130, row_h)
-    gram_value = results_dict.get("gram_stain", "")
-    c.drawCentredString(510, y - 12, str(gram_value))
-    
+    c.setFont("Helvetica", FONT_SIZE_VALUE)
+    c.drawCentredString(510, y - 12, str(fixed_list[1][1]))
+
     y -= row_h + 5
-    
-    # Count & Organism
+
     c.rect(60, y - row_h, 130, row_h)
-    c.drawCentredString(125, y - 12, "Count")
-    
+    c.drawCentredString(125, y - 12, fixed_list[2][0])
     c.rect(195, y - row_h, 100, row_h)
-    count_value = results_dict.get("count", "")
-    c.drawCentredString(245, y - 12, str(count_value))
-    
+    c.setFont("Helvetica", FONT_SIZE_VALUE)
+    c.drawCentredString(245, y - 12, str(fixed_list[2][1]))
+
     c.rect(310, y - row_h, 130, row_h)
-    c.drawCentredString(375, y - 12, "Organism")
-    
+    c.drawCentredString(375, y - 12, fixed_list[3][0])
     c.rect(445, y - row_h, 130, row_h)
-    organism_value = results_dict.get("organism", "")
-    c.drawCentredString(510, y - 12, str(organism_value))
-    
+    c.setFont("Helvetica", FONT_SIZE_VALUE)
+    c.drawCentredString(510, y - 12, str(fixed_list[3][1]))
+
     y -= row_h + 15
-    
-    # Antibiotics - عمودين
-    # Database keys (lowercase + underscores)
-    antibiotics_keys = [
-        'penicillin_g', 'ampicillin', 'amoxycillin', 'cloxacillin', 'piperacillin',
-        'erythromycin', 'clindamycin', 'cephalexin', 'cefuroxime',
-        'cefotaxime', 'ceftazidim', 'aztreofloxacin',
-        'aztreonam', 'ceftriaxone', 'cephazolin',
-        'amikacin', 'ofloxacin', 'augmantin', 'gentamicin', 'tetracycline',
-        'chloramphenicol', 'septrin', 'nalidixic', 'ciprofloxacin',
-        'polymyxin_b', 'neomycin', 'rifampicin', 'vancomycin', 'rovamycin',
-        'minocyline', 'ceclor', 'nitro_furantion', 'doxycycline'
-    ]
-    
-    # Display names (for PDF)
-    antibiotics_display = [
-        'Penicillin G', 'Ampicillin', 'Amoxycillin', 'Cloxacillin', 'Piperacillin',
-        'Erythromycin', 'Clindamycin', 'Cephalexin (Keflex)', 'Cefuroxime (Zinnat)',
-        'Cefotaxime (Claforan)', 'Ceftazidim (fortum)', 'Aztreofloxacin',
-        'Aztreonam (Azactam)', 'Ceftriaxone (Rocephin)', 'Cephazolin(Cefamezine)',
-        'Amikacin', 'Ofloxacin (travid)', 'Augmantin', 'Gentamicin', 'Tetracycline',
-        'Chloramphenicol', 'Septrin', 'Nalidixic (Negram)', 'Ciprofloxacin',
-        'Polymyxin B', 'Neomycin', 'Rifampicin', 'Vancomycin', 'Rovamycin',
-        'Minocyline', 'Ceclor', 'Nitro Furantion', 'Doxycycline'
-    ]
-    
+
     # Headers
     c.setLineWidth(1.5)
     c.rect(60, y - 20, 130, 20)
     c.setFont("Helvetica-Bold", 10)
     c.drawCentredString(125, y - 13, "Antibiotic")
-    
+
     c.rect(195, y - 20, 100, 20)
     c.drawCentredString(245, y - 13, "Result")
-    
+
     c.rect(310, y - 20, 130, 20)
     c.drawCentredString(375, y - 13, "Antibiotic")
-    
+
     c.rect(445, y - 20, 130, 20)
     c.drawCentredString(510, y - 13, "Result")
-    
+
     y -= 25
-    
-    # ✅ فلترة المضادات - فقط التي لها قيم
-    filled_antibiotics = []
-    for i in range(len(antibiotics_keys)):
-        key = antibiotics_keys[i]
-        value = results_dict.get(key, "")
-        if value:  # فقط إذا في قيمة
-            filled_antibiotics.append({
-                'key': key,
-                'display': antibiotics_display[i],
-                'value': value
-            })
-    
-    # البيانات
+
+    # عرض الـ antibiotics من DB مباشرة - عمودين
     c.setLineWidth(1)
     c.setFont("Helvetica", 9)
     row_height = 18
-    
-    half = len(filled_antibiotics) // 2 + len(filled_antibiotics) % 2
-    
+
+    half = len(antibiotic_fields) // 2 + len(antibiotic_fields) % 2
+
     for i in range(half):
-        left_antibiotic = filled_antibiotics[i]
-        left_key = left_antibiotic['key']
-        left_display = left_antibiotic['display']
-        left_value = left_antibiotic['value']
-        
-        # عمود يسار
+        left_name, left_value = antibiotic_fields[i]
+
         c.rect(60, y - row_height, 130, row_height)
-        c.drawCentredString(125, y - 12, left_display)
-        
+        c.drawCentredString(125, y - 12, left_name)
+
         c.rect(195, y - row_height, 100, row_height)
+        c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(245, y - 12, str(left_value))
-        
-        # عمود يمين
-        if i + half < len(filled_antibiotics):
-            right_antibiotic = filled_antibiotics[i + half]
-            right_key = right_antibiotic['key']
-            right_display = right_antibiotic['display']
-            right_value = right_antibiotic['value']
-            
+
+        if i + half < len(antibiotic_fields):
+            right_name, right_value = antibiotic_fields[i + half]
+
             c.rect(310, y - row_height, 130, row_height)
-            c.drawCentredString(375, y - 12, right_display)
-            
+            c.drawCentredString(375, y - 12, right_name)
+
             c.rect(445, y - row_height, 130, row_height)
+            c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(510, y - 12, str(right_value))
-        
+
         y -= row_height
-    
+
     y -= 10
-    
+
     # Lab Comment
     y = draw_lab_comment_box(c, lab_comment, y, width, arabic_available)
-    
+
     # Date & Signature
     draw_date_signature_boxes(c, footer_height + 10, width)
-    
-    return y - 50
 
+    return y - 50
 
 def draw_lap_report(c, results, y, width, height, footer_height, arabic_available):
     """
@@ -1185,21 +1125,21 @@ def draw_general_analysis(c, analysis_name, results, lab_comment, y, width, heig
         
         # Result
         c.rect(205, y - row_height, 140, row_height)
-        c.setFont("Helvetica", 9)
+        c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(275, y - 13, str(field_value))
-        c.setFont("Courier", 9)
+        c.setFont("Courier", FONT_SIZE_LABEL)
         
         # Unit
         c.rect(350, y - row_height, 80, row_height)
-        c.setFont("Helvetica", 9)
+        c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(390, y - 13, unit)
-        c.setFont("Courier", 9)
+        c.setFont("Courier", FONT_SIZE_LABEL)
         
         # Normal Range
         c.rect(435, y - row_height, 140, row_height)
-        c.setFont("Helvetica", 9)
+        c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(505, y - 13, normal_range)
-        c.setFont("Courier", 9)
+        c.setFont("Courier", FONT_SIZE_LABEL)
         
         y -= row_height
     
@@ -1591,21 +1531,21 @@ def generate_comprehensive_pdf(patient_id):
             
             # Result
             c.rect(205, y - row_height, 140, row_height)
-            c.setFont("Helvetica", 9)
+            c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(275, y - 13, str(field_value))
-            c.setFont("Courier", 9)
+            c.setFont("Courier", FONT_SIZE_LABEL)
             
             # Unit
             c.rect(350, y - row_height, 80, row_height)
-            c.setFont("Helvetica", 9)
+            c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(390, y - 13, unit)
-            c.setFont("Courier", 9)
+            c.setFont("Courier", FONT_SIZE_LABEL)
             
             # Normal Range
             c.rect(435, y - row_height, 140, row_height)
-            c.setFont("Helvetica", 9)
+            c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(505, y - 13, normal_range)
-            c.setFont("Courier", 9)
+            c.setFont("Courier", FONT_SIZE_LABEL)
             
             y -= row_height
             first_row_on_page = False

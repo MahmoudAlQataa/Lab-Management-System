@@ -2,6 +2,7 @@
 # ملف التطبيق الرئيسي #
 #########################
 
+import sys
 from flask import Flask
 from config import DATA_DIR
 import os
@@ -14,7 +15,13 @@ from routes.doctors import doctors_bp
 from routes.settings import settings_bp
 from routes.stats import stats_bp
 
-app = Flask(__name__)
+if getattr(sys, 'frozen', False):
+    base_path = sys._MEIPASS
+    template_folder = os.path.join(base_path, 'templates')
+    static_folder = os.path.join(base_path, 'static')
+    app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
+else:
+    app = Flask(__name__)
 
 # تسجيل الـ Blueprints
 app.register_blueprint(patients_bp)

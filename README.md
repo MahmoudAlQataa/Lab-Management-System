@@ -1,21 +1,22 @@
+
+---
+
+```markdown
 # 🏥 Nebras Medical Laboratory System
 
-A comprehensive medical laboratory management system built with Flask, designed to streamline patient data management, test result entry, and professional PDF report generation.
+A comprehensive medical laboratory management system built with Flask, packaged as a Windows desktop application via PyInstaller and WebView.
 
 ---
 
 ## ✨ Features
 
 ### 📋 Patient Management
-
 - Add and manage patient records (name, age, gender, ID number, doctor)
 - Search existing patients instantly while adding new reports
 - Full patient history — view all analyses per patient in one place
 - Link new analyses to existing patient records
 
 ### 🔬 Analysis Support
-
-Supports multiple analysis types out of the box:
 
 | Type | Description |
 |------|-------------|
@@ -32,7 +33,6 @@ Supports multiple analysis types out of the box:
 | Lab Report | Title + free-text content |
 
 ### 📄 PDF Generation
-
 - Individual PDF reports per analysis
 - Comprehensive PDF combining all standard analyses for one patient
 - Professional header/footer with lab logo and watermark
@@ -40,25 +40,21 @@ Supports multiple analysis types out of the box:
 - Direct print via Adobe Acrobat
 
 ### ⚙️ Template Settings
-
 - Edit field names, units, and normal ranges per template
 - Set result fields as Text or Dropdown with custom options
 - Set normal range as Text or Dropdown (e.g. `male: 13.5`, `female: 12.5`, `child: 11.0`)
 - Auto-fill normal range based on patient age and gender
 
 ### 📊 Statistics
-
 - Monthly patient and analysis counts
 - Breakdown by analysis type with visual bar chart
 
 ### 🗂️ Reports Page
-
 - Search by patient name or ID number
 - Filter by month
 - View, Edit, Delete, and History actions per report
 
 ### 🖥️ UI / UX
-
 - Screensaver after 15 seconds of inactivity (patient form only)
 - Existing patient search with auto-fill from navbar
 - Dynamic tabs for multiple simultaneous analyses
@@ -74,16 +70,23 @@ Supports multiple analysis types out of the box:
 | PDF Generation | ReportLab |
 | Arabic Support | arabic-reshaper, python-bidi |
 | Frontend | HTML, CSS, JavaScript |
+| Desktop Wrapper | PyWebView |
+| Packaging | PyInstaller + Inno Setup |
 
 ---
 
 ## 📁 Project Structure
 
 ```
+
 Lap_System/
 ├── LapApp/                  ← Application source (this repository)
-│   ├── app.py
-│   ├── config.py
+│   ├── app.py               # Flask app init
+│   ├── config.py            # Path configuration
+│   ├── launcher.py          # Entry point: starts Flask + opens WebView
+│   ├── NebrasLab.spec       # PyInstaller spec file
+│   ├── setup.iss            # Inno Setup script
+│   ├── AppIcon.ico          # App icon
 │   ├── requirements.txt
 │   ├── models/
 │   │   ├── database.py
@@ -97,24 +100,27 @@ Lap_System/
 │   ├── services/
 │   │   ├── pdf_service.py   # PDF generation engine
 │   │   └── template_service.py
-│   ├── templates/           # HTML templates
+│   ├── templates/           # HTML templates (Jinja2)
 │   └── static/
 │       ├── css/
+│       ├── fonts/
+│       ├── js/
+│       │   └── Sortable.min.js
 │       └── img/
 │           ├── header.png
 │           └── WaterMark.png
 └── LapData/                 ← Auto-generated on first run (not in repo)
-├── lap.db
-└── pdf_reports/
-└── YYYY/MM/
+    ├── lap.db
+    └── pdf_reports/
+        └── YYYY/MM/
+
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started (Development)
 
 ### Prerequisites
-
 - Python 3.10+
 - pip
 
@@ -122,19 +128,14 @@ Lap_System/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/Lap_System.git
-
-# Enter the app directory
-cd Lap_System/LapApp
+git clone https://github.com/MahmoudAlQataa/Lap_System.git
+cd Lap_System
 
 # Create virtual environment
 python -m venv venv
 
 # Activate (Windows)
 .\venv\Scripts\Activate.ps1
-
-# Activate (macOS/Linux)
-source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -145,7 +146,37 @@ python app.py
 
 The app will be available at `http://127.0.0.1:5000`
 
-> **Note:** On first run, a `LapData/` folder will be created automatically next to `LapApp/`, containing the database and all generated PDF reports. This separation makes backups straightforward — just copy the `LapData/` folder.
+> **Note:** On first run, a `LapData/` folder will be created automatically next to `LapApp/`, containing the database and all generated PDF reports.
+
+---
+
+## 📦 Building the Desktop App (Windows)
+
+### Prerequisites
+
+- [PyInstaller](https://pyinstaller.org/)
+- [Inno Setup](https://jrsoftware.org/isinfo.php)
+
+### Steps
+
+**1. Check for `target="_blank"` in templates (breaks WebView):**
+
+```powershell
+Select-String -Path "templates\*.html" -Pattern 'target="_blank"'
+```
+
+**2. Build the EXE:**
+
+```bash
+# From inside LapApp/
+pyinstaller NebrasLab.spec
+```
+
+**3. Build the installer:**
+
+- Open `setup.iss` in Inno Setup
+- Click **Compile**
+- Output: `dist/NebrasLabSetup.exe`
 
 ---
 
@@ -155,9 +186,15 @@ The app will be available at `http://127.0.0.1:5000`
 - Patient names are sanitized before use in file paths (Windows-safe)
 - Comprehensive PDF is generated automatically when a patient has 2+ standard analyses
 - Standalone analyses (Urine, Semen, Stool, Microbiology, Lab Report) are excluded from Comprehensive PDF
+- All JS libraries are bundled locally — no CDN dependencies (required for packaged app)
+- Dynamic port selection at runtime avoids conflicts on client machines
 
 ---
 
 ## 📄 License
 
 This project is proprietary. All rights reserved.
+
+```
+
+---
