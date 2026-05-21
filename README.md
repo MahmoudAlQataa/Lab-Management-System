@@ -2,7 +2,7 @@
 ---
 
 ```markdown
-# 🏥 Nebras Medical Laboratory System
+# 🏥 R Medical Laboratory System
 
 A comprehensive medical laboratory management system built with Flask, packaged as a Windows desktop application via PyInstaller and WebView.
 
@@ -84,7 +84,7 @@ Lap_System/
 │   ├── app.py               # Flask app init
 │   ├── config.py            # Path configuration
 │   ├── launcher.py          # Entry point: starts Flask + opens WebView
-│   ├── NebrasLab.spec       # PyInstaller spec file
+│   ├── RLab.spec       # PyInstaller spec file
 │   ├── setup.iss            # Inno Setup script
 │   ├── AppIcon.ico          # App icon
 │   ├── requirements.txt
@@ -169,14 +169,14 @@ Select-String -Path "templates\*.html" -Pattern 'target="_blank"'
 
 ```bash
 # From inside LapApp/
-pyinstaller NebrasLab.spec
+pyinstaller RLab.spec
 ```
 
 **3. Build the installer:**
 
 - Open `setup.iss` in Inno Setup
 - Click **Compile**
-- Output: `dist/NebrasLabSetup.exe`
+- Output: `dist/RLabSetup.exe`
 
 ---
 
