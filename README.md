@@ -1,5 +1,6 @@
 
-```markdown
+---
+
 # 🏥 R Medical Laboratory System
 
 A comprehensive medical laboratory management system built with Flask, packaged as a Windows desktop application via PyInstaller and WebView.
@@ -9,6 +10,7 @@ A comprehensive medical laboratory management system built with Flask, packaged 
 ## ✨ Features
 
 ### 📋 Patient Management
+
 - Add and manage patient records (name, age, gender, ID number, doctor)
 - Search existing patients instantly while adding new reports
 - Full patient history — view all analyses per patient in one place
@@ -31,6 +33,7 @@ A comprehensive medical laboratory management system built with Flask, packaged 
 | Lab Report | Title + free-text content |
 
 ### 📄 PDF Generation
+
 - Individual PDF reports per analysis
 - Comprehensive PDF combining all standard analyses for one patient
 - Professional header/footer with lab logo and watermark
@@ -38,21 +41,25 @@ A comprehensive medical laboratory management system built with Flask, packaged 
 - Direct print via Adobe Acrobat
 
 ### ⚙️ Template Settings
+
 - Edit field names, units, and normal ranges per template
 - Set result fields as Text or Dropdown with custom options
 - Set normal range as Text or Dropdown (e.g. `male: 13.5`, `female: 12.5`, `child: 11.0`)
 - Auto-fill normal range based on patient age and gender
 
 ### 📊 Statistics
+
 - Monthly patient and analysis counts
 - Breakdown by analysis type with visual bar chart
 
 ### 🗂️ Reports Page
+
 - Search by patient name or ID number
 - Filter by month
 - View, Edit, Delete, and History actions per report
 
 ### 🖥️ UI / UX
+
 - Screensaver after 15 seconds of inactivity (patient form only)
 - Existing patient search with auto-fill from navbar
 - Dynamic tabs for multiple simultaneous analyses
@@ -119,6 +126,7 @@ Lap_System/
 ## 🚀 Getting Started (Development)
 
 ### Prerequisites
+
 - Python 3.10+
 - pip
 
@@ -193,6 +201,4 @@ pyinstaller RLab.spec
 
 This project is proprietary. All rights reserved.
 
-```
-
-
+---
