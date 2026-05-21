@@ -9,6 +9,8 @@ A comprehensive medical laboratory management system built with Flask, packaged 
 
 ## ✨ Features
 
+- Soon
+
 ### 📋 Patient Management
 
 - Add and manage patient records (name, age, gender, ID number, doctor)
