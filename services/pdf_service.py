@@ -141,11 +141,11 @@ def draw_header_footer(c, width, height, arabic_available):
     # اليسار: هاتف
     if arabic_available:
         c.setFont("Arabic", 9)
-        phone_text = ar("هاتف: 0599414743")
+        phone_text = ar("هاتف: 0597593257")
         c.drawString(40, footer_height - 33, phone_text)
     else:
         c.setFont("Helvetica", 9)
-        c.drawString(40, footer_height - 33, "Tel: 0599414743")
+        c.drawString(40, footer_height - 33, "Tel: 0597593257")
     
     # الوسط: شرطة
     c.setFont("Helvetica", 9)
@@ -154,7 +154,7 @@ def draw_header_footer(c, width, height, arabic_available):
     # اليمين: العنوان
     if arabic_available:
         c.setFont("Arabic", 9)
-        address_text = ar("غزة - شارع الوحدة - مقابل عيادة شهداء الدرج (البندر)")
+        address_text = ar("غزة - تل الهوا - محيط منتزة برشلونة")
         c.drawRightString(width - 40, footer_height - 33, address_text)
     
     return header_height, footer_height
@@ -1179,7 +1179,6 @@ ANALYSIS_DISPLAY_NAMES = {
     'SEMEN_ANALYSIS': 'Semen Analysis Report',
     'STOOL_ANALYSIS': 'Stool Analysis Report',
     'LAP_REPORT': 'Lap Report',
-    'GENERAL': 'General'
 }
 
 def generate_pdf(analysis_id):

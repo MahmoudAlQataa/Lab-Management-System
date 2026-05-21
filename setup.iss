@@ -1,21 +1,21 @@
 [Setup]
-AppName=Nebras Medical Laboratory
+AppName=R Medical Laboratory
 AppVersion=1.0
 PrivilegesRequired=admin
-DefaultDirName={sd}\NebrasLab
-DefaultGroupName=Nebras Lab
-OutputBaseFilename=NebrasLabSetup_v2.6
+DefaultDirName={sd}\RLab
+DefaultGroupName=R Lab
+OutputBaseFilename=RLabSetup_v2.6
 OutputDir=F:\Mahmoud\Projects\WEP\Lap_System\LapApp\dist
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=F:\Mahmoud\Projects\WEP\Lap_System\LapApp\AppIcon.ico
 
 [Files]
-Source: "F:\Mahmoud\Projects\WEP\Lap_System\LapApp\dist\NebrasLab.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "F:\Mahmoud\Projects\WEP\Lap_System\LapApp\dist\RLab.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{commondesktop}\Nebras Medical Laboratory"; Filename: "{app}\NebrasLab.exe"
-Name: "{group}\Nebras Medical Laboratory"; Filename: "{app}\NebrasLab.exe"
+Name: "{commondesktop}\R Medical Laboratory"; Filename: "{app}\RLab.exe"
+Name: "{group}\R Medical Laboratory"; Filename: "{app}\RLab.exe"
 
 [Run]
-Filename: "{app}\NebrasLab.exe"; Description: "تشغيل البرنامج"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\RLab.exe"; Description: "تشغيل البرنامج"; Flags: nowait postinstall skipifsilent

@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='NebrasLab',
+    name='RLab',
     icon='AppIcon.ico',
     debug=False,
     bootloader_ignore_signals=False,

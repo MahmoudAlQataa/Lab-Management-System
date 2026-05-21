@@ -16,7 +16,7 @@ body {
 /* ======================================= */
 .main-header {
     background-color: #ffffff;
-    border-bottom: 3px solid #c0392b;
+    border-bottom: 3px solid #1a2f6e;
     padding: 12px 40px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -41,7 +41,7 @@ body {
     object-fit: contain;
     background: white;
     padding: 1px;
-    border: 1px solid #c0392b;
+    border: 1px solid #1a2f6e;
 }
 
 .main-navbar {
@@ -252,7 +252,7 @@ button:hover {
 }
 
 .checkbox-label:hover {
-    border-color: #c0392b;
+    border-color: #1a2f6e;
     background-color: #f0f4f8;
 }
 
@@ -287,15 +287,15 @@ button:hover {
     transition: all 0.3s ease;
 }
 
-/* #c0392b */
+/* #1a2f6e  */
 .tab-button:hover {
-    color: #c0392b;
+    color: #1a2f6e;
     background-color: #f0f4f8;
 }
 
 .tab-button.active {
-    color: #c0392b;
-    border-bottom-color: #c0392b;
+    color: #1a2f6e;
+    border-bottom-color: #1a2f6e;
 }
 
 .tabs-content {
@@ -438,7 +438,7 @@ button:hover {
 }
 
 .remove-field-btn {
-    background-color: #e74c3c;
+    background-color: #4a7ab5;
     color: white;
     border: none;
     border-radius: 4px;
@@ -449,7 +449,7 @@ button:hover {
 }
 
 .remove-field-btn:hover {
-    background-color: #c0392b;
+    background-color: #1a2f6e;
     transform: scale(1.1);
 }
 
@@ -615,7 +615,7 @@ button:hover {
 }
 
 .remove-custom-field-btn {
-    background-color: #e74c3c;
+    background-color: #4a7ab5;
     color: white;
     border: none;
     border-radius: 4px;
@@ -626,7 +626,7 @@ button:hover {
 }
 
 .remove-custom-field-btn:hover {
-    background-color: #c0392b;
+    background-color: #1a2f6e;
     transform: scale(1.1);
 }
 

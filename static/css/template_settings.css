@@ -16,7 +16,7 @@ body {
 /* ======================================= */
 .main-header {
     background-color: #ffffff;
-    border-bottom: 3px solid #c0392b;
+    border-bottom: 3px solid #1a2f6e;
     padding: 12px 40px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -41,7 +41,7 @@ body {
     object-fit: contain;
     background: white;
     padding: 1px;
-    border: 1px solid #c0392b;
+    border: 1px solid #1a2f6e;
 }
 
 .main-navbar {
@@ -185,7 +185,7 @@ body {
 }
 
 .tab-button.active {
-    background: #c0392b;
+    background: #1a2f6e;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 3px 10px rgba(40, 116, 166, 0.3);
@@ -301,7 +301,7 @@ body {
 .delete-row-btn {
     background: transparent;
     border: none;
-    color: #e74c3c;
+    color: #4a7ab5;
     font-size: 16px;
     cursor: pointer;
     display: flex;
@@ -312,7 +312,7 @@ body {
 }
 
 .delete-row-btn:hover {
-    color: #c0392b;
+    color: #1a2f6e;
 }
 
 .options-wrapper {

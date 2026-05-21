@@ -16,7 +16,7 @@ body {
 /* ======================================= */
 .main-header {
     background-color: #ffffff;
-    border-bottom: 3px solid #c0392b;
+    border-bottom: 3px solid #1a2f6e;
     padding: 12px 40px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
@@ -41,7 +41,7 @@ body {
     object-fit: contain;
     background: white;
     padding: 1px;
-    border: 1px solid #c0392b;
+    border: 1px solid #1a2f6e;
 }
 
 .main-navbar {
@@ -289,11 +289,11 @@ tr:hover {
 }
 
 .print-current {
-    background-color: #e74c3c;
+    background-color: #4a7ab5;
 }
 
 .print-current:hover {
-    background-color: #c0392b;
+    background-color: #1a2f6e;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
