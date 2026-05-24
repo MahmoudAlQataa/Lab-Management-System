@@ -12,7 +12,7 @@ import socket
 # ============================================================
 if getattr(sys, 'frozen', False):
     import pathlib
-    log_path = pathlib.Path(os.path.dirname(sys.executable)) / "nebras_log.txt"
+    log_path = pathlib.Path(os.path.dirname(sys.executable)) / "R_log.txt"
     sys.stdout = open(log_path, 'w', encoding='utf-8')
     sys.stderr = sys.stdout
 

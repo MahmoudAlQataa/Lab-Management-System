@@ -219,7 +219,7 @@ __marimo__/
 
 # NebrasLab specific
 LapData/
-nebras_log.txt
+R_log.txt
 notes.txt
 
 # Client-specific config
