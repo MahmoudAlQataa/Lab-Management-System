@@ -95,6 +95,7 @@ Lap_System/
 │   ├── setup.iss            # Inno Setup script
 │   ├── AppIcon.ico          # App icon
 │   ├── requirements.txt
+│   ├── client_config.example.py  # Copy and rename to client_config.py
 │   ├── models/
 │   │   ├── database.py
 │   │   └── schema.py
@@ -149,10 +150,8 @@ python -m venv venv
 pip install -r requirements.txt
 
 # Run the app
-python app.py
+python launcher.py
 ```
-
-The app will be available at `http://127.0.0.1:5000`
 
 > **Note:** On first run, a `LapData/` folder will be created automatically next to `LapApp/`, containing the database and all generated PDF reports.
 
