@@ -30,6 +30,7 @@ from bidi.algorithm import get_display
 
 from models.database import getdb
 from config import FONT_PATH, HEADER_IMAGE_PATH, PDF_OUTPUT_DIR
+from client_config import LAB_PHONE, LAB_ADDRESS, LAB_LICENSE, LAB_LICENSE_EN
 
 # =======================================
 # Constants
@@ -126,11 +127,11 @@ def draw_header_footer(c, width, height, arabic_available):
     # السطر الأول: "مُرخص من وزارة الصحة الفلسطينية"
     if arabic_available:
         c.setFont("Arabic", 10)
-        arabic_text1 = ar("مُرخص من وزارة الصحة الفلسطينية")
+        arabic_text1 = ar(LAB_LICENSE)
         c.drawCentredString(width/2, footer_height - 12, arabic_text1)
     else:
         c.setFont("Helvetica", 10)
-        c.drawCentredString(width/2, footer_height - 12, "Licensed by Palestinian Ministry of Health")
+        c.drawCentredString(width/2, footer_height - 12, LAB_LICENSE_EN)
     
     # الخط الفاصل
     c.setStrokeColor(colors.black)
@@ -141,11 +142,11 @@ def draw_header_footer(c, width, height, arabic_available):
     # اليسار: هاتف
     if arabic_available:
         c.setFont("Arabic", 9)
-        phone_text = ar("هاتف: 0597593257")
+        phone_text = ar(f"هاتف: {LAB_PHONE}")
         c.drawString(40, footer_height - 33, phone_text)
     else:
         c.setFont("Helvetica", 9)
-        c.drawString(40, footer_height - 33, "Tel: 0597593257")
+        c.drawString(40, footer_height - 33, f"Tel: {LAB_PHONE}")
     
     # الوسط: شرطة
     c.setFont("Helvetica", 9)
@@ -154,7 +155,7 @@ def draw_header_footer(c, width, height, arabic_available):
     # اليمين: العنوان
     if arabic_available:
         c.setFont("Arabic", 9)
-        address_text = ar("غزة - تل الهوا - محيط منتزة برشلونة")
+        address_text = ar(LAB_ADDRESS)
         c.drawRightString(width - 40, footer_height - 33, address_text)
     
     return header_height, footer_height
@@ -1174,7 +1175,7 @@ ANALYSIS_DISPLAY_NAMES = {
     'TUMOR_MARKERS': 'Tumor Markers Report',
     'MICROBIOLOGY': 'Microbiology Report',
     'SERO_VIROLOGY': 'Sero Virology Report',
-    'SERO_IMMU': 'Sero Immu Report',
+    'SERO_IMMU': 'Sero Immunology Report',
     'URINE_ANALYSIS': 'Urine Analysis Report',
     'SEMEN_ANALYSIS': 'Semen Analysis Report',
     'STOOL_ANALYSIS': 'Stool Analysis Report',

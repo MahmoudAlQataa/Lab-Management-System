@@ -14,7 +14,7 @@
     <header class="main-header">
         <h1 class="lab-title">
             <img src="../static/img/WaterMark.png" alt="">
-            R Medical Laboratory
+            {{ lab_name_en }}
         </h1>
 
         <nav class="main-navbar">
@@ -45,7 +45,7 @@
                 <input type="month" name="month" value="{{ selected_month }}"
                     style="padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
                 <button type="submit"
-                    style="padding:8px 16px; background:#1a2f6e ; color:white; border:none; border-radius:6px; cursor:pointer; font-size:14px;">
+                    style="padding:8px 16px; background:#c0392b; color:white; border:none; border-radius:6px; cursor:pointer; font-size:14px;">
                     🔍 Filter
                 </button>
                 {% if selected_month %}

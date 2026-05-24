@@ -5,6 +5,10 @@
 import sys
 from flask import Flask
 from config import DATA_DIR
+from client_config import (
+    LAB_NAME_EN, LAB_NAME_AR, LAB_PHONE,
+    LAB_ADDRESS, LAB_LICENSE, PRIMARY_COLOR
+)
 import os
 
 # استيراد الـ routes
@@ -31,6 +35,16 @@ app.register_blueprint(doctors_bp)
 app.register_blueprint(settings_bp)
 app.register_blueprint(stats_bp)
 
+@app.context_processor
+def inject_lab_info():
+    return dict(
+        lab_name_en=LAB_NAME_EN,
+        lab_name_ar=LAB_NAME_AR,
+        lab_phone=LAB_PHONE,
+        lab_address=LAB_ADDRESS,
+        lab_license=LAB_LICENSE,
+        primary_color=PRIMARY_COLOR,
+    )
 
 @app.route("/")
 def home():

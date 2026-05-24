@@ -12,7 +12,7 @@ import socket
 # ============================================================
 if getattr(sys, 'frozen', False):
     import pathlib
-    log_path = pathlib.Path(os.path.dirname(sys.executable)) / "R_log.txt"
+    log_path = pathlib.Path(os.path.dirname(sys.executable)) / "nebras_log.txt"
     sys.stdout = open(log_path, 'w', encoding='utf-8')
     sys.stderr = sys.stdout
 
@@ -68,7 +68,7 @@ for _ in range(40):
 import webview
 
 window = webview.create_window(
-    title="R Medical Laboratory",
+    title="Nebras Medical Laboratory",
     url=f"http://127.0.0.1:{PORT}/new-report",
     width=1280,
     height=800,

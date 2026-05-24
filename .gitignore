@@ -221,3 +221,14 @@ __marimo__/
 LapData/
 nebras_log.txt
 notes.txt
+
+# Client-specific config
+client_config.py
+
+# Data files
+LapData/
+
+# Build output
+dist/
+build/
+*.spec

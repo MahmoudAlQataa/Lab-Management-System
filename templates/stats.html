@@ -20,13 +20,13 @@
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 300px;
-            border-top: 5px solid #1a2f6e;
+            border-top: 5px solid #c0392b;
         }
 
         .stat-number {
             font-size: 48px;
             font-weight: bold;
-            color: #1a2f6e;
+            color: #c0392b;
             margin: 15px 0;
         }
 
@@ -56,7 +56,7 @@
         .filter-section button {
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #1a2f6e;
+            background-color: #c0392b;
             color: white;
             border: none;
             border-radius: 6px;
@@ -65,7 +65,7 @@
         }
 
         .filter-section button:hover {
-            background-color: #1a2f6e cc;
+            background-color: #c0392bcc;
         }
 
         .breakdown-table {
@@ -82,7 +82,7 @@
             text-align: center;
             padding: 16px;
             margin: 0;
-            background: #4a7ab5;
+            background: #b84c40;
             color: white;
             font-size: 16px;
         }
@@ -94,7 +94,7 @@
 
         .breakdown-table th {
             background: #e8f0fe;
-            color: #1a2f6e;
+            color: #c0392b;
             padding: 10px 20px;
             text-align: left;
             font-size: 14px;
@@ -116,7 +116,7 @@
 
         .count-badge {
             display: inline-block;
-            background: #1a2f6e;
+            background: #c0392b;
             color: white;
             border-radius: 12px;
             padding: 2px 12px;
@@ -136,7 +136,7 @@
 
         .bar-fill {
             height: 12px;
-            background: #1a2f6e;
+            background: #c0392b;
             border-radius: 6px;
         }
 
@@ -157,7 +157,7 @@
             object-fit: contain;
             background: white;
             padding: 1px;
-            border: 1px solid #1a2f6e;
+            border: 1px solid #c0392b;
         }
     </style>
 </head>
@@ -169,7 +169,7 @@
     <header class="main-header">
         <h1 class="lab-title">
             <img src="../static/img/WaterMark.png" alt="">
-            R Medical Laboratory
+            {{ lab_name_en }}
         </h1>
 
         <nav class="main-navbar">
