@@ -20,6 +20,7 @@
 
 import os
 from datetime import datetime
+import re
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
@@ -38,7 +39,7 @@ from client_config import LAB_PHONE, LAB_ADDRESS, LAB_LICENSE, LAB_LICENSE_EN
 SHOW_ALL_FIELDS = ['URINE_ANALYSIS', 'SEMEN_ANALYSIS', 'STOOL_ANALYSIS']
 
 FONT_SIZE_VALUE = 11      # خط القيم (نتائج + بيانات المريض)
-FONT_SIZE_LABEL = 9       # خط الـ labels والـ headers (ما بيتغير)
+FONT_SIZE_LABEL = 11      # خط الـ labels والـ headers (ما بيتغير)
 # =======================================
 # Helper Functions
 # =======================================
@@ -94,6 +95,24 @@ def ar(text):
         return ""
     reshaped = reshape(str(text))
     return get_display(reshaped)
+
+
+def draw_fitted_text(c, text, font_name, font_size, max_width, x_center, y):
+    """رسم نص مع تصغير تلقائي لو تجاوز العرض"""
+    from reportlab.pdfbase.pdfmetrics import stringWidth
+    try:
+        w = stringWidth(text, font_name, font_size)
+    except:
+        w = len(text) * font_size * 0.6
+    while font_size > 6 and w > max_width:
+        font_size -= 0.5
+        try:
+            w = stringWidth(text, font_name, font_size)
+        except:
+            w = len(text) * font_size * 0.6
+    c.setFont(font_name, font_size)
+    c.drawCentredString(x_center, y, text)
+    c.setFont(font_name, FONT_SIZE_LABEL)
 
 
 def draw_header_footer(c, width, height, arabic_available):
@@ -387,7 +406,7 @@ def draw_urine_analysis(c, results, template_fields, lab_comment, y, width, heig
             custom_fields.append(r)
         else:
             unit = r[2] if len(r) > 2 and r[2] else ""
-            results_dict[field_name] = f"{field_value} {unit}".strip()
+            results_dict[re.sub(r'[\s/]+', '_', field_name.lower()).strip('_')] = f"{field_value} {unit}".strip()
     
     # Headers
     c.setStrokeColor(colors.black)
@@ -448,8 +467,7 @@ def draw_urine_analysis(c, results, template_fields, lab_comment, y, width, heig
             field_name, field_display = left_column[i]
             field_value = results_dict.get(field_name, "")
             c.rect(40, y - row_height, 100, row_height)
-            c.setFont("Courier", 9)
-            c.drawCentredString(90, y - 13, field_display)
+            draw_fitted_text(c, field_display, "Courier-Bold", FONT_SIZE_LABEL, 95, 90, y - 13)
             c.rect(145, y - row_height, 150, row_height)
             c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(220, y - 13, str(field_value))
@@ -459,8 +477,7 @@ def draw_urine_analysis(c, results, template_fields, lab_comment, y, width, heig
             field_name, field_display = right_column[i]
             field_value = results_dict.get(field_name, "")
             c.rect(315, y - row_height, 100, row_height)
-            c.setFont("Courier", 9)
-            c.drawCentredString(365, y - 13, field_display)
+            draw_fitted_text(c, field_display, "Courier-Bold", FONT_SIZE_LABEL, 95, 365, y - 13)
             c.rect(420, y - row_height, 155, row_height)
             c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(497, y - 13, str(field_value))
@@ -483,7 +500,7 @@ def draw_urine_analysis(c, results, template_fields, lab_comment, y, width, heig
             # تحديد العمود
             if idx % 2 == 0:  # عمود يمين
                 c.rect(40, y - row_height, 100, row_height)
-                c.setFont("Courier", 9)
+                c.setFont("Courier-Bold", FONT_SIZE_LABEL)
                 c.drawString(45, y - 13, field_name)
                 
                 c.rect(145, y - row_height, 150, row_height)
@@ -491,7 +508,7 @@ def draw_urine_analysis(c, results, template_fields, lab_comment, y, width, heig
                 c.drawString(150, y - 13, custom_text)
             else:  # عمود يسار
                 c.rect(315, y - row_height, 100, row_height)
-                c.setFont("Courier", 9)
+                c.setFont("Courier-Bold", FONT_SIZE_LABEL)
                 c.drawString(320, y - 13, field_name)
                 
                 c.rect(420, y - row_height, 155, row_height)
@@ -564,7 +581,7 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     motility_results = [(k, results_dict.get(k, "")) for k in motility_keys]
 
     c.setLineWidth(1)
-    c.setFont("Courier", 9)
+    c.setFont("Courier-Bold", FONT_SIZE_LABEL)
     row_height = 20
 
     for field_name, field_value in basic_results:
@@ -574,7 +591,7 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
         c.rect(245, y - row_height, 295, row_height)
         c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(392, y - 13, str(field_value))
-        c.setFont("Courier", FONT_SIZE_LABEL)
+        c.setFont("Courier-Bold", FONT_SIZE_LABEL)
 
         y -= row_height
     
@@ -662,7 +679,7 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     c.rect(90, y - morph_box_h, 150, morph_box_h)
     c.setFont("Helvetica", 9)
     morph_name = morph_key
-    c.drawString(95, y - (morph_box_h / 2) - 3, morph_name)
+    c.drawCentredString(165, y - (morph_box_h / 2) - 3, morph_name)
     
     c.rect(245, y - morph_box_h, 295, morph_box_h)
     c.setFont(morph_font, morph_font_size)
@@ -675,10 +692,10 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     
     # 2. Spermatocyte / HPF
     c.rect(90, y - 18, 150, 18)
-    c.drawString(95, y - 13, spermatocyte_key)
+    c.drawCentredString(165, y - 13, spermatocyte_key)
 
     c.rect(245, y - 18, 295, 18)
-    c.drawString(250, y - 13, str(results_dict.get(spermatocyte_key, "")))
+    c.drawCentredString(392, y - 13, str(results_dict.get(spermatocyte_key, "")))
     
     y -= 28
     
@@ -688,10 +705,10 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     if extra_template_fields:
         for field_name, field_value in extra_template_fields:
             c.rect(90, y - 18, 150, 18)
-            c.drawString(95, y - 13, field_name)
+            c.drawCentredString(165, y - 13, field_name)
 
             c.rect(245, y - 18, 295, 18)
-            c.drawString(250, y - 13, str(field_value))
+            c.drawCentredString(392, y - 13, str(field_value))
             y -= 23
 
         y -= 5
@@ -700,7 +717,7 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
     if custom_fields:
         for custom_field in custom_fields:
             c.rect(90, y - 18, 150, 18)
-            c.drawString(95, y - 13, custom_field[0])
+            c.drawCentredString(165, y - 13, custom_field[0])
             
             c.rect(245, y - 18, 295, 18)
             custom_value = custom_field[1]
@@ -708,7 +725,7 @@ def draw_semen_analysis(c, results, template_fields, lab_comment, y, width, heig
             custom_text = str(custom_value)
             if custom_unit:
                 custom_text += " " + custom_unit
-            c.drawString(250, y - 13, custom_text)
+            c.drawCentredString(392, y - 13, custom_text)
             
             y -= 23
         
@@ -767,7 +784,7 @@ def draw_stool_analysis(c, results, template_fields, lab_comment, y, width, heig
     basic_keys = tf_names[:6]
 
     c.setLineWidth(1)
-    c.setFont("Courier", 9)
+    c.setFont("Courier-Bold", FONT_SIZE_LABEL)
     row_height = 20
 
     for field_key in basic_keys:
@@ -779,7 +796,7 @@ def draw_stool_analysis(c, results, template_fields, lab_comment, y, width, heig
         c.rect(245, y - row_height, 295, row_height)
         c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(392, y - 13, str(field_value))
-        c.setFont("Courier", FONT_SIZE_LABEL)
+        c.setFont("Courier-Bold", FONT_SIZE_LABEL)
 
         y -= row_height
 
@@ -788,12 +805,11 @@ def draw_stool_analysis(c, results, template_fields, lab_comment, y, width, heig
     # Parasites - مربع كبير
     parasites_height = 40
     c.rect(90, y - parasites_height, 150, parasites_height)
-    c.setFont("Courier", 9)
-    c.drawString(95, y - 20, parasites_key)
-
+    c.setFont("Courier-Bold", FONT_SIZE_LABEL)
+    c.drawCentredString(165, y - 20, parasites_key)
     c.rect(245, y - parasites_height, 295, parasites_height)
     c.setFont("Helvetica", 9)
-    c.drawString(250, y - 20, str(results_dict.get(parasites_key, "")))
+    c.drawCentredString(392, y - 20, str(results_dict.get(parasites_key, "")))
 
     y -= parasites_height + 10
 
@@ -803,12 +819,12 @@ def draw_stool_analysis(c, results, template_fields, lab_comment, y, width, heig
     if extra_template_fields:
         for field_name, field_value in extra_template_fields:
             c.rect(90, y - 18, 150, 18)
-            c.setFont("Courier", 9)
-            c.drawString(95, y - 13, field_name)
+            c.setFont("Courier-Bold", FONT_SIZE_LABEL)
+            c.drawCentredString(165, y - 13, field_name)
 
             c.rect(245, y - 18, 295, 18)
             c.setFont("Helvetica", 9)
-            c.drawString(250, y - 13, str(field_value))
+            c.drawCentredString(392, y - 13, str(field_value))
             y -= 23
 
         y -= 5
@@ -817,8 +833,8 @@ def draw_stool_analysis(c, results, template_fields, lab_comment, y, width, heig
     if custom_fields:
         for custom_field in custom_fields:
             c.rect(90, y - 18, 150, 18)
-            c.setFont("Courier", 9)
-            c.drawString(95, y - 13, custom_field[0])  # field_name
+            c.setFont("Courier-Bold", FONT_SIZE_LABEL)
+            c.drawCentredString(165, y - 13, custom_field[0])  # field_name
             
             c.rect(245, y - 18, 295, 18)
             c.setFont("Helvetica", 9)
@@ -827,7 +843,7 @@ def draw_stool_analysis(c, results, template_fields, lab_comment, y, width, heig
             custom_text = str(custom_value)
             if custom_unit:
                 custom_text += " " + custom_unit
-            c.drawString(250, y - 13, custom_text)
+            c.drawCentredString(392, y - 13, custom_text)
             
             y -= 23
         
@@ -863,7 +879,7 @@ def draw_microbiology(c, results, template_fields, lab_comment, y, width, height
     # الحقول الأربعة العلوية (2x2 grid)
     c.setStrokeColor(colors.black)
     c.setLineWidth(1)
-    c.setFont("Helvetica", 9)
+    c.setFont("Helvetica", FONT_SIZE_LABEL)
 
     row_h = 18
 
@@ -914,7 +930,7 @@ def draw_microbiology(c, results, template_fields, lab_comment, y, width, height
 
     # عرض الـ antibiotics من DB مباشرة - عمودين
     c.setLineWidth(1)
-    c.setFont("Helvetica", 9)
+    c.setFont("Helvetica", FONT_SIZE_LABEL)
     row_height = 18
 
     half = len(antibiotic_fields) // 2 + len(antibiotic_fields) % 2
@@ -923,7 +939,7 @@ def draw_microbiology(c, results, template_fields, lab_comment, y, width, height
         left_name, left_value = antibiotic_fields[i]
 
         c.rect(60, y - row_height, 130, row_height)
-        c.drawCentredString(125, y - 12, left_name)
+        draw_fitted_text(c, left_name, "Courier-Bold", FONT_SIZE_LABEL, 125, 125, y - 12)
 
         c.rect(195, y - row_height, 100, row_height)
         c.setFont("Helvetica", FONT_SIZE_VALUE)
@@ -933,7 +949,7 @@ def draw_microbiology(c, results, template_fields, lab_comment, y, width, height
             right_name, right_value = antibiotic_fields[i + half]
 
             c.rect(310, y - row_height, 130, row_height)
-            c.drawCentredString(375, y - 12, right_name)
+            draw_fitted_text(c, right_name, "Courier-Bold", FONT_SIZE_LABEL, 125, 375, y - 12)
 
             c.rect(445, y - row_height, 130, row_height)
             c.setFont("Helvetica", FONT_SIZE_VALUE)
@@ -1081,7 +1097,7 @@ def draw_general_analysis(c, analysis_name, results, lab_comment, y, width, heig
     
     # البيانات - فقط الحقول المملوءة
     c.setLineWidth(1)
-    c.setFont("Courier", 9)
+    c.setFont("Courier-Bold", FONT_SIZE_LABEL)
     row_height = 20
     # المساحة اللازمة قبل نهاية الصفحة: Lab Comment + Date + Footer
     min_bottom = footer_height + 120
@@ -1112,7 +1128,7 @@ def draw_general_analysis(c, analysis_name, results, lab_comment, y, width, heig
             c.drawCentredString(505, y - 15, "Normal Range")
             y -= 30
             c.setLineWidth(1)
-            c.setFont("Courier", 9)
+            c.setFont("Courier-Bold", FONT_SIZE_LABEL)
             min_bottom = footer_height + 120
 
         field_name = r[0]
@@ -1122,25 +1138,25 @@ def draw_general_analysis(c, analysis_name, results, lab_comment, y, width, heig
         
         # Test
         c.rect(40, y - row_height, 160, row_height)
-        c.drawCentredString(120, y - 13, field_name)
+        draw_fitted_text(c, field_name, "Courier-Bold", FONT_SIZE_LABEL, 155, 120, y - 13)
         
         # Result
         c.rect(205, y - row_height, 140, row_height)
         c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(275, y - 13, str(field_value))
-        c.setFont("Courier", FONT_SIZE_LABEL)
+        c.setFont("Courier-Bold", FONT_SIZE_LABEL)
         
         # Unit
         c.rect(350, y - row_height, 80, row_height)
         c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(390, y - 13, unit)
-        c.setFont("Courier", FONT_SIZE_LABEL)
+        c.setFont("Courier-Bold", FONT_SIZE_LABEL)
         
         # Normal Range
         c.rect(435, y - row_height, 140, row_height)
         c.setFont("Helvetica", FONT_SIZE_VALUE)
         c.drawCentredString(505, y - 13, normal_range)
-        c.setFont("Courier", FONT_SIZE_LABEL)
+        c.setFont("Courier-Bold", FONT_SIZE_LABEL)
         
         y -= row_height
     
@@ -1226,6 +1242,7 @@ def generate_pdf(analysis_id):
     """, (analysis_id,))
     
     results = cur.fetchall()
+    print(f"DEBUG URINE results: {results}")
     
     # جلب Lab Comment
     cur.execute("""
@@ -1482,7 +1499,7 @@ def generate_comprehensive_pdf(patient_id):
         
         # البيانات
         c.setLineWidth(1)
-        c.setFont("Courier", 9)
+        c.setFont("Courier-Bold", FONT_SIZE_LABEL)
         row_height = 20
         first_row_on_page = True
         
@@ -1517,7 +1534,7 @@ def generate_comprehensive_pdf(patient_id):
                 
                 y -= 25
                 c.setLineWidth(1)
-                c.setFont("Courier", 9)
+                c.setFont("Courier-Bold", FONT_SIZE_LABEL)
                 first_row_on_page = True
             
             field_name = r[0]
@@ -1527,25 +1544,25 @@ def generate_comprehensive_pdf(patient_id):
             
             # Test
             c.rect(40, y - row_height, 160, row_height)
-            c.drawCentredString(120, y - 13, field_name)
+            draw_fitted_text(c, field_name, "Courier-Bold", FONT_SIZE_LABEL, 155, 120, y - 13)
             
             # Result
             c.rect(205, y - row_height, 140, row_height)
             c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(275, y - 13, str(field_value))
-            c.setFont("Courier", FONT_SIZE_LABEL)
+            c.setFont("Courier-Bold", FONT_SIZE_LABEL)
             
             # Unit
             c.rect(350, y - row_height, 80, row_height)
             c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(390, y - 13, unit)
-            c.setFont("Courier", FONT_SIZE_LABEL)
+            c.setFont("Courier-Bold", FONT_SIZE_LABEL)
             
             # Normal Range
             c.rect(435, y - row_height, 140, row_height)
             c.setFont("Helvetica", FONT_SIZE_VALUE)
             c.drawCentredString(505, y - 13, normal_range)
-            c.setFont("Courier", FONT_SIZE_LABEL)
+            c.setFont("Courier-Bold", FONT_SIZE_LABEL)
             
             y -= row_height
             first_row_on_page = False

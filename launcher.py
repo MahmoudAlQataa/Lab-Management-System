@@ -68,7 +68,7 @@ for _ in range(40):
 import webview
 
 window = webview.create_window(
-    title="Nebras Medical Laboratory",
+    title="R Medical Laboratory",
     url=f"http://127.0.0.1:{PORT}/new-report",
     width=1280,
     height=800,

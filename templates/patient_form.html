@@ -277,7 +277,7 @@
             'TUMOR_MARKERS': 'Tumor Markers Report',
             'MICROBIOLOGY': 'Microbiology Report',
             'SERO_VIROLOGY': 'Sero Virology Report',
-            'SERO_IMMU': 'Sero Immu Report',
+            'SERO_IMMU': 'Sero Immunology Report',
             'URINE_ANALYSIS': 'Urine Analysis Report',
             'SEMEN_ANALYSIS': 'Semen Analysis Report',
             'STOOL_ANALYSIS': 'Stool Analysis Report',
@@ -560,7 +560,7 @@
                         let rangeInput = '';
                         if (field.range_type === 'dropdown' && field.range_options && field.range_options.length > 0) {
                             rangeInput = `
-                                <select name="${rangeName}" data-analysis="${analysisName}" class="range-input">
+                                <select name="${rangeName}" data-analysis="${analysisName}" class="range-input" tabindex="-1">
                                     <option value="">-- Range --</option>
                                     ${field.range_options.map(opt =>
                                 `<option value="${opt}" ${savedValues[rangeName] === opt ? 'selected' : ''}>${opt}</option>`
@@ -574,7 +574,8 @@
                                        placeholder="Normal Range"
                                        value="${savedValues[rangeName] || field.normal_range || ''}"
                                        data-analysis="${analysisName}"
-                                       class="range-input">
+                                       class="range-input"
+                                       tabindex="-1">
                             `;
                         }
 
@@ -583,11 +584,12 @@
                         <label>${field.label || field.name}</label>
                         ${valueInput}
                         <input type="text" 
-                               name="${unitName}" 
-                               placeholder="Unit" 
-                               value="${savedValues[unitName] || field.unit || ''}"
-                               data-analysis="${analysisName}"
-                               class="unit-input">
+                            name="${unitName}" 
+                            placeholder="Unit" 
+                            value="${savedValues[unitName] || field.unit || ''}"
+                            data-analysis="${analysisName}"
+                            class="unit-input"
+                            tabindex="-1">
                         ${rangeInput}
                     </div>
                 `;
@@ -1048,15 +1050,15 @@
 
         @keyframes glow {
             0% {
-                box-shadow: 0 0 0 3px #1a2f6e, 0 0 20px rgba(74, 122, 181, 0.3);
+                box-shadow: 0 0 0 3px #1a2f6e, 0 0 20px rgba(192, 57, 43, 0.3);
             }
 
             50% {
-                box-shadow: 0 0 0 3px #1a2f6e, 0 0 50px rgba(74, 122, 181, 0.6);
+                box-shadow: 0 0 0 3px #1a2f6e, 0 0 50px rgba(192, 57, 43, 0.6);
             }
 
             100% {
-                box-shadow: 0 0 0 3px #1a2f6e, 0 0 20px rgba(74, 122, 181, 0.3);
+                box-shadow: 0 0 0 3px #1a2f6e, 0 0 20px rgba(192, 57, 43, 0.3);
             }
         }
 
