@@ -1,0 +1,418 @@
+/* patient_history.css — يستخدم theme.css + base.css */
+
+.main-container {
+    max-width: 1200px;
+}
+
+/* ======================================= */
+/* Patient Header Card */
+/* ======================================= */
+.patient-header-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-top: 3px solid var(--lab-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.patient-header-card h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.patient-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.patient-meta p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    padding: 10px 12px;
+    background: var(--bg-surface-2);
+    border-radius: 6px;
+    border-left: 3px solid var(--lab-primary);
+    margin: 0;
+}
+
+.patient-meta strong {
+    color: var(--text-primary);
+    margin-right: 6px;
+}
+
+/* ======================================= */
+/* History Table Section */
+/* ======================================= */
+.history-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--shadow-sm);
+}
+
+.history-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--lab-primary-dim);
+}
+
+/* ======================================= */
+/* Analysis Type Badge */
+/* ======================================= */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid;
+}
+
+.badge-urine {
+    color: #2dd4bf;
+    border-color: var(--lab-primary);
+    background: var(--lab-primary-dim);
+}
+
+.badge-blood {
+    color: #f87171;
+    border-color: #dc2626;
+    background: rgba(220, 38, 38, 0.1);
+}
+
+.badge-stool {
+    color: #fbbf24;
+    border-color: #d97706;
+    background: rgba(217, 119, 6, 0.1);
+}
+
+.badge-semen {
+    color: #a78bfa;
+    border-color: #7c3aed;
+    background: rgba(124, 58, 237, 0.1);
+}
+
+.badge-micro {
+    color: #34d399;
+    border-color: #059669;
+    background: rgba(5, 150, 105, 0.1);
+}
+
+.badge-general {
+    color: #94a3b8;
+    border-color: var(--border-light);
+    background: var(--bg-surface-2);
+}
+
+/* ======================================= */
+/* Action Buttons في الجدول */
+/* ======================================= */
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid;
+}
+
+.btn-view-sm {
+    background: transparent;
+    color: var(--lab-primary);
+    border-color: var(--lab-primary);
+}
+
+.btn-view-sm:hover {
+    background: var(--lab-primary);
+    color: white;
+}
+
+.btn-edit-sm {
+    background: transparent;
+    color: var(--color-warning);
+    border-color: var(--color-warning);
+}
+
+.btn-edit-sm:hover {
+    background: var(--color-warning);
+    color: white;
+}
+
+.btn-print-sm {
+    background: transparent;
+    color: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.btn-print-sm:hover {
+    background: var(--color-success);
+    color: white;
+}
+
+/* ======================================= */
+/* Back Button */
+/* ======================================= */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background: var(--bg-surface-2);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--lab-primary);
+}
+
+/* ======================================= */
+/* Empty State */
+/* ======================================= */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-muted);
+}
+
+.empty-state p {
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+/* ======================================= */
+/* History Card */
+/* ======================================= */
+.history-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-sm);
+}
+
+.history-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--lab-primary-dim);
+}
+
+/* ======================================= */
+/* Patient Info Grid */
+/* ======================================= */
+.patient-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.info-item {
+    padding: 10px 12px;
+    background: var(--bg-surface-2);
+    border-radius: 6px;
+    border-left: 3px solid var(--lab-primary);
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.info-item strong {
+    color: var(--text-primary);
+    margin-right: 6px;
+}
+
+/* ======================================= */
+/* New Analysis Button */
+/* ======================================= */
+.new-analysis-btn {
+    display: inline-block;
+    padding: 9px 20px;
+    background: var(--lab-primary);
+    color: white;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid var(--lab-primary);
+}
+
+.new-analysis-btn:hover {
+    background: var(--lab-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(13, 148, 136, 0.3);
+}
+
+/* ======================================= */
+/* Analyses Table */
+/* ======================================= */
+.analyses-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.analyses-table th {
+    background: var(--table-header-bg);
+    color: var(--table-header-color);
+    padding: 12px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--lab-primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.analyses-table td {
+    padding: 10px 12px;
+    text-align: center;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.analyses-table tr:hover td {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* ======================================= */
+/* Badge */
+/* ======================================= */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--lab-primary-dim);
+    color: #2dd4bf;
+    border: 1px solid var(--lab-primary-dark);
+}
+
+/* ======================================= */
+/* Action Buttons */
+/* ======================================= */
+.action-btns {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid;
+}
+
+.btn-view {
+    color: var(--lab-primary);
+    border-color: var(--lab-primary);
+    background: transparent;
+}
+
+.btn-view:hover {
+    background: var(--lab-primary);
+    color: white;
+}
+
+.btn-edit {
+    color: var(--color-warning);
+    border-color: var(--color-warning);
+    background: transparent;
+}
+
+.btn-edit:hover {
+    background: var(--color-warning);
+    color: white;
+}
+
+.btn-print {
+    color: var(--color-success);
+    border-color: var(--color-success);
+    background: transparent;
+}
+
+.btn-print:hover {
+    background: var(--color-success);
+    color: white;
+}
+
+/* ======================================= */
+/* Empty State */
+/* ======================================= */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-muted);
+    font-size: 15px;
+}
+
+
+/* ======================================= */
+/* Responsive */
+/* ======================================= */
+@media (max-width: 768px) {
+    .patient-meta {
+        grid-template-columns: 1fr;
+    }
+
+    table {
+        font-size: 11px;
+    }
+
+    th,
+    td {
+        padding: 8px 6px;
+    }
+
+    .patient-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .analyses-table {
+        font-size: 11px;
+    }
+
+    .analyses-table th,
+    .analyses-table td {
+        padding: 8px 6px;
+    }
+
+    .action-btns {
+        flex-direction: column;
+        align-items: center;
+    }
+}

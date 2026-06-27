@@ -1,0 +1,70 @@
+/* ============================================================
+   theme.css — Nebras Lab | Slate Teal Dark Theme
+   لتغيير ثيم المختبر: غير القيم هون بس
+   ============================================================ */
+
+:root {
+    /* اللون الرئيسي للمختبر */
+    --lab-primary: #0d9488;
+    /* teal رئيسي */
+    --lab-primary-dark: #0a7c70;
+    /* للـ hover والحدود */
+    --lab-primary-dim: #0d4f47;
+    /* للخلفيات الخفيفة */
+
+    /* خلفيات */
+    --bg-base: #0f1117;
+    /* خلفية الصفحة */
+    --bg-surface: #161b27;
+    /* كروت وجداول */
+    --bg-surface-2: #1a2035;
+    /* كروت داخلية */
+    --bg-hover: #1e2640;
+    /* hover على الصفوف */
+
+    /* حدود */
+    --border: #1e2535;
+    --border-light: #2a3347;
+
+    /* نصوص */
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #475569;
+
+    /* Header/Navbar */
+    --navbar-bg: #1a1f2e;
+    --navbar-border: var(--lab-primary);
+
+    /* الشعار */
+    --logo-bg: var(--lab-primary-dim);
+    --logo-border: var(--lab-primary);
+
+    /* أزرار nav */
+    --nav-btn-bg: var(--lab-primary-dim);
+    --nav-btn-color: #2dd4bf;
+    --nav-btn-hover-bg: var(--lab-primary-dark);
+
+    /* الجداول */
+    --table-header-bg: var(--lab-primary-dim);
+    --table-header-color: #2dd4bf;
+    --table-border: var(--border);
+    --table-row-hover: var(--bg-hover);
+
+    /* inputs */
+    --input-bg: #1a2035;
+    --input-border: var(--border-light);
+    --input-focus-border: var(--lab-primary);
+    --input-color: var(--text-primary);
+
+    /* ألوان ثابتة (مش جزء من ثيم المختبر) */
+    --color-success: #10b981;
+    --color-success-dark: #059669;
+    --color-danger: #ef4444;
+    --color-danger-dark: #dc2626;
+    --color-warning: #f59e0b;
+    --color-info: #3b82f6;
+
+    /* ظلال */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+}

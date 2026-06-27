@@ -3,7 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../static/css/patient_form.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/patient_form.css') }}">
     <title>New Report - Patient Info</title>
 </head>
 
@@ -24,19 +28,10 @@
             <a href="/stats" class="nav-btn">📊 Statistics</a>
 
             <!-- خانة البحث في الـ Navbar -->
-            <div style="position:relative; display:flex; align-items:center;">
-                <input type="text" id="patientSearchInput" placeholder="🔍 Search patient..." style="padding:6px 12px; border:1px solid #ccc; border-radius:6px;
-                           font-size:13px; width:200px; outline:none;">
-                <button type="button" id="clearPatientBtn" onclick="clearSelectedPatient()" style="display:none; margin-left:6px; padding:6px 10px; background:#aaa;
-                           color:white; border:none; border-radius:6px; cursor:pointer; font-size:12px;">
-                    ✕
-                </button>
-
-                <!-- Dropdown نتائج البحث -->
-                <div id="searchResults" style="display:none; position:absolute; top:36px; left:0; width:380px;
-                           background:white; border:1px solid #ddd; border-radius:8px;
-                           box-shadow:0 4px 16px rgba(0,0,0,0.15); z-index:9999; overflow:hidden;">
-                </div>
+            <div id="patientSearchWrapper">
+                <input type="text" id="patientSearchInput" placeholder="🔍 Search patient...">
+                <button type="button" id="clearPatientBtn" onclick="clearSelectedPatient()">✕</button>
+                <div id="searchResults"></div>
             </div>
 
             <div class="dropdown">

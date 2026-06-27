@@ -1,0 +1,356 @@
+/* edit_report.css — يستخدم theme.css + base.css */
+
+.main-container {
+    max-width: 1400px;
+}
+
+/* ======================================= */
+/* Patient Grid */
+/* ======================================= */
+.patient-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 20px;
+}
+
+.form-field {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    text-align: right;
+}
+
+/* ======================================= */
+/* Results Table */
+/* ======================================= */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.results-table th {
+    background: var(--table-header-bg);
+    color: var(--table-header-color);
+    padding: 12px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--lab-primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.results-table td {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.results-table tr:hover td {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.results-table input,
+.results-table select {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--border-light);
+    border-radius: 5px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.results-table input:focus,
+.results-table select:focus {
+    outline: none;
+    border-color: var(--lab-primary);
+    box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.15);
+}
+
+/* Unit و Range مميزين */
+.results-table .unit-cell input,
+.results-table .range-cell input,
+.results-table .unit-cell select,
+.results-table .range-cell select {
+    background: var(--bg-base);
+    border-color: var(--border);
+    color: var(--text-muted);
+}
+
+/* ======================================= */
+/* Lab Comment */
+/* ======================================= */
+.lab-comment-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.lab-comment-label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+.lab-comment-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+    background: var(--input-bg);
+    color: var(--text-primary);
+}
+
+/* ======================================= */
+/* Action Buttons */
+/* ======================================= */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.action-buttons .save-btn {
+    padding: 12px 35px;
+    font-size: 15px;
+}
+
+.action-buttons .nav-btn {
+    padding: 12px 25px;
+    font-size: 14px;
+}
+
+/* ======================================= */
+/* Field Type Badge */
+/* ======================================= */
+.field-type-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.field-type-template {
+    background: var(--lab-primary-dim);
+    color: #2dd4bf;
+    border: 1px solid var(--lab-primary-dark);
+}
+
+.field-type-custom {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--color-warning);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* ======================================= */
+/* Section Cards */
+/* ======================================= */
+.section-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.section-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.section-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-top: 16px;
+    margin-bottom: 10px;
+}
+
+/* ======================================= */
+/* Form Grid */
+/* ======================================= */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.form-grid input,
+.form-grid select {
+    width: 100%;
+}
+
+/* ======================================= */
+/* LAP Report Fields */
+/* ======================================= */
+.lap-field {
+    margin-bottom: 20px;
+}
+
+.lap-field textarea {
+    width: 100%;
+    min-height: 160px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* ======================================= */
+/* Add/Remove Row Buttons */
+/* ======================================= */
+.btn-add-row {
+    margin-top: 12px;
+    padding: 8px 20px;
+    background: var(--color-success);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-add-row:hover {
+    background: var(--color-success-dark);
+    transform: translateY(-1px);
+}
+
+.btn-remove-row {
+    background: transparent;
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 5px 10px;
+    transition: all 0.2s ease;
+}
+
+.btn-remove-row:hover {
+    background: var(--color-danger);
+    color: white;
+}
+
+/* ======================================= */
+/* Action Bar */
+/* ======================================= */
+.action-bar {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-save {
+    padding: 12px 35px;
+    font-size: 15px;
+    font-weight: 600;
+    background: var(--color-success);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-save:hover {
+    background: var(--color-success-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-cancel {
+    padding: 12px 25px;
+    font-size: 14px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: var(--color-danger);
+    color: white;
+}
+
+
+/* ======================================= */
+/* Responsive */
+/* ======================================= */
+@media (max-width: 768px) {
+    .patient-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field label {
+        text-align: left;
+    }
+
+    .results-table {
+        font-size: 11px;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 8px 6px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-bar {
+        flex-direction: column;
+    }
+}

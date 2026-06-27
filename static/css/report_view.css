@@ -1,160 +1,12 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* report_view.css — يستخدم theme.css + base.css */
 
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #ffffff;
-    color: #2c3e50;
-    min-height: 100vh;
-}
-
-/* ======================================= */
-/* Header + Navbar */
-/* ======================================= */
-.main-header {
-    background-color: #ffffff;
-    border-bottom: 3px solid #1a2f6e;
-    padding: 12px 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.lab-title {
-    color: #1a1a1a;
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0;
-    display: flex;
-    align-items: center;
-}
-
-.lab-title img {
-    width: 70px;
-    height: 70px;
-    margin-right: 10px;
-    border-radius: 50%;
-    object-fit: contain;
-    background: white;
-    padding: 1px;
-    border: 1px solid #1a2f6e;
-}
-
-.main-navbar {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.nav-btn {
-    background-color: #2874a6;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 13px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.nav-btn:hover {
-    background-color: #1f5a7a;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Dropdown */
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.settings-btn {
-    background-color: #95a5a6;
-}
-
-.settings-btn:hover {
-    background-color: #7f8c8d;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background-color: white;
-    min-width: 200px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-radius: 6px;
-    z-index: 1000;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown-content a {
-    color: #2c3e50;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    transition: background-color 0.2s ease;
-}
-
-.dropdown-content a:hover {
-    background-color: #f0f4f8;
-}
-
-.dropdown-content a:first-child {
-    border-radius: 6px 6px 0 0;
-}
-
-.dropdown-content a:last-child {
-    border-radius: 0 0 6px 6px;
-}
-
-/* ======================================= */
-/* Main Container */
-/* ======================================= */
 .main-container {
     max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 40px;
 }
 
 /* ======================================= */
-/* Section Titles */
+/* Patient Info */
 /* ======================================= */
-.section-title {
-    color: #1a1a1a;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #95a5a6;
-}
-
-/* ======================================= */
-/* Patient Card */
-/* ======================================= */
-.patient-card {
-    background-color: white;
-    border: 2px solid #b0b8c1;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
 .patient-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -163,83 +15,40 @@ body {
 
 .info-item {
     padding: 10px;
-    background-color: #ecf0f1;
+    background-color: var(--bg-surface-2);
     border-radius: 5px;
-    border-left: 3px solid #2874a6;
+    border-left: 3px solid var(--lab-primary);
     font-size: 14px;
+    color: var(--text-secondary);
 }
 
 .info-item strong {
-    color: #1a1a1a;
+    color: var(--text-primary);
     margin-right: 8px;
     font-weight: 700;
-}
-
-/* ======================================= */
-/* Results Card */
-/* ======================================= */
-.results-card {
-    background-color: white;
-    border: 2px solid #b0b8c1;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-}
-
-th {
-    background-color: #2874a6;
-    color: white;
-    padding: 12px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: 1px solid #1f5a7a;
-}
-
-td {
-    padding: 10px 12px;
-    text-align: center;
-    border: 1px solid #b0b8c1;
-    font-size: 13px;
-    color: #2c3e50;
-    font-weight: 500;
-}
-
-tr:hover {
-    background-color: #ecf0f1;
 }
 
 /* ======================================= */
 /* Lab Comment */
 /* ======================================= */
 .lab-comment-display {
-    background-color: white;
-    border: 2px solid #f39c12;
-    border-left: 5px solid #f39c12;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--color-warning);
+    border-left: 5px solid var(--color-warning);
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 25px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .lab-comment-display h4 {
-    color: #1a1a1a;
+    color: var(--color-warning);
     font-size: 15px;
     font-weight: 700;
     margin-bottom: 10px;
 }
 
 .lab-comment-display p {
-    color: #2c3e50;
+    color: var(--text-secondary);
     font-size: 14px;
     line-height: 1.6;
     white-space: pre-wrap;
@@ -247,16 +56,8 @@ tr:hover {
 }
 
 /* ======================================= */
-/* Print Section */
+/* Print Buttons */
 /* ======================================= */
-.print-section {
-    background-color: white;
-    border: 2px solid #b0b8c1;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
 .print-buttons {
     display: flex;
     gap: 12px;
@@ -264,69 +65,45 @@ tr:hover {
     margin-top: 15px;
 }
 
-.print-btn {
-    padding: 10px 20px;
+/* أزرار Edit و Delete (inline style في HTML) */
+.btn-edit {
+    display: inline-block;
+    background: var(--color-warning);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 4px;
+    text-decoration: none;
     font-size: 14px;
     font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+.btn-edit:hover {
+    background: #d97706;
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background: var(--color-danger);
     color: white;
+    padding: 8px 18px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
-.print-all {
-    background-color: #27ae60;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.print-all:hover {
-    background-color: #229954;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
-}
-
-.print-current {
-    background-color: #4a7ab5;
-}
-
-.print-current:hover {
-    background-color: #1a2f6e;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-}
-
-.print-individual {
-    background-color: #2874a6;
-}
-
-.print-individual:hover {
-    background-color: #1f5a7a;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(40, 116, 166, 0.3);
+.btn-danger:hover {
+    background: var(--color-danger-dark);
+    transform: translateY(-1px);
 }
 
 /* ======================================= */
 /* Responsive */
 /* ======================================= */
 @media (max-width: 768px) {
-    .main-container {
-        padding: 0 20px;
-    }
-
-    .main-header {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px 20px;
-    }
-
-    .main-navbar {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
     .patient-info {
         grid-template-columns: 1fr;
     }

@@ -1,165 +1,12 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* patient_form.css — يستخدم theme.css + base.css */
 
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #ffffff;
-    color: #2c3e50;
-    min-height: 100vh;
-}
-
-/* ======================================= */
-/* Header + Navbar */
-/* ======================================= */
-.main-header {
-    background-color: #ffffff;
-    border-bottom: 3px solid #1a2f6e;
-    padding: 12px 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.lab-title {
-    color: #1a1a1a;
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0;
-    display: flex;
-    align-items: center;
-}
-
-.lab-title img {
-    width: 70px;
-    height: 70px;
-    margin-right: 10px;
-    border-radius: 50%;
-    object-fit: contain;
-    background: white;
-    padding: 1px;
-    border: 1px solid #1a2f6e;
-}
-
-.main-navbar {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.nav-btn {
-    background-color: #2874a6;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 13px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.nav-btn:hover {
-    background-color: #1f5a7a;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.save-btn {
-    background-color: #27ae60;
-}
-
-.save-btn:hover {
-    background-color: #229954;
-}
-
-/* Dropdown */
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.settings-btn {
-    background-color: #95a5a6;
-}
-
-.settings-btn:hover {
-    background-color: #7f8c8d;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background-color: white;
-    min-width: 200px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-radius: 6px;
-    z-index: 1000;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown-content a {
-    color: #2c3e50;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    transition: background-color 0.2s ease;
-}
-
-.dropdown-content a:hover {
-    background-color: #f0f4f8;
-}
-
-.dropdown-content a:first-child {
-    border-radius: 6px 6px 0 0;
-}
-
-.dropdown-content a:last-child {
-    border-radius: 0 0 6px 6px;
-}
-
-/* ======================================= */
-/* Main Container */
-/* ======================================= */
 .main-container {
     max-width: 1400px;
-    margin: 30px auto;
-    padding: 0 40px;
 }
 
 /* ======================================= */
-/* Patient Card */
+/* Patient Grid */
 /* ======================================= */
-.patient-card {
-    background-color: white;
-    border: 2px solid #b0b8c1;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.card-title {
-    color: #1a1a1a;
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #95a5a6;
-}
-
 .patient-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -176,64 +23,20 @@ body {
 .form-field label {
     font-size: 13px;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--text-primary);
     margin: 0;
     text-align: right;
 }
 
-.form-field input,
-.form-field select {
-    padding: 8px 10px;
-    border: 2px solid #b0b8c1;
-    border-radius: 6px;
-    font-size: 13px;
-    background-color: #ffffff;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    color: #2c3e50;
-}
-
-.form-field input:focus,
-.form-field select:focus {
-    outline: none;
-    border-color: #4a90e2;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
-}
-
 /* ======================================= */
-/* Form Styling */
-/* ======================================= */
-form {
-    background-color: transparent;
-}
-
-button {
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-button:hover {
-    background-color: #357abd;
-    transform: translateY(-1px);
-}
-
-/* ======================================= */
-/* Checkboxes للتحاليل */
+/* Analysis Checkboxes */
 /* ======================================= */
 .analysis-checkboxes {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     padding: 12px;
-    background-color: #ecf0f1;
+    background-color: var(--bg-surface-2);
     border-radius: 6px;
 }
 
@@ -245,25 +48,28 @@ button:hover {
     font-size: 13px;
     font-weight: 600;
     padding: 6px 12px;
-    background-color: white;
-    border: 2px solid #b0b8c1;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-light);
     border-radius: 5px;
-    transition: all 0.3s ease;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
 }
 
 .checkbox-label:hover {
-    border-color: #1a2f6e;
-    background-color: #f0f4f8;
+    border-color: var(--lab-primary);
+    color: var(--text-primary);
+    background-color: var(--bg-hover);
 }
 
 .checkbox-label input[type="checkbox"] {
     width: 16px;
     height: 16px;
     cursor: pointer;
+    accent-color: var(--lab-primary);
 }
 
 /* ======================================= */
-/* Tabs للتحاليل */
+/* Tabs */
 /* ======================================= */
 .tabs-header {
     display: flex;
@@ -271,36 +77,35 @@ button:hover {
     gap: 8px;
     margin-top: 15px;
     margin-bottom: 12px;
-    border-bottom: 3px solid #95a5a6;
-    /* max-width: 100%; */
+    border-bottom: 2px solid var(--border-light);
 }
 
 .tab-button {
     padding: 8px 16px;
     background-color: transparent;
     border: none;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
-    color: #666;
-    transition: all 0.3s ease;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
 }
 
-/* #1a2f6e  */
 .tab-button:hover {
-    color: #1a2f6e;
-    background-color: #f0f4f8;
+    color: var(--text-primary);
+    background-color: var(--bg-hover);
 }
 
 .tab-button.active {
-    color: #1a2f6e;
-    border-bottom-color: #1a2f6e;
+    color: #2dd4bf;
+    border-bottom-color: var(--lab-primary);
 }
 
 .tabs-content {
     padding: 15px;
-    background-color: #ecf0f1;
+    background-color: var(--bg-surface-2);
     border-radius: 6px;
     min-height: 150px;
 }
@@ -310,7 +115,7 @@ button:hover {
 }
 
 /* ======================================= */
-/* حقول النتائج */
+/* Result Fields */
 /* ======================================= */
 .result-field {
     display: grid;
@@ -324,65 +129,30 @@ button:hover {
     margin: 0;
     font-weight: 700;
     font-size: 14px;
-    color: #1a1a1a;
+    color: var(--text-primary);
 }
 
-.result-field input,
-.result-field select {
-    padding: 8px 12px;
-    border: 2px solid #b0b8c1;
-    border-radius: 6px;
-    font-size: 13px;
-    background-color: #ffffff;
-    transition: all 0.2s ease;
-    margin: 0;
-    font-weight: 500;
-    color: #2c3e50;
-}
-
-.result-field input:focus,
-.result-field select:focus {
-    outline: none;
-    border-color: #4a90e2;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
-}
-
-.result-field input::placeholder {
-    color: #7f8c8d;
-    font-size: 13px;
-    font-weight: 400;
-}
-
-/* حقول Unit و Range */
-.unit-input {
-    border: 2px solid #95a5a6 !important;
-    background-color: #ecf0f1 !important;
-}
-
-.unit-input:focus {
-    background-color: #ffffff !important;
-    border-color: #4a90e2 !important;
-}
-
+.unit-input,
 .range-input {
-    border: 2px solid #95a5a6 !important;
-    background-color: #ecf0f1 !important;
+    background-color: var(--bg-base) !important;
+    border-color: var(--border) !important;
+    color: var(--text-muted) !important;
 }
 
+.unit-input:focus,
 .range-input:focus {
-    background-color: #ffffff !important;
-    border-color: #4a90e2 !important;
+    border-color: var(--lab-primary) !important;
+    color: var(--text-primary) !important;
 }
 
 /* ======================================= */
 /* GENERAL Template */
 /* ======================================= */
 .general-info {
-    background-color: #e8f4f8;
+    background-color: var(--bg-surface-2);
     padding: 15px;
     border-radius: 6px;
-    border-left: 4px solid #4a90e2;
+    border-left: 4px solid var(--lab-primary);
     margin-bottom: 20px;
 }
 
@@ -393,9 +163,9 @@ button:hover {
     align-items: center;
     margin-bottom: 15px;
     padding: 10px;
-    background-color: #fafbfc;
+    background-color: var(--bg-surface);
     border-radius: 6px;
-    border: 1px solid #e1e8ed;
+    border: 1px solid var(--border);
 }
 
 .general-field-name,
@@ -403,9 +173,11 @@ button:hover {
 .general-field-unit,
 .general-field-range {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-light);
     border-radius: 4px;
     font-size: 14px;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
 }
 
 .general-field-name {
@@ -413,67 +185,130 @@ button:hover {
 }
 
 .general-field-name::placeholder {
-    color: #999;
+    color: var(--text-muted);
     font-weight: 400;
 }
 
 .add-field-btn {
     margin-top: 15px;
     padding: 12px 20px;
-    background-color: #27ae60;
+    background-color: var(--color-success);
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 15px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     width: 100%;
 }
 
 .add-field-btn:hover {
-    background-color: #229954;
+    background-color: var(--color-success-dark);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
-.remove-field-btn {
-    background-color: #4a7ab5;
-    color: white;
-    border: none;
+.remove-field-btn,
+.remove-custom-field-btn {
+    background-color: transparent;
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     padding: 8px 10px;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
-.remove-field-btn:hover {
-    background-color: #1a2f6e;
-    transform: scale(1.1);
+.remove-field-btn:hover,
+.remove-custom-field-btn:hover {
+    background-color: var(--color-danger);
+    color: white;
 }
 
+/* ======================================= */
+/* Custom Analysis Name */
+/* ======================================= */
 .custom-name-field {
     margin-bottom: 25px;
     padding: 15px;
-    background-color: #fff3cd;
+    background-color: var(--bg-surface-2);
     border-radius: 6px;
-    border-left: 4px solid #ffc107;
+    border-left: 4px solid var(--color-warning);
 }
 
 .custom-name-input {
     width: 100%;
     padding: 12px;
-    border: 2px solid #ffc107;
+    border: 2px solid var(--color-warning);
     border-radius: 6px;
     font-size: 15px;
     font-weight: 600;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
 }
 
 .custom-name-input:focus {
     outline: none;
-    border-color: #ff9800;
-    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+    border-color: var(--color-warning);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+/* ======================================= */
+/* Custom Fields */
+/* ======================================= */
+.custom-fields-container {
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.custom-field-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1.5fr 50px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: var(--bg-surface);
+    border-radius: 6px;
+    border: 1px solid var(--color-warning);
+}
+
+.custom-field-name,
+.custom-field-value,
+.custom-field-unit,
+.custom-field-range {
+    padding: 10px;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+}
+
+.custom-field-name {
+    font-weight: 600;
+}
+
+.add-custom-field-btn {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 10px 18px;
+    background-color: var(--color-warning);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.add-custom-field-btn:hover {
+    background-color: #d97706;
+    transform: translateY(-2px);
 }
 
 /* ======================================= */
@@ -492,38 +327,30 @@ button:hover {
     font-weight: 700;
     margin-bottom: 10px;
     font-size: 15px;
-    color: #2c3e50;
+    color: var(--text-primary);
+}
+
+.lap-title-input,
+.lap-content-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
 }
 
 .lap-title-input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 6px;
     font-size: 15px;
     font-weight: 600;
 }
 
-.lap-title-input:focus {
-    outline: none;
-    border-color: #4a90e2;
-}
-
 .lap-content-textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 6px;
     font-size: 14px;
     font-family: 'Arial', sans-serif;
     resize: vertical;
     min-height: 300px;
     line-height: 1.6;
-}
-
-.lap-content-textarea:focus {
-    outline: none;
-    border-color: #4a90e2;
 }
 
 /* ======================================= */
@@ -532,7 +359,7 @@ button:hover {
 .lab-comment-section {
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 2px solid #e1e8ed;
+    border-top: 1px solid var(--border);
 }
 
 .lab-comment-label {
@@ -540,115 +367,162 @@ button:hover {
     font-weight: 700;
     margin-bottom: 10px;
     font-size: 15px;
-    color: #2c3e50;
+    color: var(--text-primary);
 }
 
 .lab-comment-textarea {
     width: 100%;
     padding: 12px;
-    border: 2px solid #ddd;
+    border: 1px solid var(--border-light);
     border-radius: 6px;
     font-size: 14px;
     font-family: 'Arial', sans-serif;
     resize: vertical;
     min-height: 100px;
     line-height: 1.6;
-}
-
-.lab-comment-textarea:focus {
-    outline: none;
-    border-color: #4a90e2;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
 }
 
 /* ======================================= */
-/* Custom Fields */
+/* Search Patient (Navbar) */
 /* ======================================= */
-.custom-fields-container {
-    margin-top: 20px;
-    margin-bottom: 15px;
+#patientSearchInput {
+    padding: 6px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 13px;
 }
 
-.custom-field-row {
-    display: grid;
-    grid-template-columns: 2fr 1.5fr 1fr 1.5fr 50px;
-    gap: 10px;
+#clearPatientBtn {
+    margin-left: 6px;
+    padding: 6px 10px;
+    background: var(--bg-surface-2);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.patient-search-dropdown {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+}
+
+.patient-search-dropdown div:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.selected-patient-banner {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--lab-primary);
+    border-radius: 6px;
+    color: #2dd4bf;
+    font-size: 14px;
+}
+
+/* ======================================= */
+/* Patient Search - Navbar */
+/* ======================================= */
+#patientSearchWrapper {
+    position: relative;
+    display: flex;
     align-items: center;
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #fff9e6;
-    border-radius: 6px;
-    border: 1px solid #ffd966;
+    gap: 6px;
 }
 
-.custom-field-name,
-.custom-field-value,
-.custom-field-unit,
-.custom-field-range {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+#patientSearchInput {
+    padding: 6px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 13px;
+    width: 200px;
+    outline: none;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    transition: border-color 0.2s;
+}
+
+#patientSearchInput:focus {
+    border-color: var(--lab-primary);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+#patientSearchInput::placeholder {
+    color: var(--text-muted);
+}
+
+#clearPatientBtn {
+    display: none;
+    padding: 6px 10px;
+    background: var(--bg-surface-2);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+#clearPatientBtn:hover {
+    background: var(--color-danger);
+    color: white;
+    border-color: var(--color-danger);
+}
+
+#searchResults {
+    display: none;
+    position: absolute;
+    top: 36px;
+    left: 0;
+    width: 380px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* ======================================= */
+/* Selected Patient Banner */
+/* ======================================= */
+#selectedPatientMsg {
+    display: none;
+    margin-bottom: 10px;
+    padding: 8px 14px;
+    background: var(--lab-primary-dim);
+    border: 1px solid var(--lab-primary);
+    border-radius: 6px;
+    color: #2dd4bf;
     font-size: 14px;
 }
 
-.custom-field-name {
-    font-weight: 600;
-}
-
-.add-custom-field-btn {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    padding: 10px 18px;
-    background-color: #f39c12;
-    color: white;
-    border: none;
-    border-radius: 6px;
+/* --------------------- */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.6;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    width: 100%;
 }
 
-.add-custom-field-btn:hover {
-    background-color: #e67e22;
-    transform: translateY(-2px);
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    filter: invert(1);
+    opacity: 0.6;
 }
 
-.remove-custom-field-btn {
-    background-color: #4a7ab5;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 8px 10px;
-    transition: all 0.3s ease;
-}
-
-.remove-custom-field-btn:hover {
-    background-color: #1a2f6e;
-    transform: scale(1.1);
-}
+/* ------------------- */
 
 /* ======================================= */
 /* Responsive */
 /* ======================================= */
 @media (max-width: 768px) {
-    .main-container {
-        padding: 0 20px;
-    }
-
-    .main-header {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px 20px;
-    }
-
-    .main-navbar {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
     .patient-grid {
         grid-template-columns: 1fr;
     }

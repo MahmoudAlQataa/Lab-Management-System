@@ -1,0 +1,107 @@
+/* success.css — يستخدم theme.css + base.css */
+
+.main-container {
+    max-width: 700px;
+}
+
+/* ======================================= */
+/* Success Card */
+/* ======================================= */
+.success-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    margin-top: 60px;
+}
+
+.success-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.success-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-success);
+    margin-bottom: 12px;
+}
+
+.success-message {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* ======================================= */
+/* Patient Info Box */
+/* ======================================= */
+.success-info {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: right;
+}
+
+.success-info p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border-left: 3px solid var(--lab-primary);
+    background: var(--bg-base);
+}
+
+.success-info p:last-child {
+    margin-bottom: 0;
+}
+
+.success-info strong {
+    color: var(--text-primary);
+    margin-right: 8px;
+}
+
+/* ======================================= */
+/* Action Buttons */
+/* ======================================= */
+.success-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.success-actions .nav-btn {
+    padding: 12px 28px;
+    font-size: 14px;
+}
+
+.success-actions .btn-view {
+    background: var(--lab-primary);
+    color: white;
+    border-color: var(--lab-primary);
+}
+
+.success-actions .btn-view:hover {
+    background: var(--lab-primary-dark);
+}
+
+/* ======================================= */
+/* Responsive */
+/* ======================================= */
+@media (max-width: 768px) {
+    .success-card {
+        padding: 25px 20px;
+        margin-top: 30px;
+    }
+
+    .success-actions {
+        flex-direction: column;
+    }
+}
