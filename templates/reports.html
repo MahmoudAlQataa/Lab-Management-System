@@ -42,21 +42,13 @@
     <div class="main-container">
 
         <!-- Search & Filter -->
-        <div class="search-section" style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-            <input type="text" id="searchInput" placeholder="🔍 Search by name or ID number..."
-                style="flex:1; min-width:200px;">
-            <form method="GET" action="/reports" style="display:flex; gap:8px; align-items:center;">
-                <input type="month" name="month" value="{{ selected_month }}"
-                    style="padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
-                <button type="submit"
-                    style="padding:8px 16px; background:#1a2f6e; color:white; border:none; border-radius:6px; cursor:pointer; font-size:14px;">
-                    🔍 Filter
-                </button>
+        <div class="search-filter-bar">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by name or ID number...">
+            <form method="GET" action="/reports" class="filter-form">
+                <input type="month" name="month" value="{{ selected_month }}" class="month-input">
+                <button type="submit" class="btn-filter">🔍 Filter</button>
                 {% if selected_month %}
-                <a href="/reports"
-                    style="padding:8px 14px; background:#aaa; color:white; border-radius:6px; text-decoration:none; font-size:14px;">
-                    ✕ Clear
-                </a>
+                <a href="/reports" class="btn-clear">✕ Clear</a>
                 {% endif %}
             </form>
         </div>

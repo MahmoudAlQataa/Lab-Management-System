@@ -6,6 +6,7 @@
 
 .add-doctor-form {
     display: flex;
+    flex-direction: row;
     gap: 12px;
 }
 
@@ -15,6 +16,13 @@
 
 .table-wrapper {
     overflow-x: auto;
+}
+
+.doctors-layout {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 24px;
+    align-items: start;
 }
 
 @media (max-width: 768px) {

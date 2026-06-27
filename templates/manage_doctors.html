@@ -49,55 +49,60 @@
             <p class="page-description">Add, view, and manage doctors list</p>
         </div>
 
-        <!-- ======================================= -->
-        <!-- Add Doctor Section -->
-        <!-- ======================================= -->
-        <div class="add-doctor-section">
-            <h3 class="section-title">Add New Doctor</h3>
-            <form method="post" action="/add-doctor" class="add-doctor-form">
-                <input type="text" name="doctor_name" placeholder="Doctor Name" required>
-                <button type="submit" class="btn-add">➕ Add Doctor</button>
-            </form>
-        </div>
+        <div class="doctors-layout">
 
-        <!-- ======================================= -->
-        <!-- Doctors List -->
-        <!-- ======================================= -->
-        <div class="doctors-list-section">
-            <h3 class="section-title">Doctors List</h3>
-
-            {% if doctors %}
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Doctor Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for doctor in doctors %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ doctor[1] }}</td>
-                            <td>
-                                <form method="post" action="/delete-doctor/{{ doctor[0] }}" style="display: inline;">
-                                    <button type="submit" class="btn-delete"
-                                        onclick="return confirm('Are you sure you want to delete this doctor?\nNote: Old records will remain saved.')">
-                                        🗑️ Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <!-- ======================================= -->
+            <!-- Add Doctor Section -->
+            <!-- ======================================= -->
+            <div class="add-doctor-section">
+                <h3 class="section-title">Add New Doctor</h3>
+                <form method="post" action="/add-doctor" class="add-doctor-form">
+                    <input type="text" name="doctor_name" placeholder="Doctor Name" required>
+                    <button type="submit" class="btn-add">➕ Add Doctor</button>
+                </form>
             </div>
-            {% else %}
-            <p class="no-data">No doctors registered yet</p>
-            {% endif %}
-        </div>
+
+            <!-- ======================================= -->
+            <!-- Doctors List -->
+            <!-- ======================================= -->
+            <div class="doctors-list-section">
+                <h3 class="section-title">Doctors List</h3>
+
+                {% if doctors %}
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Doctor Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doctor in doctors %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ doctor[1] }}</td>
+                                <td>
+                                    <form method="post" action="/delete-doctor/{{ doctor[0] }}"
+                                        style="display: inline;">
+                                        <button type="submit" class="btn-delete"
+                                            onclick="return confirm('Are you sure you want to delete this doctor?\nNote: Old records will remain saved.')">
+                                            🗑️ Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="no-data">No doctors registered yet</p>
+                {% endif %}
+            </div>
+
+        </div><!-- end doctors-layout -->
 
     </div>
 

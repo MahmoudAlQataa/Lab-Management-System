@@ -48,134 +48,140 @@
         </div>
 
         <form method="POST">
-            <!-- =======================================
-                 Tabs Header
-                 ======================================= -->
-            <div class="tabs-header">
-                {% for analysis_name in templates.keys() %}
-                <button type="button" class="tab-button {% if loop.first %}active{% endif %}"
-                    onclick="showTab('{{ analysis_name }}')">
-                    {{ analysis_name }}
-                </button>
-                {% endfor %}
-            </div>
+            <div class="tabs-layout">
 
-            <!-- =======================================
+                <!-- =======================================
+                 Tabs Sidebar
+                 ======================================= -->
+                <div class="tabs-header">
+                    {% for analysis_name in templates.keys() %}
+                    <button type="button" class="tab-button {% if loop.first %}active{% endif %}"
+                        onclick="showTab('{{ analysis_name }}')">
+                        {{ analysis_name }}
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <!-- =======================================
                  Tabs Content
                  ======================================= -->
-            <div class="tabs-content">
-                {% for analysis_name, fields in templates.items() %}
-                <div class="tab-pane" id="tab-{{ analysis_name }}"
-                    style="{% if not loop.first %}display: none;{% endif %}">
+                <div class="tabs-content">
+                    {% for analysis_name, fields in templates.items() %}
+                    <div class="tab-pane" id="tab-{{ analysis_name }}"
+                        style="{% if not loop.first %}display: none;{% endif %}">
 
-                    <div class="fields-grid" id="grid-{{ analysis_name }}">
-                        <!-- Rows -->
-                        <div class="rows-container" id="rows-{{ analysis_name }}">
-                            {% for field in fields %}
-                            {% set row_index = loop.index0 %}
-                            <div class="field-row" data-name="{{ field.name }}">
-                                <!-- Top Bar -->
-                                <div class="field-top-bar">
-                                    <span class="drag-handle" title="Drag to reorder">☰</span>
-                                    <input type="hidden" name="fields_{{ analysis_name }}_old_name[]"
-                                        value="{{ field.name }}">
+                        <div class="fields-grid" id="grid-{{ analysis_name }}">
+                            <!-- Rows -->
+                            <div class="rows-container" id="rows-{{ analysis_name }}">
+                                {% for field in fields %}
+                                {% set row_index = loop.index0 %}
+                                <div class="field-row" data-name="{{ field.name }}">
+                                    <!-- Top Bar -->
+                                    <div class="field-top-bar">
+                                        <span class="drag-handle" title="Drag to reorder">☰</span>
+                                        <input type="hidden" name="fields_{{ analysis_name }}_old_name[]"
+                                            value="{{ field.name }}">
 
-                                    <input type="text" class="dark-input" name="fields_{{ analysis_name }}_name[]"
-                                        value="{{ field.name }}" placeholder="Field Name" required>
+                                        <input type="text" class="dark-input" name="fields_{{ analysis_name }}_name[]"
+                                            value="{{ field.name }}" placeholder="Field Name" required>
 
-                                    <input type="text" class="dark-input" name="fields_{{ analysis_name }}_unit[]"
-                                        value="{{ field.unit or '' }}" placeholder="Unit">
+                                        <input type="text" class="dark-input" name="fields_{{ analysis_name }}_unit[]"
+                                            value="{{ field.unit or '' }}" placeholder="Unit">
 
-                                    <input type="text" class="dark-input" name="fields_{{ analysis_name }}_range[]"
-                                        value="{{ field.normal_range or '' }}" placeholder="Normal Range">
+                                        <input type="text" class="dark-input" name="fields_{{ analysis_name }}_range[]"
+                                            value="{{ field.normal_range or '' }}" placeholder="Normal Range">
 
-                                    <div class="dropdowns-column">
-                                        <select name="fields_{{ analysis_name }}_type[]" class="dark-select result-type"
-                                            onchange="toggleOptions(this, '{{ analysis_name }}', {{ row_index }})">
-                                            <option value="text" {% if field.get('type','text')=='text' %}selected{%
-                                                endif %}>Result: Text</option>
-                                            <option value="dropdown" {% if field.get('type','text')=='dropdown'
-                                                %}selected{% endif %}>Result: Dropdown</option>
-                                        </select>
-                                        <select name="fields_{{ analysis_name }}_range_type_{{ row_index }}"
-                                            class="dark-select range-type"
-                                            onchange="toggleRangeOptions(this, '{{ analysis_name }}', {{ row_index }})">
-                                            <option value="text" {% if field.get('range_type','text')=='text'
-                                                %}selected{% endif %}>Range: Text</option>
-                                            <option value="dropdown" {% if field.get('range_type','text')=='dropdown'
-                                                %}selected{% endif %}>Range: Dropdown</option>
-                                        </select>
-                                    </div>
-
-                                    <button type="button" class="delete-row-btn"
-                                        onclick="this.closest('.field-row').remove()">✕</button>
-                                </div>
-
-                                <!-- Options Area -->
-                                <div class="options-wrapper" id="wrapper-{{ analysis_name }}-{{ row_index }}"
-                                    style="display: {% if field.get('type','text') == 'dropdown' or field.get('range_type','text') == 'dropdown' %}flex{% else %}none{% endif %};">
-
-                                    <!-- Result Options -->
-                                    <div class="options-container" id="options-{{ analysis_name }}-{{ row_index }}"
-                                        style="display: {% if field.get('type','text') == 'dropdown' %}block{% else %}none{% endif %};">
-                                        <div class="options-header result-header">Result options</div>
-                                        <div class="options-list" id="optlist-{{ analysis_name }}-{{ row_index }}">
-                                            {% if field.get('options') %}
-                                            {% for opt in field.options %}
-                                            <div class="option-item">
-                                                <input type="text" class="dark-input"
-                                                    name="fields_{{ analysis_name }}_options_{{ row_index }}[]"
-                                                    value="{{ opt }}" placeholder="Option value">
-                                                <button type="button" class="delete-row-btn"
-                                                    onclick="this.parentElement.remove()">✕</button>
-                                            </div>
-                                            {% endfor %}
-                                            {% endif %}
+                                        <div class="dropdowns-column">
+                                            <select name="fields_{{ analysis_name }}_type[]"
+                                                class="dark-select result-type"
+                                                onchange="toggleOptions(this, '{{ analysis_name }}', {{ row_index }})">
+                                                <option value="text" {% if field.get('type','text')=='text' %}selected{%
+                                                    endif %}>Result: Text</option>
+                                                <option value="dropdown" {% if field.get('type','text')=='dropdown'
+                                                    %}selected{% endif %}>Result: Dropdown</option>
+                                            </select>
+                                            <select name="fields_{{ analysis_name }}_range_type_{{ row_index }}"
+                                                class="dark-select range-type"
+                                                onchange="toggleRangeOptions(this, '{{ analysis_name }}', {{ row_index }})">
+                                                <option value="text" {% if field.get('range_type','text')=='text'
+                                                    %}selected{% endif %}>Range: Text</option>
+                                                <option value="dropdown" {% if
+                                                    field.get('range_type','text')=='dropdown' %}selected{% endif %}>
+                                                    Range: Dropdown</option>
+                                            </select>
                                         </div>
-                                        <button type="button" class="add-option-btn"
-                                            onclick="addOption('{{ analysis_name }}', {{ row_index }})">+ Add
-                                            option</button>
+
+                                        <button type="button" class="delete-row-btn"
+                                            onclick="this.closest('.field-row').remove()">✕</button>
                                     </div>
 
-                                    <!-- Range Options -->
-                                    <div class="options-container"
-                                        id="range-options-{{ analysis_name }}-{{ row_index }}"
-                                        style="display: {% if field.get('range_type','text') == 'dropdown' %}block{% else %}none{% endif %};">
-                                        <div class="options-header range-header">Range options</div>
-                                        <div class="range-options-list"
-                                            id="rangeoptlist-{{ analysis_name }}-{{ row_index }}">
-                                            {% if field.get('range_options') %}
-                                            {% for opt in field.range_options %}
-                                            <div class="option-item">
-                                                <input type="text" class="dark-input"
-                                                    name="fields_{{ analysis_name }}_range_options_{{ row_index }}[]"
-                                                    value="{{ opt }}" placeholder="e.g. male: 13.5-17.5">
-                                                <button type="button" class="delete-row-btn"
-                                                    onclick="this.parentElement.remove()">✕</button>
+                                    <!-- Options Area -->
+                                    <div class="options-wrapper" id="wrapper-{{ analysis_name }}-{{ row_index }}"
+                                        style="display: {% if field.get('type','text') == 'dropdown' or field.get('range_type','text') == 'dropdown' %}flex{% else %}none{% endif %};">
+
+                                        <!-- Result Options -->
+                                        <div class="options-container" id="options-{{ analysis_name }}-{{ row_index }}"
+                                            style="display: {% if field.get('type','text') == 'dropdown' %}block{% else %}none{% endif %};">
+                                            <div class="options-header result-header">Result options</div>
+                                            <div class="options-list" id="optlist-{{ analysis_name }}-{{ row_index }}">
+                                                {% if field.get('options') %}
+                                                {% for opt in field.options %}
+                                                <div class="option-item">
+                                                    <input type="text" class="dark-input"
+                                                        name="fields_{{ analysis_name }}_options_{{ row_index }}[]"
+                                                        value="{{ opt }}" placeholder="Option value">
+                                                    <button type="button" class="delete-row-btn"
+                                                        onclick="this.parentElement.remove()">✕</button>
+                                                </div>
+                                                {% endfor %}
+                                                {% endif %}
                                             </div>
-                                            {% endfor %}
-                                            {% endif %}
+                                            <button type="button" class="add-option-btn"
+                                                onclick="addOption('{{ analysis_name }}', {{ row_index }})">+ Add
+                                                option</button>
                                         </div>
-                                        <button type="button" class="add-option-btn"
-                                            onclick="addRangeOption('{{ analysis_name }}', {{ row_index }})">+ Add
-                                            option</button>
+
+                                        <!-- Range Options -->
+                                        <div class="options-container"
+                                            id="range-options-{{ analysis_name }}-{{ row_index }}"
+                                            style="display: {% if field.get('range_type','text') == 'dropdown' %}block{% else %}none{% endif %};">
+                                            <div class="options-header range-header">Range options</div>
+                                            <div class="range-options-list"
+                                                id="rangeoptlist-{{ analysis_name }}-{{ row_index }}">
+                                                {% if field.get('range_options') %}
+                                                {% for opt in field.range_options %}
+                                                <div class="option-item">
+                                                    <input type="text" class="dark-input"
+                                                        name="fields_{{ analysis_name }}_range_options_{{ row_index }}[]"
+                                                        value="{{ opt }}" placeholder="e.g. male: 13.5-17.5">
+                                                    <button type="button" class="delete-row-btn"
+                                                        onclick="this.parentElement.remove()">✕</button>
+                                                </div>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                            <button type="button" class="add-option-btn"
+                                                onclick="addRangeOption('{{ analysis_name }}', {{ row_index }})">+ Add
+                                                option</button>
+                                        </div>
                                     </div>
                                 </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
-                    </div>
 
-                    <!-- Add Field Button -->
-                    <div style="margin-top: 20px; text-align: right;">
-                        <button type="button" onclick="addField('{{ analysis_name }}')"
-                            style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">➕
-                            Add Field</button>
-                    </div>
+                        <!-- Add Field Button -->
+                        <div style="margin-top: 20px; text-align: right;">
+                            <button type="button" onclick="addField('{{ analysis_name }}')"
+                                style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">➕
+                                Add Field</button>
+                        </div>
 
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
+
+            </div><!-- end tabs-layout -->
 
             <div class="action-buttons" style="margin-top: 30px; text-align: center;">
                 <button type="submit" class="save-btn">💾 Save All Changes</button>
