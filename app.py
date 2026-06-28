@@ -14,7 +14,6 @@ import os
 # استيراد الـ routes
 from routes.patients import patients_bp
 from routes.reports import reports_bp
-from routes.print_routes import print_bp
 from routes.doctors import doctors_bp  
 from routes.settings import settings_bp
 from routes.stats import stats_bp
@@ -30,7 +29,6 @@ else:
 # تسجيل الـ Blueprints
 app.register_blueprint(patients_bp)
 app.register_blueprint(reports_bp)
-app.register_blueprint(print_bp)
 app.register_blueprint(doctors_bp)
 app.register_blueprint(settings_bp)
 app.register_blueprint(stats_bp)

@@ -90,7 +90,7 @@
 
     <script>
         function printAnalysis(id) {
-            window.open('/pdf/analysis/' + id, '_blank');
+            fetch('/pdf/analysis/' + id);
         }
 
         document.querySelector('.settings-btn')?.addEventListener('click', function (e) {

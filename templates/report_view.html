@@ -111,21 +111,19 @@
             {% if show_print_all %}
             <button class="print-btn print-all" onclick="printAll({{ patient_id }})">
                 📄 Print All Analyses ({{ all_analyses|length }} Tests)
-                </a>
-                {% endif %}
+            </button>
+            {% endif %}
 
-                <!-- Individual Prints -->
-                <div class="print-buttons">
-                    {% for analysis in all_analyses %}
-                    <button
-                        class="print-btn {% if analysis[0] == patient[0] %}print-current{% else %}print-individual{% endif %}"
-                        onclick="printAnalysis({{ analysis[0] }})">
-                        class="print-btn {% if analysis[0] == patient[0] %}print-current{% else %}print-individual{%
-                        endif %}">
-                        🖨️ Print {{ analysis[1].replace('_', ' ').title() }}
-                        </a>
-                        {% endfor %}
-                </div>
+            <!-- Individual Prints -->
+            <div class="print-buttons">
+                {% for analysis in all_analyses %}
+                <button
+                    class="print-btn {% if analysis[0] == patient[0] %}print-current{% else %}print-individual{% endif %}"
+                    onclick="printAnalysis({{ analysis[0] }})">
+                    🖨️ Print {{ analysis[1].replace('_', ' ').title() }}
+                </button>
+                {% endfor %}
+            </div>
         </div>
 
     </div>
@@ -139,11 +137,11 @@
         }
 
         function printAll(patientId) {
-            window.open('/pdf/comprehensive/' + patientId, '_blank');
+            fetch('/pdf/comprehensive/' + patientId);
         }
 
         function printAnalysis(analysisId) {
-            window.open('/pdf/analysis/' + analysisId, '_blank');
+            fetch('/pdf/analysis/' + analysisId);
         }
     </script>
 </body>

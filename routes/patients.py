@@ -601,32 +601,6 @@ def view_report(report_id):
         lab_comment=lab_comment,
         show_print_all=show_print_all  
     )
-    
-# =======================================
-# عرض ملف pdf مباشرة
-# هذا الـ route يسمح بعرض ملف PDF في المتصفح بدلاً من تحميله
-# =======================================
-@patients_bp.route("/view-pdf/<path:filename>")
-def view_pdf(filename):
-    """
-    عرض ملف PDF مباشرة
-    """
-    from flask import send_file
-    import os
-    
-    # المسار الكامل للملف
-    pdf_path = os.path.join('PDF_OUTPUT_DIR', filename)
-    
-    if os.path.exists(pdf_path):
-        return send_file(
-            pdf_path,
-            mimetype='application/pdf',
-            as_attachment=False,  # فتح في المتصفح/Acrobat
-            download_name=os.path.basename(pdf_path)
-        )
-    else:
-        return "PDF not found", 404
-
 
 
 @patients_bp.route("/pdf/analysis/<int:analysis_id>")

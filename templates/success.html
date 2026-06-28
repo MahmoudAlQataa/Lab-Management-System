@@ -64,7 +64,7 @@
         }
 
         function printAnalysis(analysisId) {
-            window.open('/pdf/analysis/' + analysisId, '_blank');
+            fetch('/pdf/analysis/' + analysisId);
         }
 
         function skipToDashboard() {
