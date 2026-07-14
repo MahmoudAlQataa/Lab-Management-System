@@ -1,15 +1,15 @@
 /* ============================================================
-   theme.css — Nebras Lab | Slate Teal Dark Theme
+   theme.css — Nebras Lab | Slate Blue-Teal Dark Theme
    لتغيير ثيم المختبر: غير القيم هون بس
    ============================================================ */
 
 :root {
     /* اللون الرئيسي للمختبر */
-    --lab-primary: #0d9488;
-    /* teal رئيسي */
-    --lab-primary-dark: #0a7c70;
+    --lab-primary: #1591a6;
+    /* blue-teal رئيسي */
+    --lab-primary-dark: #0f7686;
     /* للـ hover والحدود */
-    --lab-primary-dim: #0d4f47;
+    --lab-primary-dim: #0e3d47;
     /* للخلفيات الخفيفة */
 
     /* خلفيات */
@@ -41,12 +41,12 @@
 
     /* أزرار nav */
     --nav-btn-bg: var(--lab-primary-dim);
-    --nav-btn-color: #2dd4bf;
+    --nav-btn-color: #38bcd1;
     --nav-btn-hover-bg: var(--lab-primary-dark);
 
     /* الجداول */
     --table-header-bg: var(--lab-primary-dim);
-    --table-header-color: #2dd4bf;
+    --table-header-color: #38bcd1;
     --table-border: var(--border);
     --table-row-hover: var(--bg-hover);
 

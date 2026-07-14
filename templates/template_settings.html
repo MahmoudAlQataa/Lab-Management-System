@@ -23,20 +23,32 @@
             {{ lab_name_en }}
         </h1>
 
-        <nav class="main-navbar">
-            <a href="/new-report" class="nav-btn">➕ New Report</a>
-            <a href="/reports" class="nav-btn">📄 Reports</a>
+        <div class="header-actions">
+            <button type="submit" form="templateForm" class="nav-btn save-btn">💾 Save</button>
+            <button type="button" id="hamburgerBtn" class="hamburger-btn" aria-label="فتح القائمة">☰</button>
+        </div>
+    </header>
 
-            <a href="/stats" class="nav-btn">📊 Statistics</a>
-            <div class="dropdown">
-                <button type="button" class="nav-btn settings-btn active-page">⚙️ Settings ▼</button>
-                <div class="dropdown-content">
-                    <a href="/template-settings">📋 Template Settings</a>
-                    <a href="/manage-doctors">👨‍⚕️ Manage Doctors</a>
-                </div>
+    <div id="drawerOverlay" class="drawer-overlay"></div>
+    <aside id="sideDrawer" class="side-drawer">
+        <div class="drawer-header">
+            <span>القائمة</span>
+            <button type="button" id="drawerCloseBtn" class="drawer-close-btn">✕</button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/new-report" class="drawer-link">➕ New Report</a>
+            <a href="/reports" class="drawer-link">📄 Reports</a>
+            <a href="/stats" class="drawer-link">📊 Statistics</a>
+            <button type="button" class="drawer-link drawer-settings-toggle open">
+                <span>⚙️ Settings</span>
+                <span class="drawer-arrow">▾</span>
+            </button>
+            <div class="drawer-submenu open">
+                <a href="/template-settings" class="drawer-sublink active-page">📋 Template Settings</a>
+                <a href="/manage-doctors" class="drawer-sublink">👨‍⚕️ Manage Doctors</a>
             </div>
         </nav>
-    </header>
+    </aside>
 
     <!-- ======================================= -->
     <!-- Main Container -->
@@ -47,7 +59,7 @@
             <p class="page-description">Edit default Units and Normal Ranges for all analysis templates</p>
         </div>
 
-        <form method="POST">
+        <form method="POST" id="templateForm">
             <div class="tabs-layout">
 
                 <!-- =======================================
@@ -183,11 +195,6 @@
 
             </div><!-- end tabs-layout -->
 
-            <div class="action-buttons" style="margin-top: 30px; text-align: center;">
-                <button type="submit" class="save-btn">💾 Save All Changes</button>
-                <a href="/new-report" class="nav-btn">➕ New Patient</a>
-                <a href="/reports" class="nav-btn">📄 All Reports</a>
-            </div>
         </form>
     </div>
 
@@ -328,6 +335,7 @@
         });
     </script>
 
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
     <script src="{{ url_for('static', filename='js/Sortable.min.js') }}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {

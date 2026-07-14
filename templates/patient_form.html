@@ -22,27 +22,40 @@
             {{ lab_name_en }}
         </h1>
 
-        <nav class="main-navbar">
+        <div class="header-actions">
             <button type="submit" form="patientForm" class="nav-btn save-btn">💾 Save</button>
-            <a href="/reports" class="nav-btn reports-btn">📄 Reports</a>
-            <a href="/stats" class="nav-btn">📊 Statistics</a>
 
-            <!-- خانة البحث في الـ Navbar -->
+            <!-- خانة البحث -->
             <div id="patientSearchWrapper">
                 <input type="text" id="patientSearchInput" placeholder="🔍 Search patient...">
                 <button type="button" id="clearPatientBtn" onclick="clearSelectedPatient()">✕</button>
                 <div id="searchResults"></div>
             </div>
 
-            <div class="dropdown">
-                <button type="button" class="nav-btn settings-btn">⚙️ Settings ▼</button>
-                <div class="dropdown-content">
-                    <a href="/template-settings">📋 Template Settings</a>
-                    <a href="/manage-doctors">👨‍⚕️ Manage Doctors</a>
-                </div>
+            <button type="button" id="hamburgerBtn" class="hamburger-btn" aria-label="فتح القائمة">☰</button>
+        </div>
+    </header>
+
+    <div id="drawerOverlay" class="drawer-overlay"></div>
+    <aside id="sideDrawer" class="side-drawer">
+        <div class="drawer-header">
+            <span>القائمة</span>
+            <button type="button" id="drawerCloseBtn" class="drawer-close-btn">✕</button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/new-report" class="drawer-link active-page">➕ New Report</a>
+            <a href="/reports" class="drawer-link">📄 Reports</a>
+            <a href="/stats" class="drawer-link">📊 Statistics</a>
+            <button type="button" class="drawer-link drawer-settings-toggle">
+                <span>⚙️ Settings</span>
+                <span class="drawer-arrow">▾</span>
+            </button>
+            <div class="drawer-submenu">
+                <a href="/template-settings" class="drawer-sublink">📋 Template Settings</a>
+                <a href="/manage-doctors" class="drawer-sublink">👨‍⚕️ Manage Doctors</a>
             </div>
         </nav>
-    </header>
+    </aside>
 
     <!-- ======================================= -->
     <!-- Container -->
@@ -1137,6 +1150,7 @@
         resetTimer();
     </script>
 
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
 </body>
 
 </html>

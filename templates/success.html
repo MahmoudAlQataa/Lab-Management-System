@@ -16,7 +16,30 @@
             <img src="{{ url_for('static', filename='img/WaterMark.png') }}" alt="">
             {{ lab_name_en }}
         </h1>
+
+        <button type="button" id="hamburgerBtn" class="hamburger-btn" aria-label="فتح القائمة">☰</button>
     </header>
+
+    <div id="drawerOverlay" class="drawer-overlay"></div>
+    <aside id="sideDrawer" class="side-drawer">
+        <div class="drawer-header">
+            <span>القائمة</span>
+            <button type="button" id="drawerCloseBtn" class="drawer-close-btn">✕</button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/new-report" class="drawer-link">➕ New Report</a>
+            <a href="/reports" class="drawer-link">📄 Reports</a>
+            <a href="/stats" class="drawer-link">📊 Statistics</a>
+            <button type="button" class="drawer-link drawer-settings-toggle">
+                <span>⚙️ Settings</span>
+                <span class="drawer-arrow">▾</span>
+            </button>
+            <div class="drawer-submenu">
+                <a href="/template-settings" class="drawer-sublink">📋 Template Settings</a>
+                <a href="/manage-doctors" class="drawer-sublink">👨‍⚕️ Manage Doctors</a>
+            </div>
+        </nav>
+    </aside>
 
     <div class="main-container">
         <div class="success-card">
@@ -57,6 +80,8 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
 
     <script>
         function printAll() {

@@ -21,20 +21,29 @@
             {{ lab_name_en }}
         </h1>
 
-        <nav class="main-navbar">
-            <a href="/new-report" class="nav-btn">➕ New Report</a>
-            <a href="/reports" class="nav-btn active-page">📄 Reports</a>
+        <button type="button" id="hamburgerBtn" class="hamburger-btn" aria-label="فتح القائمة">☰</button>
+    </header>
 
-            <a href="/stats" class="nav-btn">📊 Statistics</a>
-            <div class="dropdown">
-                <button type="button" class="nav-btn settings-btn">⚙️ Settings ▼</button>
-                <div class="dropdown-content">
-                    <a href="/template-settings">📋 Template Settings</a>
-                    <a href="/manage-doctors">👨‍⚕️ Manage Doctors</a>
-                </div>
+    <div id="drawerOverlay" class="drawer-overlay"></div>
+    <aside id="sideDrawer" class="side-drawer">
+        <div class="drawer-header">
+            <span>القائمة</span>
+            <button type="button" id="drawerCloseBtn" class="drawer-close-btn">✕</button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/new-report" class="drawer-link">➕ New Report</a>
+            <a href="/reports" class="drawer-link active-page">📄 Reports</a>
+            <a href="/stats" class="drawer-link">📊 Statistics</a>
+            <button type="button" class="drawer-link drawer-settings-toggle">
+                <span>⚙️ Settings</span>
+                <span class="drawer-arrow">▾</span>
+            </button>
+            <div class="drawer-submenu">
+                <a href="/template-settings" class="drawer-sublink">📋 Template Settings</a>
+                <a href="/manage-doctors" class="drawer-sublink">👨‍⚕️ Manage Doctors</a>
             </div>
         </nav>
-    </header>
+    </aside>
 
     <!-- ======================================= -->
     <!-- Main Container -->
@@ -137,6 +146,8 @@
             }
         });
     </script>
+
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
 </body>
 
 </html>
