@@ -3,6 +3,27 @@
    لتغيير ثيم المختبر: غير القيم هون بس
    ============================================================ */
 
+@font-face {
+    font-family: 'IBM Plex Sans';
+    src: url("../fonts/IBMPlexSans-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'IBM Plex Sans';
+    src: url("../fonts/IBMPlexSans-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'IBM Plex Sans';
+    src: url("../fonts/IBMPlexSans-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-display: swap;
+}
+
 :root {
     /* اللون الرئيسي للمختبر */
     --lab-primary: #1591a6;

@@ -85,7 +85,7 @@
 
     <script>
         function printAll() {
-            window.open('/pdf/comprehensive/{{ patient_id }}', '_blank');
+            fetch('/pdf/comprehensive/{{ patient_id }}');
         }
 
         function printAnalysis(analysisId) {

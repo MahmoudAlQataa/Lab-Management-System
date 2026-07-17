@@ -9,7 +9,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
     background-color: var(--bg-base);
     color: var(--text-primary);
     min-height: 100vh;
