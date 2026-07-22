@@ -5,6 +5,8 @@
 
 A comprehensive medical laboratory management system built with Flask, packaged as a Windows desktop application via PyInstaller and WebView.
 
+> Developed as a real-world laboratory management solution using Flask and SQLite.
+
 ---
 
 ## Badges
