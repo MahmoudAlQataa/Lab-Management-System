@@ -480,7 +480,7 @@
     display: none;
     position: absolute;
     top: 36px;
-    left: 0;
+    right: 0;
     width: 380px;
     background: var(--bg-surface);
     border: 1px solid var(--border-light);

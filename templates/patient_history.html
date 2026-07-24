@@ -63,7 +63,15 @@
 
         <!-- Analyses History -->
         <div class="history-card">
-            <h3>🧪 Analysis History ({{ analyses|length }} total)</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>🧪 Analysis History ({{ analyses|length }} total)</h3>
+                {% if analyses|length > 1 %}
+                <button onclick="printAllAnalyses({{ patient[0] }})" class="new-analysis-btn"
+                    style="background:var(--lab-primary); cursor:pointer;">
+                    🖨️ Print All ({{ analyses|length }})
+                </button>
+                {% endif %}
+            </div>
 
             {% if analyses %}
             <table class="analyses-table">
@@ -100,10 +108,16 @@
     </div>
 
     <script>
+        //    function printAnalysis(id) {
+        //          fetch('/pdf/analysis/' + id);
+        //        }
         function printAnalysis(id) {
             fetch('/pdf/analysis/' + id);
         }
 
+        function printAllAnalyses(patientId) {
+            fetch('/pdf/comprehensive/' + patientId);
+        }
         document.querySelector('.settings-btn')?.addEventListener('click', function (e) {
             e.stopPropagation();
             this.nextElementSibling.style.display =

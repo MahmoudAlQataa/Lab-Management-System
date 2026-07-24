@@ -338,6 +338,60 @@
     <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
     <script src="{{ url_for('static', filename='js/Sortable.min.js') }}"></script>
     <script>
+        function reindexRows(analysisName) {
+            const container = document.getElementById('rows-' + analysisName);
+            const rows = container.querySelectorAll('.field-row');
+
+            rows.forEach((row, idx) => {
+                // Result type select
+                const typeSelect = row.querySelector('select.result-type');
+                if (typeSelect) typeSelect.setAttribute('onchange', `toggleOptions(this, '${analysisName}', ${idx})`);
+
+                // Range type select
+                const rangeSelect = row.querySelector('select.range-type');
+                if (rangeSelect) {
+                    rangeSelect.setAttribute('name', `fields_${analysisName}_range_type_${idx}`);
+                    rangeSelect.setAttribute('onchange', `toggleRangeOptions(this, '${analysisName}', ${idx})`);
+                }
+
+                // Wrapper
+                const wrapper = row.querySelector('.options-wrapper');
+                if (wrapper) wrapper.id = `wrapper-${analysisName}-${idx}`;
+
+                const containers = row.querySelectorAll('.options-wrapper > .options-container');
+
+                // Result options container
+                const resultContainer = containers[0];
+                if (resultContainer) {
+                    resultContainer.id = `options-${analysisName}-${idx}`;
+                    const optList = resultContainer.querySelector('.options-list');
+                    if (optList) {
+                        optList.id = `optlist-${analysisName}-${idx}`;
+                        optList.querySelectorAll('input').forEach(inp => {
+                            inp.name = `fields_${analysisName}_options_${idx}[]`;
+                        });
+                    }
+                    const addBtn = resultContainer.querySelector('.add-option-btn');
+                    if (addBtn) addBtn.setAttribute('onclick', `addOption('${analysisName}', ${idx})`);
+                }
+
+                // Range options container
+                const rangeContainer = containers[1];
+                if (rangeContainer) {
+                    rangeContainer.id = `range-options-${analysisName}-${idx}`;
+                    const rangeList = rangeContainer.querySelector('.range-options-list');
+                    if (rangeList) {
+                        rangeList.id = `rangeoptlist-${analysisName}-${idx}`;
+                        rangeList.querySelectorAll('input').forEach(inp => {
+                            inp.name = `fields_${analysisName}_range_options_${idx}[]`;
+                        });
+                    }
+                    const rangeAddBtn = rangeContainer.querySelector('.add-option-btn');
+                    if (rangeAddBtn) rangeAddBtn.setAttribute('onclick', `addRangeOption('${analysisName}', ${idx})`);
+                }
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".rows-container").forEach(function (container) {
                 Sortable.create(container, {
@@ -345,6 +399,10 @@
                     animation: 150,
                     onEnd: function (evt) {
                         const analysisName = container.id.replace("rows-", "");
+
+                        // إعادة ترقيم كل الصفوف حسب الترتيب الجديد بالـ DOM
+                        reindexRows(analysisName);
+
                         const rows = container.querySelectorAll(".field-row");
                         const order = Array.from(rows).map(r => r.dataset.name);
 
