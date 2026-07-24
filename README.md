@@ -1,15 +1,28 @@
 
 ---
 
-# 🏥 R Medical Laboratory System
+# 🏥 Laboratory Management System
 
 A comprehensive medical laboratory management system built with Flask, packaged as a Windows desktop application via PyInstaller and WebView.
 
+> Developed as a real-world laboratory management solution using Flask and SQLite.
+
 ---
+
+## Badges
+
+- Python
+- Flask
+- SQLite
+- License
 
 ## ✨ Features
 
-- Soon
+- 
+
+## 📸 Screenshots
+
+Coming soon...
 
 ### 📋 Patient Management
 
@@ -86,7 +99,7 @@ A comprehensive medical laboratory management system built with Flask, packaged 
 
 ```
 
-Lap_System/
+Lab-Management-System/
 ├── LapApp/                  ← Application source (this repository)
 │   ├── app.py               # Flask app init
 │   ├── config.py            # Path configuration
@@ -137,8 +150,8 @@ Lap_System/
 
 ```bash
 # Clone the repository
-git clone https://github.com/MahmoudAlQataa/Lap_System.git
-cd Lap_System
+git clone https://github.com/MahmoudAlQataa/Lab-Management-System.git
+cd Lab-Management-System
 
 # Create virtual environment
 python -m venv venv
